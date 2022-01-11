@@ -13,25 +13,16 @@ html, body {
 body {
     border: 1px solid #000;
 }
-/*
-a:link {
-    color: #9b9b7a;
-}
 
-a:visited {
-    color: #797d62;
-}
-*/
 
-/*
 a {
-    color: #9b9b7a;
+    color: #1a936f;
 }
 
 a:visited {
-    color: #797d62;
+    color: #114b5f;
 }
-*/
+
 
 
 /*
@@ -46,7 +37,7 @@ header {
 
     /*border-bottom: 1px solid #000;*/
 
-    background-color: rgb(206, 166, 135);
+    /*background-color: #e5fdf6;*/
 }
 
 header h1 {
@@ -68,6 +59,7 @@ header form input {
     width: 70%;
     height: 2em;
     border-radius: 3px;
+    border-width: 1px;
     font-size: large;
     text-indent: 0.3em;
 }
@@ -76,10 +68,14 @@ header form input {
     width: 20%;
     height: 2em;
     border-radius: 3px;
+    border-width: 1px;
     font-size: large;
 
     margin-left: -0.3em;
     min-width: fit-content;
+
+    color: white;
+    background-color: #1a936f;
 }
 
 #accedi {
@@ -101,7 +97,7 @@ SEZIONE BREADCRUMB
     padding-left: 0.6em;
     border-bottom: 1px solid #000;
 
-    background-color: rgb(206, 166, 135);
+    /*background-color: #e5fdf6;*/
 
     padding-bottom: 0.5em;
 }
@@ -116,7 +112,7 @@ SEZIONE MENU'
     padding-left: 0.6em;
     border-bottom: 1px solid #000;
 
-    background-color: #d9ae94;
+    /*background-color: #e5fdf6;*/
 
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -132,10 +128,12 @@ SEZIONE MENU'
 SEZIONE CONTENT
 ==================
 */
-
+/*
 #content {
-    background-color: #f0ead2;
+    background-color: #e5fdf6;
 }
+*/
+
 
 /*
 #content div {
@@ -148,6 +146,8 @@ SEZIONE CONTENT
     margin-bottom: 0.4em;
 
     padding-top: 0.4em;
+
+    color: #1a936f;
 }
 
 .bookCards {
@@ -251,6 +251,8 @@ SEZIONE CONTENT
 #filtri h2 {
     padding-left: 0.3em;
     padding-top: 1em;
+
+    color: #1a936f;
 }
 
 /*
