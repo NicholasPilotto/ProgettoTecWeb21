@@ -1,5 +1,6 @@
 <?php
-require_once "graphics.php";
+require_once "./Backend/Pages/graphics.php";
+
 
 $paginaHTML = graphics::getPage("Views/index_php.html");
 
