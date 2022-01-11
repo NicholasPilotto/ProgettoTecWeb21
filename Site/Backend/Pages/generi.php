@@ -1,11 +1,10 @@
 <?php
-    require_once "graphics.php";
-    
-    $paginaHTML = graphics::getPage("generi_php.html");
+require_once "graphics.php";
 
-    // Accesso al database
+$paginaHTML = graphics::getPage("./Views/generi_php.html");
 
-    // -------------------
+// Accesso al database
 
-    echo $paginaHTML;
-?>
+// -------------------
+
+echo $paginaHTML;
