@@ -243,7 +243,7 @@ SEZIONE CONTENT
 
 #formAccedi fieldset {
     padding: 0em 3em 3em 3em;
-    border: 1px solid #000;
+    border: 1px solid #aaaaaa;
     border-radius: 10px;
 }
 
@@ -313,11 +313,11 @@ SEZIONE CONTENT
     display: flex;
     flex-wrap: wrap; /* Andare a capo */
 
-    border-left: 1px solid #000;
+    border-left: 1px solid #aaaaaa;
 }
 
 .advertsCards li{
-    border-top: 1px solid #000;
+    border-top: 1px solid #aaaaaa;
 }
 
 li.primaInserzione {
@@ -369,7 +369,7 @@ footer {
     clear: both;
     text-align: center;
     font-size: 0.8em;
-    /*border-top: 1px solid #000;*/
+    border-top: 1px solid #aaaaaa;
     padding: 0.5em;
 
     background-color: white;
