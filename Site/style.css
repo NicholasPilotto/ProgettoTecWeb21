@@ -36,6 +36,8 @@ header {
     flex-wrap: wrap;
     align-items: center;
 
+    min-height: 5em;
+
     /*border-bottom: 1px solid #000;*/
 
     /*background-color: #e5fdf6;*/
