@@ -12,7 +12,10 @@ html, body {
 }
 
 body {
-    border: 1px solid #000;
+    /*border: 1px solid #000;*/
+
+    background-color: rgb(237, 239, 240);
+    box-shadow: 0px 0px 10px 0px #aaaaaa;
 }
 
 
@@ -41,6 +44,9 @@ header {
     /*border-bottom: 1px solid #000;*/
 
     /*background-color: #e5fdf6;*/
+    background-color: white;
+
+    padding-left: 1em;
 }
 
 header h1 {
@@ -50,16 +56,22 @@ header h1 {
     text-indent: -9999999em;
     font-size: 3em;
 
+    /*
     width: 28%;
     min-width: 280px;
+    */
+    flex-basis: 280px;
 }
 
 header form {
-    width: 45%;
+    /*width: 45%;*/
+    /*flex-basis: 500px;*/
+    flex-shrink: 1;
+    flex-grow: 1;
 }
 
-header form input {
-    width: 70%;
+#searchBar {
+    width: 82%;
     height: 2em;
     border-radius: 3px;
     border-width: 1px;
@@ -68,7 +80,8 @@ header form input {
 }
 
 #searchButton {
-    width: 20%;
+    width: 15%;
+
     height: 2em;
     border-radius: 3px;
     border-width: 1px;
@@ -79,20 +92,21 @@ header form input {
 
     color: white;
     background-color: #1a936f;
+
+    cursor: pointer;
 }
 
 #accedi {
-    margin-top: 0.3em;
-    margin-right: 1em;
+    margin-left: 0.5%;
 }
 
 #registrati {
-    margin-top: 0.3em;
-    margin-right: 1em;
+    margin-left: 2%;
 }
 
 #carrello {
-    margin-top: 0.3em;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 /*
@@ -102,10 +116,12 @@ SEZIONE BREADCRUMB
 */
 
 #breadcrumb {
-    padding-left: 0.6em;
-    border-bottom: 1px solid #000;
+    /*padding-left: 0.6em;*/
+    padding-left: 1.5em;
+    /*border-bottom: 1px solid #000;*/
 
     /*background-color: #e5fdf6;*/
+    background-color: white;
 
     padding-bottom: 0.5em;
 }
@@ -117,10 +133,13 @@ SEZIONE MENU'
 */
 
 #menu {
-    padding-left: 0.6em;
-    border-bottom: 1px solid #000;
+    /*padding-left: 0.6em;*/
+    /*padding-left: 1.5em;
+    padding-right: 1.5em;*/
+    border-bottom: 1px solid #aaaaaa;
 
     /*background-color: #e5fdf6;*/
+    background-color: white;
 
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -128,7 +147,16 @@ SEZIONE MENU'
 
 #menu ul {
     list-style-type: none;
-    column-count: 5;
+    /*column-count: 4;*/
+    display: flex;
+    justify-content:space-around;
+}
+
+#menu ul li {
+    /*margin-left: 5%;
+    margin-right: 5%;*/
+
+    text-align: center;
 }
 
 /*
@@ -136,11 +164,12 @@ SEZIONE MENU'
 SEZIONE CONTENT
 ==================
 */
-/*
+
 #content {
-    background-color: #e5fdf6;
+    /*background-color: #e5fdf6;*/
+    background-color: white;
 }
-*/
+
 
 
 /*
@@ -205,7 +234,7 @@ SEZIONE CONTENT
 /* ------------------- ACCEDI ------------------- */
 
 #formAccedi {
-    width: 35%;
+    width: 25em;
 
     margin: auto;    
     padding-bottom: 2em;
@@ -215,6 +244,7 @@ SEZIONE CONTENT
 #formAccedi fieldset {
     padding: 0em 3em 3em 3em;
     border: 1px solid #000;
+    border-radius: 10px;
 }
 
 #formAccedi input[type=text] {
@@ -231,13 +261,18 @@ SEZIONE CONTENT
 #formAccedi input[type=submit] {
     display: block;
 
-    width: 30%;
-    height: 1.5em;
+    width: 32%;
+    height: 2em;
     font-size: larger;
 
     margin: auto;
     margin-top: 1.2em;
     margin-bottom: -1.2em;
+
+    color: white;
+    background-color: #1a936f;
+    border-width: 1px;
+    border-radius: 3px;
 }
 
 /* ------------------- RICERCA ------------------- */
@@ -334,8 +369,10 @@ footer {
     clear: both;
     text-align: center;
     font-size: 0.8em;
-    border-top: 1px solid #000;
+    /*border-top: 1px solid #000;*/
     padding: 0.5em;
+
+    background-color: white;
 }
 
 footer p {
