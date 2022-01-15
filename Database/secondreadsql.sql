@@ -2,7 +2,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS Editore;
 CREATE TABLE Editore (
-  ID INT(4) NOT NULL AUTO_INCREMENT,
+  ID INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
   Nome VARCHAR(50) NOT NULL,
   PRIMARY KEY(ID)
 );
@@ -53,10 +53,10 @@ INSERT INTO Editore(ID,Nome) VALUES
 
 DROP TABLE IF EXISTS Libro ;
 CREATE TABLE Libro (
-  ISBN INT(13) NOT NULL,
+  ISBN BIGINT(13) UNSIGNED NOT NULL,
   Titolo VARCHAR(100) NOT NULL,
-  Editore INT(4) NOT NULL,
-  Pagine INT(5) NOT NULL,
+  Editore INT(4) UNSIGNED NOT NULL,
+  Pagine INT(5) UNSIGNED NOT NULL,
   Prezzo DECIMAL(5,2) NOT NULL,
   Quantità INT(3) NOT NULL,
   PRIMARY KEY(ISBN),
@@ -83,7 +83,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantità) VALUES
 (9788804742364,'Amore e ginnastica',3011,144,8.55,7),
 (9791220376419,'Quando le parlerai di me',3013,258,14.00,34),
 (9791259570321,'Nel modo in cui cade la neve',3014,480,16.05,78),
-(9788833751627,'Pazza di te','Leggereditore',3015,14.15,21),
+(9788833751627,'Pazza di te',3015,352,14.15,21),
 (9788892841437,'Il sentiero dei fiori.12',3016,324,6.60,12),
 (9788809763180,'Cime tempestose',3017,448,7.60,6),
 (9788830453517,'La casa senza ricordi',3018,400,20.90,5),
@@ -130,7 +130,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantità) VALUES
 
 DROP TABLE IF EXISTS Categoria ;
 CREATE TABLE Categoria (
-  ID_Categoria INT(2) NOT NULL AUTO_INCREMENT,
+  ID_Categoria INT(2) UNSIGNED NOT NULL AUTO_INCREMENT,
   Nome VARCHAR(45) NOT NULL,
   PRIMARY KEY(ID_Categoria)
 );
@@ -152,7 +152,7 @@ INSERT INTO Categoria(ID_Categoria,Nome) VALUES
 
 DROP TABLE IF EXISTS Autore ;
 CREATE TABLE Autore(
-  ID INT(5) NOT NULL AUTO_INCREMENT,
+  ID INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   Nome VARCHAR(45) NOT NULL,
   Cognome VARCHAR(45) NOT NULL,
   PRIMARY KEY(ID)
@@ -230,16 +230,16 @@ INSERT INTO Autore(ID,Nome,Cognome) VALUES
 
 DROP Table IF EXISTS Pubblicazione ;
 CREATE TABLE Pubblicazione (
-  Libro_ISBN INT(13) NOT NULL,
-  Autore_ID INT(5) NOT NULL,
+  Libro_ISBN BIGINT(13) UNSIGNED NOT NULL,
+  Autore_ID INT(5) UNSIGNED NOT NULL,
   PRIMARY KEY (Libro_ISBN, Autore_ID),
   CONSTRAINT FK_LibroPubblicazione
-  FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN),
+    FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN),
   CONSTRAINT FK_AutorePubblicazione
-  FOREIGN KEY (Autore_ID) REFERENCES Autore(ID)
+    FOREIGN KEY (Autore_ID) REFERENCES Autore(ID)
   );
 
-INSERT INTTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
+INSERT INTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
 (9788822760265,50000),
 (9788893884167,50001),
 (9791280229366,50002),
@@ -311,13 +311,13 @@ INSERT INTTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
 
 DROP Table IF EXISTS Appartenenza ;
 CREATE TABLE Appartenenza (
-  Libro_ISBN INT(13) NOT NULL,
-  Codice_Categoria INT(2) NOT NULL,
+  Libro_ISBN BIGINT(13) UNSIGNED NOT NULL,
+  Codice_Categoria INT(2) UNSIGNED NOT NULL,
   PRIMARY KEY (Libro_ISBN,Codice_Categoria),
   CONSTRAINT FK_LibroAppartenenza
-  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN),
+    FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN),
   CONSTRAINT FK_CategoriaAppartenenza
-  FOREIGN KEY(Codice_Categoria) REFERENCES Categoria(ID_Categoria)
+    FOREIGN KEY(Codice_Categoria) REFERENCES Categoria(ID_Categoria)
   );
 
 INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
@@ -339,7 +339,7 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 (9788828763604,11),
 (9788828763604,13),
 (9788804742364,12),
-(9788804742364,15)
+(9788804742364,15),
 (9791220376419,12),
 (9791220376419,21),
 (9791259570321,12),
@@ -397,35 +397,35 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 
 DROP TABLE IF EXISTS Utente;
 CREATE TABLE Utente (
-  Codice_identificativo INT(10) NOT NULL AUTO_INCREMENT,
+  Codice_identificativo INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   Nome VARCHAR(45) NOT NULL,
   Cognome VARCHAR(45) NOT NULL,
   Data_nascita DATE NOT NULL,
   Username VARCHAR(5) NOT NULL,
   Email VARCHAR(60) NOT NULL UNIQUE ,
-  Password VARCHAR(10) NOT NULL,
-  Telefono INT(10) NOT NULL UNIQUE,
+  Password VARCHAR(64) NOT NULL,
+  Telefono VARCHAR(15) NOT NULL UNIQUE,
   PRIMARY KEY(Codice_identificativo)
   );
 
 INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Email,Password,Telefono) VALUES
-(1000000000,'Annalisa','Bianchi',2000-05-10,'anna5','anabianchi42@gmail.com','milano10',1597863412),
-(1000000001,'Fiona','Rossi',1997-03-12,'fior7','fiona12r@gmail.com','luna20',2548213745),
-(1000000002,'Andrea','Pavin',1989-08-15,'pavn5','andapav89@gmail.com','millevisi8',5878134625),
-(1000000003,'Marco','Danielli',2005-11-28,'dan28','marcodan@gmail.com','quarantaventi88',7225846192),
-(1000000004,'Lucia','Verdi',1964-08-20,'luc64','luciaverdi12@gmail.com','fabbionicola2',9736182341),
-(1000000005,'Davide','Nosella',1995-11-14,'nov15','davide95@gmail.com','barcelona88',4612546158),
-(1000000006,'Admin','admin',1999-12-09,'admin','admin@gmail.com','admin1234',0000000000);
+(1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','milano10','1597863412'),
+(1000000001,'Fiona','Rossi','1997-03-12','fior7','fiona12r@gmail.com','luna20','2548213745'),
+(1000000002,'Andrea','Pavin','1989-08-15','pavn5','andapav89@gmail.com','millevisi8','5878134625'),
+(1000000003,'Marco','Danielli','2005-11-28','dan28','marcodan@gmail.com','quarantaventi88','7225846192'),
+(1000000004,'Lucia','Verdi','1964-08-20','luc64','luciaverdi12@gmail.com','fabbionicola2','9736182341'),
+(1000000005,'Davide','Nosella','1995-11-14','nov15','davide95@gmail.com','barcelona88','4612546158'),
+(1000000006,'Admin','admin','1999-12-09','admin','admin@gmail.com','admin1234','6380571935');
 
 
 DROP TABLE IF EXISTS Indirizzo ;
 CREATE TABLE Indirizzo (
-  Codice INT(6) NOT NULL AUTO_INCREMENT,
+  Codice INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   Via VARCHAR(50) NOT NULL,
   Città VARCHAR(20) NOT NULL,
-  Cap INT(5) NOT NULL,
-  Num_civico INT(3) NOT NULL,
-  Utente INT(10) NOT NULL,
+  Cap INT(5) UNSIGNED NOT NULL,
+  Num_civico INT(3) UNSIGNED NOT NULL,
+  Utente INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice),
   CONSTRAINT FK_UtenteIndirizzo
   FOREIGN KEY(Utente) REFERENCES Utente(Codice_identificativo)
@@ -442,12 +442,12 @@ INSERT INTO Indirizzo(Codice,Via,Città,Cap,Num_civico,Utente) VALUES
 
 DROP TABLE IF EXISTS Ordine ;
 CREATE TABLE Ordine (
-  Codice_univoco INT(8) NOT NULL AUTO_INCREMENT,
-  Cliente_Codice INT(10) NOT NULL,
+  Codice_univoco INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  Cliente_Codice INT(10) UNSIGNED NOT NULL,
   Data_partenza DATE NOT NULL,
   Data_consegna DATE NOT NULL,
-  Indirizzo INT(4) NOT NULL,
-  Totale DECIMAL(9,2) NOT NULL,
+  Indirizzo INT(4) UNSIGNED NOT NULL,
+  Totale DECIMAL(9,2) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice_univoco),
   CONSTRAINT FK_UtenteOrdine
   FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo),
@@ -456,18 +456,18 @@ CREATE TABLE Ordine (
 );
 
  INSERT INTO Ordine(Codice_univoco,Cliente_Codice,Data_partenza,Data_consegna,Indirizzo,Totale) VALUES 
- (50000000, 1000000000,2019-07-23,2019-07-25, 100000,65.25),
- (50000001, 1000000000,2019-05-11,2019-05-28, 100000,45.80),
- (50000002, 1000000002,2018-11-13,2018-11-24, 100002,84.50),
- (50000003, 1000000005,2022-01-26,2022-01-29,100005,96.60),
- (50000004, 1000000003,2020-01-02,2020-01-05,100003,84.12),
- (50000005, 1000000004,2021-08-02,2021-09-03,100004,104.50);
+ (50000000, 1000000000,'2019-07-23','2019-07-25', 100000,65.25),
+ (50000001, 1000000000,'2019-05-11','2019-05-28', 100000,45.80),
+ (50000002, 1000000002,'2018-11-13','2018-11-24', 100002,84.50),
+ (50000003, 1000000005,'2022-01-26','2022-01-29',100005,96.60),
+ (50000004, 1000000003,'2020-01-02','2020-01-05',100003,84.12),
+ (50000005, 1000000004,'2021-08-02','2021-09-03',100004,104.50);
 
 DROP TABLE IF EXISTS Composizione ;
 CREATE TABLE Composizione (
-  Elemento INT(13) NOT NULL,
-  Codice_ordine INT(8) NOT NULL,
-  Quantità INT(3) NOT NULL,
+  Elemento BIGINT(13) UNSIGNED NOT NULL,
+  Codice_ordine INT(8) UNSIGNED NOT NULL,
+  Quantità INT(3) UNSIGNED NOT NULL,
   PRIMARY KEY (Elemento,Codice_ordine),
   CONSTRAINT FK_LibroComposizione
   FOREIGN KEY(Elemento) REFERENCES Libro(ISBN),
@@ -483,17 +483,17 @@ INSERT INTO Composizione(Elemento,Codice_ordine,Quantità) VALUES
 (9783836589055,50000001,1),
 (9788861895034,50000002,10),
 (9788820362713,50000003,4),
-(9788875788049,50000004,2)
-(9788808064851,50000004,1)
+(9788875788049,50000004,2),
+(9788808064851,50000004,1),
 (9788858018460,50000005,5);
 
 
 DROP TABLE IF EXISTS Recensione ;
 CREATE TABLE Recensione (
-  Numero INT(3) NOT NULL AUTO_INCREMENT,
+  Numero INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
   Data DATE NOT NULL,
-  Codice_ordine INT(8) NOT NULL,
-  Valutazione INT(1) NOT NULL,
+  Codice_ordine INT(8) UNSIGNED NOT NULL,
+  Valutazione INT(1) UNSIGNED NOT NULL,
   Commento VARCHAR(300) NOT NULL,
   PRIMARY KEY(Numero),
   CONSTRAINT FK_RecensioneOrdine
@@ -501,43 +501,41 @@ CREATE TABLE Recensione (
   );
 
 INSERT INTO Recensione(Numero,Data,Codice_ordine,Valutazione,Commento) VALUES 
-(300,2019-07-28,50000000,4,'Tutto ok.Spedizione come sempre veloce.Devo ancora leggere i libri'),
-(301,2019-06-01,50000001,3,'Arrivati un pò in ritardo'),
-(302,2018-11-27,50000002,4 ,'Spediti in maniera veloce e sicura.I libri sono veramente interessanti.'),
-(303,2022-01-30,50000003,5,'Nessuna cosa negative da dire.Come sempre puntali ed veloci.Grazie mille.'),
-(304,2020-02-02,50000004,4 ,'I libri erano bellissimi.Vi consiglio di aggiungere altri ancora.'),
-(305,2021-09-13,50000005,2,'Non posso dire niente della qualità del prodotto,ma non sono affato sodissfato con il tempo di consegna.Ci ha messo quasi un mese ad arrivare.');
+(300,'2019-07-28',50000000,4,'Tutto ok.Spedizione come sempre veloce.Devo ancora leggere i libri'),
+(301,'2019-06-01',50000001,3,'Arrivati un pò in ritardo'),
+(302,'2018-11-27',50000002,4 ,'Spediti in maniera veloce e sicura.I libri sono veramente interessanti.'),
+(303,'2022-01-30',50000003,5,'Nessuna cosa negative da dire.Come sempre puntali ed veloci.Grazie mille.'),
+(304,'2020-02-02',50000004,4 ,'I libri erano bellissimi.Vi consiglio di aggiungere altri ancora.'),
+(305,'2021-09-13',50000005,2,'Non posso dire niente della qualità del prodotto,ma non sono affato sodissfato con il tempo di consegna.Ci ha messo quasi un mese ad arrivare.');
 
 
 DROP TABLE IF EXISTS Scontrino ;
 CREATE TABLE Scontrino (
-  Codice_scontrino INT(6) NOT NULL AUTO_INCREMENT,
-  Utente INT(10) NOT NULL,
-  Ordine INT(8) NOT NULL,
+  Codice_scontrino INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
+  Utente INT(10) UNSIGNED NOT NULL,
+  Ordine INT(8) UNSIGNED NOT NULL,
   Data DATE NOT NULL,
-  Totale DECIMAL(9,2) NOT NULL,
+  Totale DECIMAL(9,2) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice_scontrino),
   CONSTRAINT FK_UtenteScontrino
-  FOREIGN KEY (Utente) REFERENCES Utente(Codice_identificativo),
+    FOREIGN KEY (Utente) REFERENCES Utente(Codice_identificativo),
   CONSTRAINT FK_OrdineScontrino
-  FOREIGN KEY (Ordine) REFERENCES Ordine(Codice_univoco),
-  CONSTRAINT FK_OrdineScontrino2
-  FOREIGN KEY (Totale) REFERENCES Ordine(Totale)
+    FOREIGN KEY (Ordine) REFERENCES Ordine(Codice_univoco)
 );
 
 INSERT INTO Scontrino(Codice_scontrino,Ordine,Utente,Data,Totale) VALUES
-(200000,50000000,1000000000,2019-07-22,65.25),
-(200001,50000001,1000000000,2019-05-10,45.80),
-(200002,50000002,1000000002,2018-11-11,84.50),
-(200003,50000003,1000000005,2022-01-25,96.60),
-(200004,50000004,1000000003,2020-01-01,84.12),
-(200005,50000005,1000000004,2021-08-02,104.50);
+(200000,50000000,1000000000,'2019-07-22',65.25),
+(200001,50000001,1000000000,'2019-05-10',45.80),
+(200002,50000002,1000000002,'2018-11-11',84.50),
+(200003,50000003,1000000005,'2022-01-25',96.60),
+(200004,50000004,1000000003,'2020-01-01',84.12),
+(200005,50000005,1000000004,'2021-08-02',104.50);
  
 
 DROP TABLE IF EXISTS Foto;
 CREATE TABLE Foto (
-  ID INT(15) NOT NULL AUTO_INCREMENT,
-  Libro INT(13) NOT NULL,
+  ID BIGINT(15) UNSIGNED NOT NULL AUTO_INCREMENT,
+  Libro BIGINT(13) UNSIGNED NOT NULL,
   Percorso VARCHAR(250) NULL,
   PRIMARY KEY(ID),
   CONSTRAINT FK_LibroFoto
