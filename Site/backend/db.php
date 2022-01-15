@@ -119,4 +119,32 @@ class Service extends Constant {
     $stmt->close();
     return $result;
   }
+
+  public function get_genre_by_id($id): array {
+    $query = "SELECT * FROM categoria WHERE id_categoria = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('i', $id) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
 }
