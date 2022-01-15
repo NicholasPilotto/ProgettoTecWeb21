@@ -5,9 +5,9 @@ namespace DB;
 use mysqli;
 
 class Constant {
-  protected const HOST_DB = "";
-  protected const DATABASE_NAME = "";
-  protected const USERNAME = "";
+  protected const HOST_DB = "127.0.0.1";
+  protected const DATABASE_NAME = "SecondRead";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -102,6 +102,34 @@ class Service extends Constant {
 
 
     if ($stmt->bind_param('ss', $first, $last) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_books_by_genre($id): array {
+    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? INNER JOIN foto ON libro.ISBN = foto.Libro LIMIT 5";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('i', $id) === false) {
       return $result;
     }
 
