@@ -107,7 +107,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione)
 (9788829929801,'Fisiopatologia del cuore',3028,480,42.75,100,'2019-04-01'),
 (9798482387986,'Sconfiggere la rabbia',3026,32,10.99,4,'2021-09-22'),
 (9788817144988,'Vai all''inferno,Dante',3030,500,16.15,8,'2020-05-12'),
-(9788820362713,'Il metodo di Warren Buffett.I segreti del più grane investitore del mondo',3031,320,23.65,16,'2014-04-28'),
+(9788820362713,'Il metodo di Warren Buffett.I segreti del piu grane investitore del mondo',3031,320,23.65,16,'2014-04-28'),
 (9798650853428,'I 7 peccati finanziari.Fai luce sugli errorri finanziari piu comuni',3026,250,18.00,17,'2020-08-31'),
 (9798786890663,'METAVERSO:Investire nel trend del Futuro con azioni,ETF,Token e NFT',3026,166,19.66,18,'2021-12-18'),
 (9788863365474,'Nextgozio.Commercio al dettaglio nell''era digitale:quale futuro dopo il Covid-19',3032,208,23.65,22,'2021-03-29'),
@@ -123,7 +123,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione)
 (9781675491300,'Riordinare casa in 10 minuti',3026,97,8.99,18,'2019-12-14'),
 (9798709878938,'Lavorare a maglia',3026,128,11.99,77,'2021-03-12'),
 (9798455911064,'Fisica Quantistica',3026,135,23.97,98,'2021-08-21'),
-(9788834609484,'Filosofi in libertà',3040,224,11.40,14,'2022-01-07'),
+(9788834609484,'Filosofi in liberta',3040,224,11.40,14,'2022-01-07'),
 (9798513926276,'Come smettere di Pensare Troppo',3026,139,24.53,11,'2021-06-02'),
 (9788845278334,'La scienza della fantascienza',3039,544,23.75,2,'2015-01-15'),
 (9798796912720,'Il figlio',3026,280,13.50,6,'2019-05-07');
