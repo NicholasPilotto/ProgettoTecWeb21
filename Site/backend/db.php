@@ -147,4 +147,35 @@ class Service extends Constant {
     $stmt->close();
     return $result;
   }
+
+  public function get_bestsellers(): array {
+    $query = "SELECT *, count(libro.isbn) AS sold 
+              FROM libro
+              INNER JOIN editore
+              ON editore.id = libro.editore
+              INNER JOIN composizione
+              ON composizione.elemento = libro.isbn
+              GROUP BY libro.isbn
+              ORDER BY sold DESC";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
 }
