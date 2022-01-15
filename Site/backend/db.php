@@ -26,7 +26,6 @@ class Service extends Constant {
 
   public function closeConnection(): void {
     $this->connection->close();
-    $this->connection->free();
   }
 
   public function get_book_by_isbn($isbn): array {
