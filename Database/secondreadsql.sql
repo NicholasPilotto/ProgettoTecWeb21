@@ -509,13 +509,6 @@ L''informazione utilissima è l''indicazione del luogo in cui si trovano i dipin
 (304,2020-02-02,9788804728191,3 ,'La versione a fumetti del film dei Manetti!'),
 (305,2021-09-13,9788858018460,2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
 
-
-
-
-
-
-
-
 DROP TABLE IF EXISTS Scontrino ;
 CREATE TABLE Scontrino (
   Codice_scontrino INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
