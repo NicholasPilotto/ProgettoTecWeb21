@@ -492,21 +492,21 @@ DROP TABLE IF EXISTS Recensione ;
 CREATE TABLE Recensione (
   Numero INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
   Data DATE NOT NULL,
-  Codice_ordine INT(8) UNSIGNED NOT NULL,
+  Libro_ISBN BIGINT(13) UNSIGNED NOT NULL,
   Valutazione INT(1) UNSIGNED NOT NULL,
   Commento VARCHAR(300) NOT NULL,
   PRIMARY KEY(Numero),
   CONSTRAINT FK_RecensioneOrdine
-  FOREIGN KEY(Codice_ordine) REFERENCES Ordine(Codice_univoco)
+  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
   );
 
-INSERT INTO Recensione(Numero,Data,Codice_ordine,Valutazione,Commento) VALUES 
-(300,'2019-07-28',50000000,4,'Tutto ok.Spedizione come sempre veloce.Devo ancora leggere i libri'),
-(301,'2019-06-01',50000001,3,'Arrivati un pò in ritardo'),
-(302,'2018-11-27',50000002,4 ,'Spediti in maniera veloce e sicura.I libri sono veramente interessanti.'),
-(303,'2022-01-30',50000003,5,'Nessuna cosa negative da dire.Come sempre puntali ed veloci.Grazie mille.'),
-(304,'2020-02-02',50000004,4 ,'I libri erano bellissimi.Vi consiglio di aggiungere altri ancora.'),
-(305,'2021-09-13',50000005,2,'Non posso dire niente della qualità del prodotto,ma non sono affato sodissfato con il tempo di consegna.Ci ha messo quasi un mese ad arrivare.');
+INSERT INTO Recensione(Numero,Data,Libro_ISBN,Valutazione,Commento) VALUES 
+(300,'2019-07-28',9788879554596,4,'Tutto ok.Spedizione come sempre veloce.Devo ancora leggere i libri'),
+(301,'2019-06-01',9788861026223,3,'Arrivati un pò in ritardo'),
+(302,'2018-11-27',9788820362713,4 ,'Spediti in maniera veloce e sicura.I libri sono veramente interessanti.'),
+(303,'2022-01-30',9788822760265,5,'Nessuna cosa negative da dire.Come sempre puntali ed veloci.Grazie mille.'),
+(304,'2020-02-02',9788892841437,4 ,'I libri erano bellissimi.Vi consiglio di aggiungere altri ancora.'),
+(305,'2021-09-13',9788829929801,2,'Non posso dire niente della qualità del prodotto,ma non sono affato sodissfato con il tempo di consegna.Ci ha messo quasi un mese ad arrivare.');
 
 
 DROP TABLE IF EXISTS Scontrino ;
