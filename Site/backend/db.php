@@ -1,0 +1,91 @@
+<?php
+
+namespace DB;
+
+use mysqli;
+
+class Constant {
+  protected const HOST_DB = "";
+  protected const DATABASE_NAME = "";
+  protected const USERNAME = "";
+  protected const PASSWORD = "";
+}
+
+class Service extends Constant {
+  private $connection;
+
+  public function openConnection(): bool {
+    $this->connection = new mysqli(parent::HOST_DB, parent::USERNAME, parent::PASSWORD, parent::DATABASE_NAME);
+
+    if ($this->connection->connect_errno) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public function closeConnection(): void {
+    $this->connection->close();
+    $this->connection->free();
+  }
+
+  public function get_book_by_isbn($isbn): array {
+    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.isbn = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('s', $isbn) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_book_by_title($title): array {
+    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.titolo LIKE ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    $title = '%' . $title . '%';
+
+    if ($stmt->bind_param('s', $title) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+}
