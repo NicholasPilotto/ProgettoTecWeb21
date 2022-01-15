@@ -553,7 +553,7 @@ INSERT INTO Foto(ID,Libro,Percorso) VALUES
 (700000000000028,9788868957636,'images/books/guarireconlamedicinadolce.jpg'),
 (700000000000029,9788858018460,'images/books/lagrandeenciclopedia.jpg'),
 (700000000000030,9788808153432,'images/books/lozingarelliminore.jpg'),
-(700000000000031,9788809898059,'images/books/ilmioprimodizionario,jpg'),
+(700000000000031,9788809898059,'images/books/ilmioprimodizionario.jpg'),
 (700000000000032,9798685585967,'images/books/allenalatuasalute.jpg'),
 (700000000000033,9781092842280,'images/books/lamotivazione.jpg'),
 (700000000000034,9788875788049,'images/books/sottoiferri.jpg'),
