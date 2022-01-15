@@ -4,7 +4,7 @@
     $paginaHTML = graphics::getPage("generi_php.html");
 
     // Accesso al database
-
+    
     // -------------------
 
     echo $paginaHTML;
