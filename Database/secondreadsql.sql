@@ -58,74 +58,75 @@ CREATE TABLE Libro (
   Editore INT(4) UNSIGNED NOT NULL,
   Pagine INT(5) UNSIGNED NOT NULL,
   Prezzo DECIMAL(5,2) NOT NULL,
-  Quantità INT(3) NOT NULL,
+  Quantita INT(3) NOT NULL,
+  Data_Pubblicazione DATE NOT NULL,
   PRIMARY KEY(ISBN),
   CONSTRAINT FK_LibroEditore
   FOREIGN KEY (Editore) REFERENCES Editore(ID)
   );
 
-INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantità) VALUES
-(9788822760265,'La canzone romana.',3000,320,11.40,15),
-(9788893884167,'Il poeta non sa parlare',3001,256,17.10,2),
-(9791280229366,'La regina di Kabul',3002,173,16.02,4),
-(9788879554596,'Storia de Milan dal 1896',3003,176,18.05,16),
-(9788830901988,'Adrenalina.My untold stories',3004,272,18.05,7),
-(9791280034816,'Marzia,una sentenza già scritta?',3005,428,17.10,26),
-(9791220500548,'Storie di Covid.Storie di persone.Per non dimenticare',3006,152,14.28,44),
-(9791280022486,'La seconda lettera.Corrispondenza con un condannato a morte',3007,408,18.90,21),
-(9788868685768,'Alzati e ricomincia.La storia vera di Brunella Barbaro',3008,143,16.05,15),
-(9788836210800,'Mestre e la guerra.Il secondo conflitto mondiale raccontato dai suoi testimoni',3009,209,19.00,2),
-(9788822628541,'Dragon Ball Super',3010,192,4.50,3),
-(9788804728191,'Diabolik',3011,128,18.05,87),
-(9788822628725,'One piece.Celebration edition.',3010,208,6.55,52),
-(9788828764489,'Master Keaton.5',3012,344,14.15,45),
-(9788828763604,'Jujutsu Kaisen.Sorcery Fight:Incidente di Shibuya',3012,200,4.90,36),
-(9788804742364,'Amore e ginnastica',3011,144,8.55,7),
-(9791220376419,'Quando le parlerai di me',3013,258,14.00,34),
-(9791259570321,'Nel modo in cui cade la neve',3014,480,16.05,78),
-(9788833751627,'Pazza di te',3015,352,14.15,21),
-(9788892841437,'Il sentiero dei fiori.12',3016,324,6.60,12),
-(9788809763180,'Cime tempestose',3017,448,7.60,6),
-(9788830453517,'La casa senza ricordi',3018,400,20.90,5),
-(9788832063479,'Turbolo.Le avventurose storie in costiera.',3019,70,24.70,14),
-(9788866884095,'Alex Rider.1',3020,224,12.25,24),
-(9788804742319,'Per niente al mondo',3011,732,26.65,18),
-(9788807900846,'Orgoglio e Pregiudizio',3021,402,14.02,34),
-(9788807900693,'Il padre Goriot',3021,288,8.55,15),
-(9788858333037,'Vocabolario della lingua latina in brossura',3022,2240,71.25,52),
-(9788868957636,'Guarire con la medicina dolce',3023,272,18.90,13),
-(9788858018460,'La grande enciclopedia del corpo umano',3024,208,20.90,6),
-(9788808153432,'Lo Zingarelli minore',3025,1440,31.50,8),
-(9788809898059,'Il mio primo dizionario',3017,960,9.40,2),
-(9798685585967,'Allena la tua salute',3026,182,16.90,16),
-(9781092842280,'La motivazione',3026,54,7.99,15),
-(9788875788049,'Sotto i ferri',3027,378,24.70,51),
-(9798529792254,'Interpretazione dell''ECG',3026,156,18.99,4),
-(9788829927302,'Aritmie cardiache',3028,615,47.50,1),
-(9788861895034,'Buonanotte,coniglietto',3029,22,8.45,58),
-(9788829929801,'Fisiopatologia del cuore',3028,480,42.75,100),
-(9798482387986,'Sconfiggere la rabbia',3026,32,10.99,4),
-(9788817144988,'Vai all''inferno,Dante',3030,500,16.15,8),
-(9788820362713,'Il metodo di Warren Buffett.I segreti del più grane investitore del mondo',3031,320,23.65,16),
-(9798650853428,'I 7 peccati finanziari.Fai luce sugli errorri finanziari piu comuni',3026,250,18.00,17),
-(9798786890663,'METAVERSO:Investire nel trend del Futuro con azioni,ETF,Token e NFT',3026,166,19.66,18),
-(9788863365474,'Nextgozio.Commercio al dettaglio nell''era digitale:quale futuro dopo il Covid-19',3032,208,23.65,22),
-(9788843088188,'Didattica speciale e inclusione scolastica',3033,435,35.15,85),
-(9788851157630,'Esatto!',3034,224,27.20,44),
-(9788891534613,'Autori e lettori',3035,1236,29.40,64),
-(9788891520180,'La parola alla storia',3035,209,6.65,87),
-(9788808064851,'Analisi Matematica 1',3025,392,35.72,56),
-(9788861026223,'I Profetti dell''arte',3036,127,13.30,4),
-(9783836589055,'Caravaggio',3037,512,19.00,2),
-(9783836559591,'Van Gogh.Tutti i dipinti',3037,744,15.20,44),
-(9788865204528,'Dipingere con i colori acrilici',3038,48,6.17,15),
-(9781675491300,'Riordinare casa in 10 minuti',3026,97,8.99,18),
-(9798709878938,'Lavorare a maglia',3026,128,11.99,77),
-(9798455911064,'Fisica Quantistica',3026,135,23.97,98),
-(9788834609484,'Filosofi in libertà',3040,224,11.40,14),
-(9798513926276,'Come smettere di Pensare Troppo',3026,139,24.53,11),
-(9788845278334,'La scienza della fantascienza',3039,544,23.75,2),
-(9798796912720,'Il figlio',3026,280,13.50,6);
+INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione) VALUES
+(9788822760265,'La canzone romana.',3000,320,11.40,15,'2021-10-28'),
+(9788893884167,'Il poeta che non sa parlare',3001,256,17.10,2,'2021-10-14'),
+(9791280229366,'La regina di Kabul',3002,173,16.02,4,'2021-11-17'),
+(9788879554596,'Storia de Milan dal 1896',3003,176,18.05,16,'2021-10-11'),
+(9788830901988,'Adrenalina.My untold stories',3004,272,18.05,7,'2021-18-2-02'),
+(9791280034816,'Marzia,una sentenza già scritta?',3005,428,17.10,26,'2021-12-16'),
+(9791220500548,'Storie di Covid.Storie di persone.Per non dimenticare',3006,152,14.28,44,'2021-12-06'),
+(9791280022486,'La seconda lettera.Corrispondenza con un condannato a morte',3007,408,18.90,21,'2021-11-25'),
+(9788868685768,'Alzati e ricomincia.La storia vera di Brunella Barbaro',3008,143,16.05,15,'2021-11-25'),
+(9788836210800,'Mestre e la guerra.Il secondo conflitto mondiale raccontato dai suoi testimoni',3009,209,19.00,2,'2021-10-20'),
+(9788822628541,'Dragon Ball Super',3010,192,4.50,3,'2022-01-07'),
+(9788804728191,'Diabolik',3011,128,18.05,87,'2021-11-30'),
+(9788822628725,'One piece.Celebration edition.',3010,208,6.55,52,'2021-10-29'),
+(9788828764489,'Master Keaton.5',3012,344,14.15,45,'2021-12-30'),
+(9788828763604,'Jujutsu Kaisen.Sorcery Fight:Incidente di Shibuya',3012,200,4.90,36,'2021-11-04'),
+(9788804742364,'Amore e ginnastica',3011,144,8.55,7,'2021-11-17'),
+(9791220376419,'Quando le parlerai di me',3013,258,14.00,34,'2021-12-14'),
+(9791259570321,'Nel modo in cui cade la neve',3014,480,16.05,78,'2022-01-13'),
+(9788833751627,'Pazza di te',3015,352,14.15,21,'2022-01-07'),
+(9788892841437,'Il sentiero dei fiori.12',3016,324,6.60,12,'2021-09-17'),
+(9788809763180,'Cime tempestose',3017,448,7.60,6,'2017-03-12'),
+(9788830453517,'La casa senza ricordi',3018,400,20.90,5,'2021-11-29'),
+(9788832063479,'Turbolo.Le avventurose storie in costiera.',3019,70,24.70,14,'2021-11-27'),
+(9788866884095,'Alex Rider.1',3020,224,12.25,24,'2020-11-18'),
+(9788804742319,'Per niente al mondo',3011,732,26.65,18,'2021-11-09'),
+(9788807900846,'Orgoglio e Pregiudizio',3021,402,14.02,34,'2020-12-10'),
+(9788807900693,'Il padre Goriot',3021,288,8.55,15,'2013-07-01'),
+(9788858333037,'Vocabolario della lingua latina in brossura',3022,2240,71.25,52,'2019-05-20'),
+(9788868957636,'Guarire con la medicina dolce',3023,272,18.90,13,'2020-04-08'),
+(9788858018460,'La grande enciclopedia del corpo umano',3024,208,20.90,6,'2017-10-19'),
+(9788808153432,'Lo Zingarelli minore',3025,1440,31.50,8,'2021-01-01'),
+(9788809898059,'Il mio primo dizionario',3017,960,9.40,2,'2021-01-27'),
+(9798685585967,'Allena la tua salute',3026,182,16.90,16,'2020-11-19'),
+(9781092842280,'La motivazione',3026,54,7.99,15,'2019-04-05'),
+(9788875788049,'Sotto i ferri',3027,378,24.70,51,'2019-11-07'),
+(9798529792254,'Interpretazione dell''ECG',3026,156,18.99,4,'2021-07-01'),
+(9788829927302,'Aritmie cardiache',3028,615,47.50,1,'2015-06-24'),
+(9788861895034,'Buonanotte,coniglietto',3029,22,8.45,58,'2018-10-18'),
+(9788829929801,'Fisiopatologia del cuore',3028,480,42.75,100,'2019-04-01'),
+(9798482387986,'Sconfiggere la rabbia',3026,32,10.99,4,'2021-09-22'),
+(9788817144988,'Vai all''inferno,Dante',3030,500,16.15,8,'2020-05-12'),
+(9788820362713,'Il metodo di Warren Buffett.I segreti del più grane investitore del mondo',3031,320,23.65,16,'2014-04-28'),
+(9798650853428,'I 7 peccati finanziari.Fai luce sugli errorri finanziari piu comuni',3026,250,18.00,17,'2020-08-31'),
+(9798786890663,'METAVERSO:Investire nel trend del Futuro con azioni,ETF,Token e NFT',3026,166,19.66,18,'2021-12-18'),
+(9788863365474,'Nextgozio.Commercio al dettaglio nell''era digitale:quale futuro dopo il Covid-19',3032,208,23.65,22,'2021-03-29'),
+(9788843088188,'Didattica speciale e inclusione scolastica',3033,435,35.15,85,'2017-12-05'),
+(9788851157630,'Esatto!',3034,224,27.20,44,'2018-09-01'),
+(9788891534613,'Autori e lettori',3035,1236,29.40,64,'2018-09-01'),
+(9788891520180,'La parola alla storia',3035,209,6.65,87,'2016-07-01'),
+(9788808064851,'Analisi Matematica 1',3025,392,35.72,56,'2008-09-17'),
+(9788861026223,'I Profetti dell''arte',3036,127,13.30,4,'2019-09-26'),
+(9783836589055,'Caravaggio',3037,512,19.00,2,'2021-09-14'),
+(9783836559591,'Van Gogh.Tutti i dipinti',3037,744,15.20,44,'2015-06-16'),
+(9788865204528,'Dipingere con i colori acrilici',3038,48,6.17,15,'2014-06-02'),
+(9781675491300,'Riordinare casa in 10 minuti',3026,97,8.99,18,'2019-12-14'),
+(9798709878938,'Lavorare a maglia',3026,128,11.99,77,'2021-03-12'),
+(9798455911064,'Fisica Quantistica',3026,135,23.97,98,'2021-08-21'),
+(9788834609484,'Filosofi in libertà',3040,224,11.40,14,'2022-01-07'),
+(9798513926276,'Come smettere di Pensare Troppo',3026,139,24.53,11,'2021-06-02'),
+(9788845278334,'La scienza della fantascienza',3039,544,23.75,2,'2015-01-15'),
+(9798796912720,'Il figlio',3026,280,13.50,6,'2019-05-07');
 
 
 DROP TABLE IF EXISTS Categoria ;
@@ -444,6 +445,7 @@ DROP TABLE IF EXISTS Ordine ;
 CREATE TABLE Ordine (
   Codice_univoco INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
   Cliente_Codice INT(10) UNSIGNED NOT NULL,
+  Data DATE NOT NULL,
   Data_partenza DATE NOT NULL,
   Data_consegna DATE NOT NULL,
   Indirizzo INT(4) UNSIGNED NOT NULL,
@@ -455,19 +457,19 @@ CREATE TABLE Ordine (
   FOREIGN KEY (Indirizzo) REFERENCES Indirizzo(Codice)
 );
 
- INSERT INTO Ordine(Codice_univoco,Cliente_Codice,Data_partenza,Data_consegna,Indirizzo,Totale) VALUES 
- (50000000, 1000000000,'2019-07-23','2019-07-25', 100000,65.25),
- (50000001, 1000000000,'2019-05-11','2019-05-28', 100000,45.80),
- (50000002, 1000000002,'2018-11-13','2018-11-24', 100002,84.50),
- (50000003, 1000000005,'2022-01-26','2022-01-29',100005,96.60),
- (50000004, 1000000003,'2020-01-02','2020-01-05',100003,84.12),
- (50000005, 1000000004,'2021-08-02','2021-09-03',100004,104.50);
+ INSERT INTO Ordine(Codice_univoco,Cliente_Codice,Data,Data_partenza,Data_consegna,Indirizzo,Totale) VALUES 
+ (50000000, 1000000000,'2019-07-22','2019-07-23','2019-07-25', 100000,65.25),
+ (50000001, 1000000000,'2019-05-10','2019-05-11','2019-05-28', 100000,45.80),
+ (50000002, 1000000002,'2018-11-11','2018-11-13','2018-11-24', 100002,84.50),
+ (50000003, 1000000005,'2020-01-25','2022-01-26','2022-01-29',100005,96.60),
+ (50000004, 1000000003,'2019-12-31','2020-01-02','2020-01-05',100003,84.12),
+ (50000005, 1000000004,'2021-07-30','2021-08-02','2021-09-03',100004,104.50);
 
 DROP TABLE IF EXISTS Composizione ;
 CREATE TABLE Composizione (
   Elemento BIGINT(13) UNSIGNED NOT NULL,
   Codice_ordine INT(8) UNSIGNED NOT NULL,
-  Quantità INT(3) UNSIGNED NOT NULL,
+  Quantita INT(3) UNSIGNED NOT NULL,
   PRIMARY KEY (Elemento,Codice_ordine),
   CONSTRAINT FK_LibroComposizione
   FOREIGN KEY(Elemento) REFERENCES Libro(ISBN),
@@ -475,7 +477,7 @@ CREATE TABLE Composizione (
   FOREIGN KEY(Codice_ordine) REFERENCES Ordine(Codice_univoco)
   );
 
-INSERT INTO Composizione(Elemento,Codice_ordine,Quantità) VALUES
+INSERT INTO Composizione(Elemento,Codice_ordine,Quantita) VALUES
 (9788893884167,50000000,1),
 (9788868685768,50000000,3),
 (9788861026223,50000001,1),
@@ -501,36 +503,13 @@ CREATE TABLE Recensione (
   );
 
 INSERT INTO Recensione(Numero,Data,Libro_ISBN,Valutazione,Commento) VALUES 
-(300,2019-07-28,9798650853428,4,'Un libro scritto in modo semplice e scorrevole , con un racconto che serve da legame per accennare e approfondire diversi aspetti base della gestione della finanza personale con la quale bisogna fare i conti in diverse fasi della nostra vita. Il libro lo affronta con esempi e strategie applicabili ai nostri giorni.'),
-(301,2019-06-01,9783836559591,2,'La storia di VAN GOGH è trattata molto bene e sono riportate le immagini delle sue opere. C''è scritto che sono riportate tutti i suoi dipinti. L''unico problema che il libro è in formato tascabile e le immagini sono piccole e alcune sono microscopiche quindi il libro l''ho utilizzato solo come spunto per poi cercare il dipinto su internet.
+(300,'2019-07-28',9798650853428,4,'Un libro scritto in modo semplice e scorrevole , con un racconto che serve da legame per accennare e approfondire diversi aspetti base della gestione della finanza personale con la quale bisogna fare i conti in diverse fasi della nostra vita. Il libro lo affronta con esempi e strategie applicabili ai nostri giorni.'),
+(301,'2019-06-01',9783836559591,2,'La storia di VAN GOGH è trattata molto bene e sono riportate le immagini delle sue opere. C''è scritto che sono riportate tutti i suoi dipinti. L''unico problema che il libro è in formato tascabile e le immagini sono piccole e alcune sono microscopiche quindi il libro l''ho utilizzato solo come spunto per poi cercare il dipinto su internet.
 L''informazione utilissima è l''indicazione del luogo in cui si trovano i dipinti. In fondo è riportato l''elenco completo dei dipinti.'),
-(302,2018-11-27,9788830453517,5 ,'L’ho letto tutto d’un fiato. Libro che ti tiene incollato alle pagine fino alla fine. L’unica pecca? È che ti lascia con un vuoto immenso! Leggetelo perché ne merita davvero la pena. MERAVIGLIOSO.'),
-(303,2022-01-30,9788807900693,4,'Un classico che vedo più per una interpretazione teatrale piuttosto che per lettura vera e propria. Mi vedo i protagonisti meglio interpretati dal vivo è sicuramente è stato tradotto in tal senso. Io non seguo il teatro perchè preferisco l''opera lirica.'),
-(304,2020-02-02,9788804728191,3 ,'La versione a fumetti del film dei Manetti!'),
-(305,2021-09-13,9788858018460,2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
-
-DROP TABLE IF EXISTS Scontrino ;
-CREATE TABLE Scontrino (
-  Codice_scontrino INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-  Utente INT(10) UNSIGNED NOT NULL,
-  Ordine INT(8) UNSIGNED NOT NULL,
-  Data DATE NOT NULL,
-  Totale DECIMAL(9,2) UNSIGNED NOT NULL,
-  PRIMARY KEY(Codice_scontrino),
-  CONSTRAINT FK_UtenteScontrino
-    FOREIGN KEY (Utente) REFERENCES Utente(Codice_identificativo),
-  CONSTRAINT FK_OrdineScontrino
-    FOREIGN KEY (Ordine) REFERENCES Ordine(Codice_univoco)
-);
-
-INSERT INTO Scontrino(Codice_scontrino,Ordine,Utente,Data,Totale) VALUES
-(200000,50000000,1000000000,'2019-07-22',65.25),
-(200001,50000001,1000000000,'2019-05-10',45.80),
-(200002,50000002,1000000002,'2018-11-11',84.50),
-(200003,50000003,1000000005,'2022-01-25',96.60),
-(200004,50000004,1000000003,'2020-01-01',84.12),
-(200005,50000005,1000000004,'2021-08-02',104.50);
- 
+(302,'2018-11-27',9788830453517,5 ,'L’ho letto tutto d’un fiato. Libro che ti tiene incollato alle pagine fino alla fine. L’unica pecca? È che ti lascia con un vuoto immenso! Leggetelo perché ne merita davvero la pena. MERAVIGLIOSO.'),
+(303,'2022-01-30',9788807900693,4,'Un classico che vedo più per una interpretazione teatrale piuttosto che per lettura vera e propria. Mi vedo i protagonisti meglio interpretati dal vivo è sicuramente è stato tradotto in tal senso. Io non seguo il teatro perchè preferisco l''opera lirica.'),
+(304,'2020-02-02',9788804728191,3 ,'La versione a fumetti del film dei Manetti!'),
+(305,'2021-09-13',9788858018460,2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
 
 DROP TABLE IF EXISTS Foto;
 CREATE TABLE Foto (
@@ -613,5 +592,4 @@ ALTER TABLE Utente AUTO_INCREMENT=1000000007;
 ALTER TABLE Indirizzo AUTO_INCREMENT=100007;
 ALTER TABLE Ordine AUTO_INCREMENT=50000006;
 ALTER TABLE Recensione AUTO_INCREMENT=306;
-ALTER TABLE Scontrino AUTO_INCREMENT=200006;
 ALTER TABLE Foto AUTO_INCREMENT= 700000000000061;
