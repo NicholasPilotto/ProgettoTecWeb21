@@ -490,23 +490,30 @@ INSERT INTO Composizione(Elemento,Codice_ordine,Quantità) VALUES
 
 DROP TABLE IF EXISTS Recensione ;
 CREATE TABLE Recensione (
-  Numero INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  Numero INT(3) NOT NULL AUTO_INCREMENT,
   Data DATE NOT NULL,
   Libro_ISBN BIGINT(13) UNSIGNED NOT NULL,
-  Valutazione INT(1) UNSIGNED NOT NULL,
-  Commento VARCHAR(300) NOT NULL,
+  Valutazione INT(1) NOT NULL,
+  Commento VARCHAR(500) NOT NULL,
   PRIMARY KEY(Numero),
-  CONSTRAINT FK_RecensioneOrdine
+  CONSTRAINT FK_RecensioneLibro
   FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
   );
 
 INSERT INTO Recensione(Numero,Data,Libro_ISBN,Valutazione,Commento) VALUES 
-(300,'2019-07-28',9788879554596,4,'Tutto ok.Spedizione come sempre veloce.Devo ancora leggere i libri'),
-(301,'2019-06-01',9788861026223,3,'Arrivati un pò in ritardo'),
-(302,'2018-11-27',9788820362713,4 ,'Spediti in maniera veloce e sicura.I libri sono veramente interessanti.'),
-(303,'2022-01-30',9788822760265,5,'Nessuna cosa negative da dire.Come sempre puntali ed veloci.Grazie mille.'),
-(304,'2020-02-02',9788892841437,4 ,'I libri erano bellissimi.Vi consiglio di aggiungere altri ancora.'),
-(305,'2021-09-13',9788829929801,2,'Non posso dire niente della qualità del prodotto,ma non sono affato sodissfato con il tempo di consegna.Ci ha messo quasi un mese ad arrivare.');
+(300,2019-07-28,9798650853428,4,'Un libro scritto in modo semplice e scorrevole , con un racconto che serve da legame per accennare e approfondire diversi aspetti base della gestione della finanza personale con la quale bisogna fare i conti in diverse fasi della nostra vita. Il libro lo affronta con esempi e strategie applicabili ai nostri giorni.'),
+(301,2019-06-01,9783836559591,2,'La storia di VAN GOGH è trattata molto bene e sono riportate le immagini delle sue opere. C''è scritto che sono riportate tutti i suoi dipinti. L''unico problema che il libro è in formato tascabile e le immagini sono piccole e alcune sono microscopiche quindi il libro l''ho utilizzato solo come spunto per poi cercare il dipinto su internet.
+L''informazione utilissima è l''indicazione del luogo in cui si trovano i dipinti. In fondo è riportato l''elenco completo dei dipinti.'),
+(302,2018-11-27,9788830453517,5 ,'L’ho letto tutto d’un fiato. Libro che ti tiene incollato alle pagine fino alla fine. L’unica pecca? È che ti lascia con un vuoto immenso! Leggetelo perché ne merita davvero la pena. MERAVIGLIOSO.'),
+(303,2022-01-30,9788807900693,4,'Un classico che vedo più per una interpretazione teatrale piuttosto che per lettura vera e propria. Mi vedo i protagonisti meglio interpretati dal vivo è sicuramente è stato tradotto in tal senso. Io non seguo il teatro perchè preferisco l''opera lirica.'),
+(304,2020-02-02,9788804728191,3 ,'La versione a fumetti del film dei Manetti!'),
+(305,2021-09-13,9788858018460,2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
+
+
+
+
+
+
 
 
 DROP TABLE IF EXISTS Scontrino ;
