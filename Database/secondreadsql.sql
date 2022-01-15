@@ -562,7 +562,7 @@ INSERT INTO Foto(ID,Libro,Percorso) VALUES
 (700000000000037,9788861895034,'images/books/buonanotteconiglietto.jpg'),
 (700000000000038,9788829929801,'images/books/fisiopatologiadelcuore.jpg'),
 (700000000000039,9798482387986,'images/books/scongiggerelarabbia.jpg'),
-(700000000000040,9788817144988,'images/books/vaiall''infernodante.jpg'),
+(700000000000040,9788817144988,'images/books/vaiallinfernodante.jpg'),
 (700000000000041,9788820362713,'images/books/ilmetododiwarren.jpg'),
 (700000000000042,9798650853428,'images/books/i7peccatifinanziari.jpg'),
 (700000000000043,9798786890663,'images/books/metaverso.jpg'),
