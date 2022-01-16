@@ -16,9 +16,9 @@
         $a = $connessione->openConnection();
 
         $nomeGenere = $connessione->get_genre_by_id($idGenere)[0]['Nome'];
-        $libri = $connessione->get_books_by_genre($idGenere);
+        $libri = $connessione->get_new_books_by_genre($idGenere);
 
-        $listaLibri = "";
+        $listaNuovi = "";
 
         foreach($libri as $libro)
         {
