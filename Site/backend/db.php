@@ -29,7 +29,16 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.isbn = ?";
+    $query = "SELECT * 
+              FROM libro
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE libro.isbn = ?";
+
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -59,7 +68,16 @@ class Service extends Constant {
   }
 
   public function get_book_by_title($title): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.titolo LIKE ?";
+    $query = "SELECT *
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE libro.titolo LIKE ?";
+
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -89,7 +107,16 @@ class Service extends Constant {
   }
 
   public function get_books_by_author($author_firstname, $author_lastname): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE autore.nome LIKE ? AND autore.cognome LIKE ?";
+    $query = "SELECT * 
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE autore.nome LIKE ? AND autore.cognome LIKE ?";
+
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -121,7 +148,13 @@ class Service extends Constant {
   }
 
   public function get_books_by_genre($id): array {
-    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? INNER JOIN foto ON libro.ISBN = foto.Libro LIMIT 5";
+    $query = "SELECT *
+              FROM libro 
+              INNER JOIN appartenenza 
+              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? 
+              INNER JOIN foto ON libro.ISBN = foto.Libro 
+              LIMIT 5";
+
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -149,7 +182,10 @@ class Service extends Constant {
   }
 
   public function get_genre_by_id($id): array {
-    $query = "SELECT * FROM categoria WHERE id_categoria = ?";
+    $query = "SELECT * 
+              FROM categoria 
+              WHERE id_categoria = ?";
+
     $stmt = $this->connection->prepare($query);
     $result = array();
 
