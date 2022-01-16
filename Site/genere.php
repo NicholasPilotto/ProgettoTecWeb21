@@ -10,7 +10,7 @@
 
     $idGenere = $_GET['genere'];
 
-    if(isset($idGenere))
+    if($idGenere>9 && $idGenere<22)
     {
         $connessione = new Service();
         $a = $connessione->openConnection();
@@ -22,17 +22,18 @@
 
         foreach($libri as $libro)
         {
-            $listaLibri .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaNuovi .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
 
-        $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
+        $paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
         $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
 
         $connessione->closeConnection();
     }
     else
     {
-
+        $paginaHTML = str_replace("</listaNuovi>", "La preghiamo di tornare indietro e provare con un altro genere", $paginaHTML);
+        $paginaHTML = str_replace("</nomeGenere>", "Spiacente, il genere da lei inserito non è valido", $paginaHTML);
     }
 
     // -------------------
