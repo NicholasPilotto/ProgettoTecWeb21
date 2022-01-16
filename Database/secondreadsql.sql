@@ -70,7 +70,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione)
 (9788893884167,'Il poeta che non sa parlare',3001,256,17.10,2,'2021-10-14'),
 (9791280229366,'La regina di Kabul',3002,173,16.02,4,'2021-11-17'),
 (9788879554596,'Storia de Milan dal 1896',3003,176,18.05,16,'2021-10-11'),
-(9788830901988,'Adrenalina.My untold stories',3004,272,18.05,7,'2021-18-2-02'),
+(9788830901988,'Adrenalina.My untold stories',3004,272,18.05,7,'2021-02-18'),
 (9791280034816,'Marzia,una sentenza già scritta?',3005,428,17.10,26,'2021-12-16'),
 (9791220500548,'Storie di Covid.Storie di persone.Per non dimenticare',3006,152,14.28,44,'2021-12-06'),
 (9791280022486,'La seconda lettera.Corrispondenza con un condannato a morte',3007,408,18.90,21,'2021-11-25'),
