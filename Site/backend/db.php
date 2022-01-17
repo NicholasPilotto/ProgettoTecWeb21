@@ -425,7 +425,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_reviews($isbn): array {
+  public function get_reviews_by_isbn($isbn): array {
     $query = "SELECT *
      FROM recensione 
      WHERE libro_isbn = ?";
@@ -437,6 +437,36 @@ class Service extends Constant {
     }
 
     if ($stmt->bind_param('s', $isbn) === false) {
+      return false;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_reviews_by_user($utente): array {
+    $query = "SELECT *
+     FROM recensione 
+     WHERE idutente = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('s', $utente) === false) {
       return false;
     }
 
