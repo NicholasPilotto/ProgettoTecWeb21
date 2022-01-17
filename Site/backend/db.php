@@ -255,4 +255,75 @@ class Service extends Constant {
 
     return $res;
   }
+
+  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
+    $query = "UPDATE libro SET ";
+    $components = array();
+    $aux = "";
+    $type = "";
+
+
+    if (isset($titolo)) {
+      array_push($components, $titolo);
+      $type . "s";
+      $aux . " titolo = ?,";
+    }
+
+    if (isset($editore)) {
+      array_push($components, $editore);
+      $type . "i";
+      $aux . " editore = ?,";
+    }
+    if (isset($pagine)) {
+      array_push($components, $pagine);
+      $type . "i";
+      $aux . " pagine = ?,";
+    }
+    if (isset($prezzo)) {
+      array_push($components, $prezzo);
+      $type .= "d";
+      $aux .= " prezzo = ?,";
+    }
+    if (isset($quantita)) {
+      array_push($components, $quantita);
+      $type .= "i";
+      $aux .= " quantita = ?,";
+    }
+    if (isset($data_pub)) {
+      array_push($components, $data_pub);
+      $type .= "s";
+      $aux .= " data_pubblicazione = ?,";
+    }
+    if (isset($percorso)) {
+      array_push($components, $percorso);
+      $type .= "s";
+      $aux .= " editore = ?,";
+    }
+
+    $aux = substr($aux, 0, -1);
+    array_push($components, $isbn);
+
+    $aux .= " ";
+
+    $query .= $aux . "WHERE isbn = ?";
+
+    $type .= "s";
+
+    $stmt = $this->connection->prepare($query);
+
+
+    if ($stmt === false) {
+      return false;
+    }
+
+
+    if ($stmt->bind_param($type, ...$components) === false) {
+      return false;
+    }
+
+    $res = $stmt->execute();
+
+    $stmt->close();
+    return $res;
+  }
 }
