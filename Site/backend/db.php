@@ -348,7 +348,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function login($mail, $pass): string {
+  public function login($mail, $pass): bool {
     $query = "SELECT *
               FROM utente
               WHERE email = ? AND password = ?";
@@ -358,11 +358,11 @@ class Service extends Constant {
     $psw = hash('sha256', $pass);
 
     if ($stmt === false) {
-      return "a";
+      return false;
     }
 
     if ($stmt->bind_param('ss', $mail, $psw) === false) {
-      return "b";
+      return false;
     }
 
     $stmt->execute();
@@ -373,7 +373,36 @@ class Service extends Constant {
     }
     $stmt->close();
 
+    return $result;
+  }
 
+  public function get_addresses($utente_id): array {
+    $query = "SELECT *
+     FROM indirizzo 
+     WHERE utente = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('s', $utente_id) === false) {
+      return false;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
     return $result;
   }
 }

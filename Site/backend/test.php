@@ -9,8 +9,8 @@ if ($_GET["f"] == 'a') {
   $a = $connessione->openConnection();
   // $aux = $connessione->insert_book(9788817108331, "Io sono il calcio", 3030, 300, 12.5, 10, "2018-10-03", "");
 
-  $aux = $connessione->login("mariorossi@gmail.com", "ciao");
-  print_r(var_export($aux));
+  $aux = $connessione->get_addresses(1000000000);
+  print_r(json_encode($aux));
   $connessione->closeConnection();
 }
 
