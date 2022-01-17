@@ -10,7 +10,7 @@
 
     $idGenere = $_GET['genere'];
 
-    if($idGenere>9 && $idGenere<22)
+    if(isset($idGenere))
     {
         $connessione = new Service();
         $a = $connessione->openConnection();
@@ -32,8 +32,7 @@
     }
     else
     {
-        $paginaHTML = str_replace("</listaNuovi>", "La preghiamo di tornare indietro e provare con un altro genere", $paginaHTML);
-        $paginaHTML = str_replace("</nomeGenere>", "Spiacente, il genere da lei inserito non è valido", $paginaHTML);
+
     }
 
     // -------------------
