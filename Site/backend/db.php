@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -497,6 +497,31 @@ class Service extends Constant {
     }
 
     if ($stmt->bind_param('ss', $utente, $isbn) === false) {
+      return false;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_orders(): array {
+    $query = "SELECT *
+              FROM ordine";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
       return false;
     }
 
