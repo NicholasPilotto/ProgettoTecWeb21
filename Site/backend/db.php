@@ -378,8 +378,8 @@ class Service extends Constant {
 
   public function get_addresses($utente_id): array {
     $query = "SELECT *
-     FROM indirizzo 
-     WHERE utente = ?";
+              FROM indirizzo 
+              WHERE utente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -427,8 +427,8 @@ class Service extends Constant {
 
   public function get_reviews_by_isbn($isbn): array {
     $query = "SELECT *
-     FROM recensione 
-     WHERE libro_isbn = ?";
+              FROM recensione 
+              WHERE libro_isbn = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -457,8 +457,8 @@ class Service extends Constant {
 
   public function get_reviews_by_user($utente): array {
     $query = "SELECT *
-     FROM recensione 
-     WHERE idutente = ?";
+              FROM recensione 
+              WHERE idutente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -467,6 +467,36 @@ class Service extends Constant {
     }
 
     if ($stmt->bind_param('s', $utente) === false) {
+      return false;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_review_by_user_book($utente, $isbn): array {
+    $query = "SELECT *
+              FROM recensione 
+              WHERE idutente = ? AND libro_isbn = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('ss', $utente, $isbn) === false) {
       return false;
     }
 
