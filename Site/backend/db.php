@@ -326,4 +326,25 @@ class Service extends Constant {
     $stmt->close();
     return $res;
   }
+
+  public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): bool {
+    $query = "INSERT INTO Utente (Nome,Cognome,Data_nascita,Username,Email,password,Telefono) VALUES (?,?,?,?,?,?,?)";
+    $stmt = $this->connection->prepare($query);
+    $psw = hash('sha256', $pass);
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('sssssss', $nome, $cognome, $nascita, $username, $email, $psw, $tel) === false) {
+      return false;
+    }
+
+    $res = $stmt->execute();
+
+    $stmt->close();
+
+
+    return $res;
+  }
 }
