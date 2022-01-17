@@ -539,4 +539,26 @@ class Service extends Constant {
     $stmt->close();
     return $result;
   }
+
+  public function insert_review($utenteid, $isbn, $valore, $commento): string {
+    $query = "INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
+    $stmt = $this->connection->prepare($query);
+    $today = date('Y-m-d');
+
+
+    if ($stmt === false) {
+      return "a";
+    }
+
+    if ($stmt->bind_param('sssis', $utenteid, $isbn, $today, $valore, $commento) === false) {
+      return "b";
+    }
+
+    $res = $stmt->execute();
+
+    $stmt->close();
+
+
+    return $res;
+  }
 }
