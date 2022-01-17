@@ -5,10 +5,10 @@ namespace DB;
 use mysqli;
 
 class Constant {
-  protected const HOST_DB = "localhost";
-  protected const DATABASE_NAME = "SecondRead";
-  protected const USERNAME = "turkey";
-  protected const PASSWORD = "turrrkey123";
+  protected const HOST_DB = "";
+  protected const DATABASE_NAME = "";
+  protected const USERNAME = "";
+  protected const PASSWORD = "";
 }
 
 class Service extends Constant {
