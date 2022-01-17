@@ -1,0 +1,405 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    font-size: 100%;
+    /*font-family: "Comic Sans MS", cursive, sans-serif;*/
+    font-family: 'Open Sans', sans-serif;
+    margin: auto;
+    max-width: 1024px;
+}
+
+body {
+    /*border: 1px solid #000;*/
+
+    background-color: rgb(237, 239, 240);
+    box-shadow: 0px 0px 10px 0px #aaaaaa;
+}
+
+
+a {
+    color: #0080FF;
+}
+
+a:visited {
+    color: #991199;
+}
+
+
+
+/*
+==================
+SEZIONE HEADER
+==================
+*/
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    min-height: 5em;
+
+    /*border-bottom: 1px solid #000;*/
+
+    /*background-color: #e5fdf6;*/
+    background-color: white;
+
+    padding-left: 1em;
+}
+
+header h1 {
+    background-image: url("images/SecondReadLogo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-indent: -9999999em;
+    font-size: 3em;
+
+    /*
+    width: 28%;
+    min-width: 280px;
+    */
+    flex-basis: 280px;
+}
+
+header form {
+    /*width: 45%;*/
+    /*flex-basis: 500px;*/
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+#searchBar {
+    width: 82%;
+    height: 2em;
+    border-radius: 3px;
+    border-width: 1px;
+    font-size: large;
+    text-indent: 0.3em;
+}
+
+#searchButton {
+    width: 15%;
+
+    height: 2em;
+    border-radius: 3px;
+    border-width: 1px;
+    font-size: large;
+
+    margin-left: -0.3em;
+    min-width: fit-content;
+
+    color: white;
+    background-color: #146e53;
+
+    cursor: pointer;
+}
+
+#accedi {
+    margin-left: 0.5%;
+}
+
+#registrati {
+    margin-left: 2%;
+}
+
+#carrello {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+/*
+==================
+SEZIONE BREADCRUMB
+==================
+*/
+
+#breadcrumb {
+    /*padding-left: 0.6em;*/
+    padding-left: 1.5em;
+    /*border-bottom: 1px solid #000;*/
+
+    /*background-color: #e5fdf6;*/
+    background-color: white;
+
+    padding-bottom: 0.5em;
+}
+
+/*
+==================
+SEZIONE MENU'
+==================
+*/
+
+#menu {
+    /*padding-left: 0.6em;*/
+    /*padding-left: 1.5em;
+    padding-right: 1.5em;*/
+    border-bottom: 1px solid #aaaaaa;
+
+    /*background-color: #e5fdf6;*/
+    background-color: white;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+#menu ul {
+    list-style-type: none;
+    /*column-count: 4;*/
+    display: flex;
+    justify-content:space-around;
+}
+
+#menu ul li {
+    /*margin-left: 5%;
+    margin-right: 5%;*/
+
+    text-align: center;
+}
+
+/*
+==================
+SEZIONE CONTENT
+==================
+*/
+
+#content {
+    /*background-color: #e5fdf6;*/
+    background-color: white;
+}
+
+
+
+/*
+#content div {
+    border-bottom: 1px solid #000;
+}
+*/
+
+#content h2 {
+    text-align: center;
+    margin-bottom: 0.4em;
+
+    padding-top: 0.4em;
+
+    color: #146e53;
+}
+
+.bookCards {
+    text-align: center;
+
+    list-style: none;
+    display: flex;
+
+    flex-wrap: wrap; /* Andare a capo */
+    justify-content: center;
+}
+
+.bookCards li {
+    margin: 0 10px 10px 10px;
+    /*
+    background-color: cornsilk;
+    border: 1px solid #000;
+    border-radius: 5px;*/
+
+    flex-basis: 11%;
+}
+
+.bookCards img {
+    object-fit: cover;
+
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    
+    border-radius: 5px;
+}
+/* ------------------- HOME ------------------- */
+
+
+.homeCardsImg {
+    width: 7em;
+    height: 11em;
+}
+
+/* ------------------- GENERI ------------------- */
+
+.generiCardsImg {
+    width: 9em;
+    height: 14em;
+}
+
+/* ------------------- ACCEDI ------------------- */
+
+.accediRegistrati {
+    width: 25em;
+
+    margin: auto;    
+    padding-bottom: 2em;
+    padding-top: 2em;
+}
+
+.accediRegistrati fieldset {
+    padding: 0em 3em 3em 3em;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+}
+
+.accediRegistrati .styleInput {
+    width: 100%;
+    height: 1.5em;
+    font-size: larger;
+    text-indent: 0.3em;
+}
+
+.accediRegistrati input[type=date] {
+    height: 2em;
+}
+
+.accediRegistrati *:not(.ultimoInput) {
+    margin-bottom: 1em;
+}
+
+.accediRegistrati input[type=submit] {
+    display: block;
+
+    width: 32%;
+    height: 2em;
+    font-size: larger;
+
+    margin: auto;
+    margin-top: 1.2em;
+    margin-bottom: -1.2em;
+
+    color: white;
+    background-color: #146e53;
+    border-width: 1px;
+    border-radius: 3px;
+
+    cursor: pointer;
+}
+
+/* ------------------- RICERCA ------------------- */
+
+#filtri {
+    float: left;
+    width: 20%;
+}
+
+#filtri ul {
+    list-style-type: none;
+}
+
+#filtri ul li {
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+}
+
+#filtri h2 {
+    padding-left: 0.3em;
+    padding-top: 1em;
+
+    color: #146e53;
+}
+
+/*
+#inserzioni {
+    margin-left: 20%;
+    padding-left: 2%;
+
+    border-left: 1px solid #000;
+}
+*/
+.advertsCards {
+    margin-left: 20%;
+    list-style-type: none;
+
+    display: flex;
+    flex-wrap: wrap; /* Andare a capo */
+
+    border-left: 1px solid #aaaaaa;
+}
+
+.advertsCards li{
+    border-top: 1px solid #aaaaaa;
+}
+
+li.primaInserzione {
+    border-top: none;
+}
+
+li.primaInserzione {
+    border-top: none;
+}
+
+li.imgLi {
+    flex-basis: 20%;
+    /*border: 1px solid rgb(240, 38, 38);*/
+
+    text-align: center;
+    
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+}
+
+li.textLi {
+    flex-basis: 15%;
+    flex-grow: 1;
+    /*border: 1px solid rgb(0, 255, 64);*/
+
+    padding-top: 0.6em;
+}
+
+li.tramaLi {
+    flex-basis: 63%;
+}
+
+.advertsImg {
+    object-fit: cover;
+    width: 5em;
+    height: 8em;
+    border-radius: 5px;
+
+    vertical-align: middle;
+}
+
+a.titolo {
+    font-size: larger;
+}
+
+#trama {
+    float: right;
+    margin-top: 1.3em;
+    font-size: small;
+}
+
+/*
+==================
+SEZIONE FOOTER
+==================
+*/
+
+footer {
+    clear: both;
+    text-align: center;
+    font-size: 0.8em;
+    border-top: 1px solid #aaaaaa;
+    padding: 0.5em;
+
+    /*background-color: white;*/
+    background-color: #146e53;
+}
+
+footer p {
+    display: inline;
+    font-style: italic;
+    color: white;
+}
+
+footer .imgValidCode {
+    vertical-align: middle;
+    margin-left: 1.0em;
+    margin-right: 1.0em;
+}
