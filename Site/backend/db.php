@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -404,5 +404,24 @@ class Service extends Constant {
 
     $stmt->close();
     return $result;
+  }
+
+  public function insert_address($utente_id, $via, $citta, $cap, $civico): bool {
+    $query = "INSERT INTO Indirizzo(Via,Città,Cap,Num_civico,Utente) VALUES (?,?,?,?,?)";
+    $stmt = $this->connection->prepare($query);
+
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
+      return false;
+    }
+
+    $res = $stmt->execute();
+    $stmt->close();
+
+    return $res;
   }
 }
