@@ -16,6 +16,7 @@ class Service extends Constant {
 
   public function openConnection(): bool {
     $this->connection = new mysqli(parent::HOST_DB, parent::USERNAME, parent::PASSWORD, parent::DATABASE_NAME);
+    $this->connection->set_charset("utf8");
 
     if ($this->connection->connect_errno) {
       return false;
