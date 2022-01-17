@@ -611,4 +611,24 @@ class Service extends Constant {
     $stmt->close();
     return $res;
   }
+
+  public function delete_review($utenteid, $isbn, $valore, $commento): bool {
+    $query = "DELETE FROM recensione WHERE idUtente = ? AND libro_isbn = ?";
+    $stmt = $this->connection->prepare($query);
+
+    if ($stmt === false) {
+      return "a";
+    }
+
+    if ($stmt->bind_param('ss', $utenteid, $isbn) === false) {
+      return "b";
+    }
+
+    $res = $stmt->execute();
+
+    $stmt->close();
+
+
+    return $res;
+  }
 }
