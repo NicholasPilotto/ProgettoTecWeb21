@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "root";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
@@ -265,19 +265,19 @@ class Service extends Constant {
 
     if (isset($titolo)) {
       array_push($components, $titolo);
-      $type . "s";
-      $aux . " titolo = ?,";
+      $type .= "s";
+      $aux .= " titolo = ?,";
     }
 
     if (isset($editore)) {
       array_push($components, $editore);
-      $type . "i";
-      $aux . " editore = ?,";
+      $type .= "i";
+      $aux .= " editore = ?,";
     }
     if (isset($pagine)) {
       array_push($components, $pagine);
-      $type . "i";
-      $aux . " pagine = ?,";
+      $type .= "i";
+      $aux .= " pagine = ?,";
     }
     if (isset($prezzo)) {
       array_push($components, $prezzo);
@@ -559,6 +559,56 @@ class Service extends Constant {
     $stmt->close();
 
 
+    return $res;
+  }
+
+  public function edit_review($utenteid, $isbn, $valore, $commento): bool {
+    $query = "UPDATE recensione SET ";
+    $components = array();
+    $aux = "";
+    $type = "";
+
+
+    if (isset($valore)) {
+      array_push($components, $valore);
+      $type .= "i";
+      $aux .= " valutazione = ?,";
+    }
+
+    if (isset($commento)) {
+      array_push($components, $commento);
+      $type .= "s";
+      $aux .= " commento = ?,";
+    }
+
+    $aux = substr($aux, 0, -1);
+    array_push($components, $utenteid);
+    array_push($components, $isbn);
+
+    $aux .= " ";
+
+    $query .= $aux . "WHERE idutente = ? AND libro_isbn = ?";
+
+    $type .= "ss";
+
+
+    $stmt = $this->connection->prepare($query);
+
+
+    if ($stmt === false) {
+      return false;
+    }
+
+
+
+    if ($stmt->bind_param($type, ...$components) === false) {
+      return false;
+    }
+
+
+    $res = $stmt->execute();
+
+    $stmt->close();
     return $res;
   }
 }
