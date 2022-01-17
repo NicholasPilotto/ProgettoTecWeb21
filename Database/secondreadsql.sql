@@ -169,7 +169,14 @@ INSERT INTO Editore(ID,Nome) VALUES
 (3037,'Taschen'),
 (3038,'Il Castello'),
 (3039,'Bompiani'),
-(3040,'La nave di Teseo');
+(3040,'La nave di Teseo')
+(3041,'Editori Riuniti'),
+(3042,'SaldaPress',),
+(3043,'Einaudi'),
+(3044,'Amazon Crossing'),
+(3045,'Babelcube'),
+(3046,'Garzanti'),
+(3047,'Adelphi');
 
 INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES
 (9788822760265,'La canzone romana.',3000,320,11.40,15,'2021-10-28','images/books/lacanzoneromana.jpg'),
@@ -232,7 +239,27 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,
 (9788834609484,'Filosofi in liberta',3040,224,11.40,14,'2022-01-07', 'images/books/filosofiainlibertà.jpg'),
 (9798513926276,'Come smettere di Pensare Troppo',3026,139,24.53,11,'2021-06-02','images/books/comesmetteredipensaretroppo.jpg'),
 (9788845278334,'La scienza della fantascienza',3039,544,23.75,2,'2015-01-15', 'images/books/lascienzadellafantascienza.jpg'),
-(9798796912720,'Il figlio',3026,280,13.50,6,'2019-05-07', 'images/books/ilfiglio.jpg');
+(9798796912720,'Il figlio',3026,280,13.50,6,'2019-05-07', 'images/books/ilfiglio.jpg'),
+(9788891293206,'L''attacco dei giganti (Vol.4)',3012,200,4.90,5,'2020-03-05', 'images/books/attaccodeigiganti.jpg'),
+(9788891294999,'Naruto (Vol.7)',3012,192,4.66,25,'2020-08-06','images/books/naruto.jpg'),
+(9788835952978,'L''illuminismo francese e la Rivoluzione a fumetti',3041,256,5.00,10,'2002-09-01','images/books/illuminismofrancese.jpg'),
+(9788869199486,'Invincible omnibus (Vol. 1)',3042,480,35.02,7,'2021-12-02','images/books/invincilibe.jpg'),
+(9788806249458,'La bella estate',3043,134,9.50,7,'2021-06-01','images/books/labellaestate.jpg'),
+(9798721050411,'Il Corsaro Nero',3026,399,21.22,18,'2021-03-12','images/books/ilcorsaro.jpg'),
+(9782496700480,'Pronto a uccidere',3044,380,9.99,12,'2020-02-11','images/books/prontiauccidere.jpg'),
+(9781547553488,'Pazza Scuola Di Pirateria',3045,54,18.22,3,'2018-11-03','images/books/scuoladipirateria.jpg'),
+(9781077079762,'La foresta dei Segreti',3026,70,8.99,15,'2019-06-29','images/books/laforesta.jpg'),
+(9798455333859,'L''ultima città perdutà',3026,489,19.90,3,'2021-11-22','images/books/ultimacitta.jpg'),
+(9788811602880,'L''isola dei pirati',3046,332,4.75,15,'2018-05-03','images/books/isoladeipirati.jpg'),
+(9788822719751.'L''arte di ottenere ragione',3000,200,3.92,10,'2018-17-12','images/books/arteragione.jpg'),
+(9788806186678,'Il primo libro di filosofia',3043,234,17.10,23,'2007-05-11','images/books/ilprimolibrodifilosofia.jpg'),
+(9788845917721,'L''arte di conoscere se stessi',3047,177,8.00,65,'2003-04-23','images/books/conosceresestessi.jpg'),
+(9788858015018,'Il libro della psicologia. Grandi idee spiegate in modo semplice',3024,352,20.90,51,'2016-04-14','images/books/libropsicologia.jpg'),
+(9798491690848,'Il Manuale del Linguaggio del Corpo',3026,127,13.97,25,'2021-10-07','images/books/linguaggiodelcorpo.jpg'),
+(9798463535634,'La Legge dell''Attrazione',3026,235,13.73,2,'2021-06-23','images/books/leggeattrazione.jpg'),
+(9798791164681,'Tecniche di manipolazione mentale',3026,91,14.90,64,'2021-12-27','images/books/manipolazionementale.jpg'),
+(9788854192805,'La saggezza della vita',3000,198,3.92,48,'2016-07-14','images/books/saggezzadellavita.jpg');
+
 
 INSERT INTO Categoria(ID_Categoria,Nome) VALUES
 (10,'Storia e Biografie'),
@@ -315,7 +342,26 @@ INSERT INTO Autore(ID,Nome,Cognome) VALUES
 (50063,'Manuel','Faè'),
 (50064,'Patrizio','Bertin'),
 (50065,'Renato','Giovannoli'),
-(50066,'John','Henry');
+(50066,'John','Henry'),
+(50067,'Hajime','Isayama'),
+(50068,'Masashi','Kishimoto'),
+(50069,'Paolo Quintili'),
+(50070,'Robert Kirkman'),
+(50071,'Cory Walker'),
+(50072,'Cesare Pavese'),
+(50073,'Emilio Salgari'),
+(50074,'Andrew Peterson'),
+(50075,'Anna Hernandez'),
+(50076,'Ali Ross'),
+(50078,'Fernando Gamboa'),
+(50079,'Michael Crichton'),
+(50080,'Arthur Schopenhauer'),
+(50081,'Nigel Warburton'),
+(50082,'Giordano Lupi'),
+(50083,'Giorgio Lancetti'),
+(50084,'Gaia Zendali'),
+(50085,'Konrad Sewell');
+
 
 
 INSERT INTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
@@ -385,7 +431,27 @@ INSERT INTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
 (9788834609484,50042),
 (9798513926276,50043),
 (9788845278334,50065),
-(9798796912720,50066);
+(9798796912720,50066),
+(9788891293206,50067),
+(9788891294999,50068),
+(9788835952978,50069),
+(9788869199486,50070),
+(9788869199486,50071),
+(9788806249458,50072),
+(9798721050411,50073),
+(9782496700480,50074),
+(9781547553488,50075),
+(9781077079762,50076),
+(9798455333859,50078),
+(9788811602880,50079),
+(9788822719751,50080),
+(9788806186678,50081),
+(9788845917721,50080),
+(9788858015018,50082),
+(9798491690848,50083),
+(9798463535634,50084),
+(9798791164681,50085),
+(9788854192805,50080);
 
 
 INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
@@ -461,7 +527,28 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 (9798513926276,16),
 (9798513926276,14),
 (9788845278334,17),
-(9798796912720,17);
+(9798796912720,17),
+(9788891293206,11),
+(9788891294999,11),
+(9788835952978,11),
+(9788869199486,11),
+(9788806249458,12),
+(9798721050411,12),
+(9782496700480,13),
+(9781547553488,21),
+(9781077079762,21),
+(9788891294999,21),
+(9798455333859,13),
+(9788811602880,13),
+(9788822719751,16),
+(9788806186678,16),
+(9788845917721,16),
+(9788858015018,16),
+(9798491690848,16),
+(9798463535634,16),
+(9798791164681,16),
+(9788854192805,16),
+(9788845917721,15);
 
 INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Email,Password,Telefono) VALUES
 (1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','milano10','1597863412'),
@@ -524,9 +611,9 @@ L''informazione utilissima è l''indicazione del luogo in cui si trovano i dipin
 (1000000002,9788858018460,'2021-09-13',2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
 
 
-ALTER TABLE Editore AUTO_INCREMENT=3041;
+ALTER TABLE Editore AUTO_INCREMENT=3048;
 ALTER TABLE Categoria AUTO_INCREMENT=22;
-ALTER TABLE Autore AUTO_INCREMENT=50067;
+ALTER TABLE Autore AUTO_INCREMENT=50086;
 ALTER TABLE Utente AUTO_INCREMENT=1000000007;
 ALTER TABLE Indirizzo AUTO_INCREMENT=100007;
 ALTER TABLE Ordine AUTO_INCREMENT=50000006;
