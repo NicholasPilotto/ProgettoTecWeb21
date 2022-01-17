@@ -5,8 +5,8 @@ namespace DB;
 use mysqli;
 
 class Constant {
-  protected const HOST_DB = "";
-  protected const DATABASE_NAME = "";
+  protected const HOST_DB = "127.0.0.1";
+  protected const DATABASE_NAME = "secondread";
   protected const USERNAME = "";
   protected const PASSWORD = "";
 }
@@ -346,5 +346,34 @@ class Service extends Constant {
 
 
     return $res;
+  }
+
+  public function login($mail, $pass): string {
+    $query = "SELECT *
+              FROM utente
+              WHERE email = ? AND password = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = false;
+
+    $psw = hash('sha256', $pass);
+
+    if ($stmt === false) {
+      return "a";
+    }
+
+    if ($stmt->bind_param('ss', $mail, $psw) === false) {
+      return "b";
+    }
+
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows != 0) {
+      $result = true;
+    }
+    $stmt->close();
+
+
+    return $result;
   }
 }
