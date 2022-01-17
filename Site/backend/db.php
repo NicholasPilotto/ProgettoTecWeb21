@@ -5,10 +5,10 @@ namespace DB;
 use mysqli;
 
 class Constant {
-  protected const HOST_DB = "";
-  protected const DATABASE_NAME = "";
-  protected const USERNAME = "";
-  protected const PASSWORD = "";
+  protected const HOST_DB = "localhost";
+  protected const DATABASE_NAME = "SecondRead";
+  protected const USERNAME = "turkey";
+  protected const PASSWORD = "turrrkey123";
 }
 
 class Service extends Constant {
@@ -120,8 +120,8 @@ class Service extends Constant {
     return $result;
   }
 
-  public function get_books_by_genre_new($id): array {
-    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? ORDER BY libro.Data_Pubblicazione DESC LIMIT 5";
+  public function get_books_by_genre($id): array {
+    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? LIMIT 5";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -150,34 +150,6 @@ class Service extends Constant {
 
   public function get_new_books_by_genre($id): array {
     $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? ORDER BY libro.Data_Pubblicazione DESC LIMIT 5";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
-
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $id) === false) {
-      return $result;
-    }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
-  }
-
-  public function get_loved_books_by_genre($id): array{
-    $query = "SELECT * FROM libro INNER JOIN recensioni ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? ORDER BY libro.Data_Pubblicazione DESC LIMIT 5";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
