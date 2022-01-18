@@ -215,7 +215,8 @@ class Service extends Constant {
               INNER JOIN composizione
               ON composizione.elemento = libro.isbn
               GROUP BY libro.isbn
-              ORDER BY sold DESC";
+              ORDER BY sold DESC
+              LIMIT 7";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
