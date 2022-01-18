@@ -22,7 +22,7 @@
         {
             // Ce un genere con quell'id, posso andare avanti
             $nomeGenere = $queryNomeGenere[0]['Nome'];
-            $libri = $connessione->get_new_books_by_genre($idGenere);
+            $libri = $connessione->get_books_by_genre($idGenere);
 
             $listaNuovi = "<ul class='bookCards'>";
 
