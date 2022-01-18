@@ -30,7 +30,15 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.isbn = ?";
+    $query = "SELECT *
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE libro.isbn = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -60,7 +68,15 @@ class Service extends Constant {
   }
 
   public function get_book_by_title($title): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE libro.titolo LIKE ?";
+    $query = "SELECT * 
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE libro.titolo LIKE ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -90,7 +106,15 @@ class Service extends Constant {
   }
 
   public function get_books_by_author($author_firstname, $author_lastname): array {
-    $query = "SELECT * FROM libro INNER JOIN pubblicazione ON pubblicazione.libro_isbn = libro.isbn INNER JOIN autore ON autore.id = pubblicazione.autore_id INNER JOIN editore ON libro.editore = editore.id WHERE autore.nome LIKE ? AND autore.cognome LIKE ?";
+    $query = "SELECT * 
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id 
+              WHERE autore.nome LIKE ? AND autore.cognome LIKE ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -122,7 +146,10 @@ class Service extends Constant {
   }
 
   public function get_books_by_genre($id): array {
-    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
+    $query = "SELECT * 
+              FROM libro 
+              INNER JOIN appartenenza 
+              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -150,7 +177,12 @@ class Service extends Constant {
   }
 
   public function get_new_books_by_genre($id): array {
-    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? ORDER BY libro.Data_Pubblicazione DESC LIMIT 5";
+    $query = "SELECT * 
+              FROM libro 
+              INNER JOIN appartenenza 
+              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? 
+              ORDER BY libro.Data_Pubblicazione DESC 
+              LIMIT 5";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -179,7 +211,9 @@ class Service extends Constant {
 
 
   public function get_genre_by_id($id): array {
-    $query = "SELECT * FROM categoria WHERE id_categoria = ?";
+    $query = "SELECT *
+              FROM categoria 
+              WHERE id_categoria = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -216,26 +250,20 @@ class Service extends Constant {
               ON composizione.elemento = libro.isbn
               GROUP BY libro.isbn
               ORDER BY sold DESC";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
 
-    if ($stmt === false) {
+    $stmt = $this->connection->query($query);
+
+    if ($stmt->num_rows == 0) {
+      return NULL;
+    } else {
+      $result = array();
+
+      while ($row = $stmt->fetch_assoc()) {
+        array_push($result, $row);
+      }
+      $stmt->free();
       return $result;
     }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
   }
 
   public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
@@ -518,30 +546,25 @@ class Service extends Constant {
   public function get_orders(): array {
     $query = "SELECT *
               FROM ordine";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
+    $stmt = $this->connection->query($query);
 
-    $stmt->execute();
-    $tmp = $stmt->get_result();
+    if ($stmt->num_rows == 0) {
+      return NULL;
+    } else {
+      $result = array();
 
-    if ($tmp->num_rows == 0) {
+      while ($row = $stmt->fetch_assoc()) {
+        array_push($result, $row);
+      }
+      $stmt->free();
       return $result;
     }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
   }
 
   public function insert_review($utenteid, $isbn, $valore, $commento): string {
     $query = "INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
+
     $stmt = $this->connection->prepare($query);
     $today = date('Y-m-d');
 
@@ -564,6 +587,7 @@ class Service extends Constant {
 
   public function edit_review($utenteid, $isbn, $valore, $commento): bool {
     $query = "UPDATE recensione SET ";
+
     $components = array();
     $aux = "";
     $type = "";
@@ -613,7 +637,9 @@ class Service extends Constant {
   }
 
   public function delete_review($utenteid, $isbn): bool {
-    $query = "DELETE FROM recensione WHERE idUtente = ? AND libro_isbn = ?";
+    $query = "DELETE FROM recensione 
+              WHERE idUtente = ? AND libro_isbn = ?";
+
     $stmt = $this->connection->prepare($query);
 
     if ($stmt === false) {
@@ -633,76 +659,62 @@ class Service extends Constant {
   }
 
   public function get_new_books(): array {
-    $query = "SELECT * FROM libro ORDER BY libro.Data_Pubblicazione DESC LIMIT 7";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
+    $query = "SELECT * 
+              FROM libro 
+              ORDER BY libro.Data_Pubblicazione DESC 
+              LIMIT 7";
 
-    if ($stmt === false) {
+    $stmt = $this->connection->query($query);
+
+    if ($stmt->num_rows == 0) {
+      return NULL;
+    } else {
+      $result = array();
+
+      while ($row = $stmt->fetch_assoc()) {
+        array_push($result, $row);
+      }
+      $stmt->free();
       return $result;
     }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
   }
 
   public function get_books_under_5(): array {
-    $query = "SELECT * FROM libro WHERE prezzo < 5";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
+    $query = "SELECT *
+              FROM libro 
+              WHERE prezzo < 5";
 
-    if ($stmt === false) {
+    $stmt = $this->connection->query($query);
+
+    if ($stmt->num_rows == 0) {
+      return NULL;
+    } else {
+      $result = array();
+
+      while ($row = $stmt->fetch_assoc()) {
+        array_push($result, $row);
+      }
+      $stmt->free();
       return $result;
     }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
   }
-  
+
   public function get_all_books(): array {
-    $query = "SELECT * FROM libro";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
+    $query = "SELECT * 
+              FROM libro";
 
-    if ($stmt === false) {
+    $stmt = $this->connection->query($query);
+
+    if ($stmt->num_rows == 0) {
+      return NULL;
+    } else {
+      $result = array();
+
+      while ($row = $stmt->fetch_assoc()) {
+        array_push($result, $row);
+      }
+      $stmt->free();
       return $result;
     }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $stmt->close();
-    return $result;
   }
 }
-
-?>
