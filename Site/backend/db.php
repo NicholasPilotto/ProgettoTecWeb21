@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -633,13 +633,7 @@ class Service extends Constant {
   }
 
   public function get_new_books(): array {
-    $query = "SELECT *
-              FROM libro
-              INNER JOIN editore
-              ON editore.id = libro.editore
-              INNER JOIN composizione
-              ON composizione.elemento = libro.isbn
-              WHERE data_pubblicazione > NOW() - INTERVAL 30 DAY";
+    $query = "SELECT * FROM libro ORDER BY libro.Data_Pubblicazione DESC LIMIT 7";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -663,13 +657,7 @@ class Service extends Constant {
   }
 
   public function get_books_under_5(): array {
-    $query = "SELECT *
-              FROM libro
-              INNER JOIN editore
-              ON editore.id = libro.editore
-              INNER JOIN composizione
-              ON composizione.elemento = libro.isbn
-              WHERE prezzo < 5";
+    $query = "SELECT * FROM libro WHERE prezzo < 5";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -692,3 +680,5 @@ class Service extends Constant {
     return $result;
   }
 }
+
+?>
