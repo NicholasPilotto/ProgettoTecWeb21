@@ -632,7 +632,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_new(): array {
+  public function get_new_books(): array {
     $query = "SELECT *
               FROM libro
               INNER JOIN editore
