@@ -122,7 +122,7 @@ class Service extends Constant {
   }
 
   public function get_books_by_genre($id): array {
-    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? LIMIT 5";
+    $query = "SELECT * FROM libro INNER JOIN appartenenza ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
