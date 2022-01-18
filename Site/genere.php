@@ -8,31 +8,53 @@
 
     // Accesso al database
 
-    $idGenere = $_GET['genere'];
+    $trovatoErrore = false;
 
-    if(isset($idGenere))
+    if(isset($_GET['genere']))
     {
+        $idGenere = $_GET['genere'];
+
         $connessione = new Service();
         $a = $connessione->openConnection();
 
-        $nomeGenere = $connessione->get_genre_by_id($idGenere)[0]['Nome'];
-        $libri = $connessione->get_new_books_by_genre($idGenere);
-
-        $listaNuovi = "";
-
-        foreach($libri as $libro)
+        $queryNomeGenere = $connessione->get_genre_by_id($idGenere);
+        if(count($queryNomeGenere) > 0)
         {
-            $listaNuovi .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
-        }
+            // Ce un genere con quell'id, posso andare avanti
+            $nomeGenere = $queryNomeGenere[0]['Nome'];
+            $libri = $connessione->get_new_books_by_genre($idGenere);
 
-        $paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
-        $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
+            $listaNuovi = "<ul class='bookCards'>";
+
+            foreach($libri as $libro)
+            {
+                $listaNuovi .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            }
+
+            $listaNuovi .= "</ul>";
+
+            $paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
+            $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
+        }
+        else
+        {
+            $trovatoErrore = true;
+        }
 
         $connessione->closeConnection();
     }
     else
     {
+        $trovatoErrore = true;
+    }
 
+    if($trovatoErrore)
+    {
+        // Errore, pagina senza genereId o con idGenere sbagliato
+        $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
+
+        $paginaHTML = str_replace("</listaNuovi>", $errore, $paginaHTML);
+        $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
     }
 
     // -------------------

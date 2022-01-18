@@ -283,9 +283,37 @@ SEZIONE CONTENT
 
 /* ------------------- RICERCA ------------------- */
 
+.contentRicerca {
+    display: flex;
+}
+
 #filtri {
-    float: left;
-    width: 20%;
+    flex-basis: 25%;
+    border-right: 1px solid #aaaaaa;
+    padding-bottom: 1em;
+}
+
+#contentDx {
+    flex-basis: 75%;
+}
+
+.genreForm fieldset {
+    border: none;
+}
+
+.genreForm fieldset legend {
+    padding-left: 0.5em;
+    /*padding-top: 1em;*/
+    margin-left: 0.3em;
+    padding-top: 0.5em;
+
+    color: #146e53;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.genreForm input[type=number] {
+    width: 4em;
 }
 
 #filtri ul {
@@ -293,33 +321,43 @@ SEZIONE CONTENT
 }
 
 #filtri ul li {
-    padding-top: 0.5em;
-    padding-left: 0.5em;
+    margin-top: 0.5em;
+    margin-left: 1.5em;
 }
 
-#filtri h2 {
-    padding-left: 0.3em;
-    padding-top: 1em;
-
-    color: #146e53;
+#filtri ul li input[type=checkbox] {
+    transform: scale(1.5);
+    margin-left: 0.2em;
 }
 
-/*
-#inserzioni {
-    margin-left: 20%;
-    padding-left: 2%;
-
-    border-left: 1px solid #000;
+#filtri ul li input[type=number] {
+    font-size: 1em;
 }
-*/
+
+#filtri ul li label {
+    font-size: 0.8em;
+    padding-left: 0.8em;
+}
+
+#filtri .btn {
+    width: 42%;
+    margin-left: 5%;
+    margin-top: 2em;
+
+    height: 2em;
+    font-size: medium;
+
+    color: white;
+    background-color: #146e53;
+}
+
 .advertsCards {
-    margin-left: 20%;
     list-style-type: none;
 
     display: flex;
     flex-wrap: wrap; /* Andare a capo */
 
-    border-left: 1px solid #aaaaaa;
+    /*border-left: 1px solid #aaaaaa;*/
 }
 
 .advertsCards li{
@@ -373,6 +411,13 @@ a.titolo {
     float: right;
     margin-top: 1.3em;
     font-size: small;
+}
+
+/* ------------------- ERRORE ------------------- */
+
+#erroreImg {
+    width: 80%;
+    margin-left: 10%;
 }
 
 /*
