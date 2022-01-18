@@ -612,7 +612,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function delete_review($utenteid, $isbn, $valore, $commento): bool {
+  public function delete_review($utenteid, $isbn): bool {
     $query = "DELETE FROM recensione WHERE idUtente = ? AND libro_isbn = ?";
     $stmt = $this->connection->prepare($query);
 
@@ -630,5 +630,35 @@ class Service extends Constant {
 
 
     return $res;
+  }
+
+  public function get_new(): array {
+    $query = "SELECT *
+              FROM libro
+              INNER JOIN editore
+              ON editore.id = libro.editore
+              INNER JOIN composizione
+              ON composizione.elemento = libro.isbn
+              WHERE data_pubblicazione > NOW() - INTERVAL 30 DAY";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
   }
 }
