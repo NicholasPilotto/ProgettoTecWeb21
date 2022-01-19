@@ -454,7 +454,7 @@ class Service extends Constant {
   public function get_avg_review($isbn): array {
     $query = "SELECT libro_isbn, AVG(valutazione) AS media
               FROM recensione 
-              WHERE libro_isbn = ?'
+              WHERE libro_isbn = ?
               GROUP BY libro_isbn";
     $stmt = $this->connection->prepare($query);
     $result = array();
