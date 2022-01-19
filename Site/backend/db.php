@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -30,7 +30,7 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): array {
-    $query = "SELECT *
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
@@ -68,7 +68,7 @@ class Service extends Constant {
   }
 
   public function get_book_by_title($title): array {
-    $query = "SELECT * 
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome  
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
@@ -106,7 +106,7 @@ class Service extends Constant {
   }
 
   public function get_books_by_author($author_firstname, $author_lastname): array {
-    $query = "SELECT * 
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome  
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
@@ -146,7 +146,7 @@ class Service extends Constant {
   }
 
   public function get_books_by_genre($id): array {
-    $query = "SELECT * 
+    $query = "SELECT libro.*, categoria.nome AS categoria_nome 
               FROM libro 
               INNER JOIN appartenenza 
               ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
@@ -177,7 +177,7 @@ class Service extends Constant {
   }
 
   public function get_new_books_by_genre($id): array {
-    $query = "SELECT * 
+    $query = "SELECT libro.* 
               FROM libro 
               INNER JOIN appartenenza 
               ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ? 
@@ -242,10 +242,8 @@ class Service extends Constant {
 
 
   public function get_bestsellers(): array {
-    $query = "SELECT *, count(libro.isbn) AS sold 
+    $query = "SELECT libro.*, count(libro.isbn) AS sold 
               FROM libro
-              INNER JOIN editore
-              ON editore.id = libro.editore
               INNER JOIN composizione
               ON composizione.elemento = libro.isbn
               GROUP BY libro.isbn
@@ -377,7 +375,7 @@ class Service extends Constant {
   }
 
   public function login($mail, $pass): bool {
-    $query = "SELECT *
+    $query = "SELECT codice_identificativo, nome, cognome, data_nascita, username, email, telefono
               FROM utente
               WHERE email = ? AND password = ?";
     $stmt = $this->connection->prepare($query);
@@ -680,7 +678,7 @@ class Service extends Constant {
   }
 
   public function get_books_under_5(): array {
-    $query = "SELECT *
+    $query = "SELECT * 
               FROM libro 
               WHERE prezzo < 5";
 
