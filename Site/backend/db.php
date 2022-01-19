@@ -746,4 +746,33 @@ class Service extends Constant {
       return $result;
     }
   }
+  
+  public function get_genres_from_isbn($isbn): array {
+    $query = "SELECT * FROM categoria
+              INNER JOIN appartenenza ON categoria.ID_Categoria = appartenenza.Codice_Categoria WHERE appartenenza.Libro_ISBN = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('i', $isbn) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
 }
