@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "root";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
@@ -449,6 +449,37 @@ class Service extends Constant {
     $stmt->close();
 
     return $res;
+  }
+
+  public function get_avg_review($isbn): array {
+    $query = "SELECT libro_isbn, AVG(valutazione) AS tot
+              FROM recensione 
+              WHERE libro_isbn = ?'
+              GROUP BY libro_isbn";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return false;
+    }
+
+    if ($stmt->bind_param('s', $isbn) === false) {
+      return false;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
   }
 
   public function get_reviews_by_isbn($isbn): array {
