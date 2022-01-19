@@ -789,7 +789,7 @@ INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento)
 (1000000004,9788835952978, '2017-10-01', 3, "Tutto ok"),
 (1000000004,9788869199486, '2020-05-02', 4, "Libro molto valido"),
 (1000000004,9788806249458, '2018-12-01', 1, "Libro pessimo...stare alla larga!"),
-(1000000004,9798721050411, '2019-13-05', 3, "Mi è piaciuto abbastanza da fan del genere"),
+(1000000004,9798721050411, '2019-12-05', 3, "Mi è piaciuto abbastanza da fan del genere"),
 (1000000004,9782496700480, '2021-03-13', 5, "Mi ha lasciato estasiato!!"),
 (1000000004,9781547553488, '2021-02-15', 4, "Bel libro anche se alcuni passaggi mi hanno lasciato interdetto"),
 (1000000004,9781077079762, '2021-01-28', 3, "Decente"),
