@@ -20,7 +20,7 @@
     {
         if($cont++ < $limit)
         {
-            $listaBestseller .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaBestseller .= "</ul>";

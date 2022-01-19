@@ -24,16 +24,16 @@
             $nomeGenere = $queryNomeGenere[0]['Nome'];
             $libri = $connessione->get_books_by_genre($idGenere);
 
-            $listaNuovi = "<ul class='bookCards'>";
+            $listaLibri = "<ul class='bookCards'>";
 
             foreach($libri as $libro)
             {
-                $listaNuovi .= "<li><a href=''><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+                $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
             }
 
-            $listaNuovi .= "</ul>";
+            $listaLibri .= "</ul>";
 
-            $paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
+            $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
             $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
         }
         else
@@ -53,7 +53,7 @@
         // Errore, pagina senza genereId o con idGenere sbagliato
         $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
 
-        $paginaHTML = str_replace("</listaNuovi>", $errore, $paginaHTML);
+        $paginaHTML = str_replace("</listaLibri>", $errore, $paginaHTML);
         $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
     }
 

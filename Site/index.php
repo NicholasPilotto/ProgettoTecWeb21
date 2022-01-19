@@ -20,7 +20,7 @@
     {
         if($cont++ < $limit)
         {
-            $listaBestseller .= "<li><a href=''><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaBestseller .= "</ul>";
@@ -34,7 +34,7 @@
     {
         if($cont++ < $limit)
         {
-            $listaNuovi .= "<li><a href=''><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaNuovi .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaNuovi .= "</ul>";
@@ -48,7 +48,7 @@
     {
         if($cont++ < $limit)
         {
-            $listaUnder5 .= "<li><a href=''><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaUnder5 .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaUnder5 .= "</ul>";
