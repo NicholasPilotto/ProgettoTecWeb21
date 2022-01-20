@@ -37,3 +37,4 @@ class response_manager {
     return $this->errno;
   }
 }
+?>
