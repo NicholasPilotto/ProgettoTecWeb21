@@ -243,6 +243,36 @@ class Service extends Constant {
     return $result;
   }
 
+  public function get_utente_by_email($email): array {
+    $query = "SELECT *
+              FROM utente
+              WHERE email = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('s', $email) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
+
 
   public function get_bestsellers(): array {
     $query = "SELECT libro.*, count(libro.isbn) AS sold 
