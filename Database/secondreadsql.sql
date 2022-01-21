@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS Recensione ;
 DROP TABLE IF EXISTS Composizione ;
 DROP Table IF EXISTS Appartenenza ;
 DROP Table IF EXISTS Pubblicazione ;
+DROP TABLE IF EXISTS Wishlist;
 DROP TABLE IF EXISTS Libro;
 DROP TABLE IF EXISTS Editore;
 DROP TABLE IF EXISTS Categoria;
@@ -31,6 +32,7 @@ CREATE TABLE Libro (
   PRIMARY KEY(ISBN),
   CONSTRAINT FK_LibroEditore
   FOREIGN KEY (Editore) REFERENCES Editore(ID)
+  ON DELETE CASCADE
 );
 
 
@@ -52,9 +54,11 @@ CREATE TABLE Pubblicazione (
   Autore_ID INT(5) UNSIGNED,
   PRIMARY KEY (Libro_ISBN, Autore_ID),
   CONSTRAINT FK_LibroPubblicazione
-    FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN),
+    FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN)
+    ON DELETE CASCADE,
   CONSTRAINT FK_AutorePubblicazione
     FOREIGN KEY (Autore_ID) REFERENCES Autore(ID)
+    ON DELETE CASCADE
   );
 
 CREATE TABLE Appartenenza (
@@ -62,9 +66,11 @@ CREATE TABLE Appartenenza (
   Codice_Categoria INT(2) UNSIGNED,
   PRIMARY KEY (Libro_ISBN,Codice_Categoria),
   CONSTRAINT FK_LibroAppartenenza
-    FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN),
+    FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+    ON DELETE CASCADE,
   CONSTRAINT FK_CategoriaAppartenenza
     FOREIGN KEY(Codice_Categoria) REFERENCES Categoria(ID_Categoria)
+    ON DELETE CASCADE
   );
 
 CREATE TABLE Utente (
@@ -79,6 +85,18 @@ CREATE TABLE Utente (
   PRIMARY KEY(Codice_identificativo)
   );
 
+CREATE TABLE WishList(
+  Cliente_Codice INT(10) UNSIGNED,
+  Libro_ISBN BIGINT(13) UNSIGNED,
+  PRIMARY KEY(Libro_ISBN, Cliente_Codice),
+  CONSTRAINT FK_UtenteWishlist
+    FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
+    ON DELETE CASCADE,
+  CONSTRAINT FK_LibroWishlist
+  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  ON DELETE CASCADE
+);
+
 CREATE TABLE Indirizzo (
   Codice INT(6) UNSIGNED AUTO_INCREMENT,
   Via VARCHAR(50) NOT NULL,
@@ -89,11 +107,12 @@ CREATE TABLE Indirizzo (
   PRIMARY KEY(Codice),
   CONSTRAINT FK_UtenteIndirizzo
   FOREIGN KEY(Utente) REFERENCES Utente(Codice_identificativo)
+  ON DELETE CASCADE
   );
 
 CREATE TABLE Ordine (
   Codice_univoco INT(8) UNSIGNED AUTO_INCREMENT,
-  Cliente_Codice INT(10) UNSIGNED NOT NULL,
+  Cliente_Codice INT(10) UNSIGNED,
   Data DATE NOT NULL,
   Data_partenza DATE NOT NULL,
   Data_consegna DATE NOT NULL,
@@ -101,9 +120,11 @@ CREATE TABLE Ordine (
   Totale DECIMAL(9,2) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice_univoco),
   CONSTRAINT FK_UtenteOrdine
-  FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo),
+  FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
+  ON DELETE CASCADE,
   CONSTRAINT FK_IndirizzoOrdine
   FOREIGN KEY (Indirizzo) REFERENCES Indirizzo(Codice)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE Composizione (
@@ -112,9 +133,11 @@ CREATE TABLE Composizione (
   Quantita INT(3) UNSIGNED,
   PRIMARY KEY (Elemento,Codice_ordine),
   CONSTRAINT FK_LibroComposizione
-  FOREIGN KEY(Elemento) REFERENCES Libro(ISBN),
+  FOREIGN KEY(Elemento) REFERENCES Libro(ISBN)
+  ON DELETE CASCADE,
   CONSTRAINT FK_OrdineComposizione
   FOREIGN KEY(Codice_ordine) REFERENCES Ordine(Codice_univoco)
+  ON DELETE CASCADE
   );
 
 CREATE TABLE Recensione (
@@ -125,8 +148,10 @@ CREATE TABLE Recensione (
   Commento VARCHAR(500) NOT NULL,
   PRIMARY KEY(idUtente,Libro_ISBN),
   CONSTRAINT FK_RecensioneLibro
-  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN),
+  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  ON DELETE CASCADE,
   FOREIGN KEY(idUtente) REFERENCES Utente(Codice_identificativo)
+  ON DELETE CASCADE
   );
 
 INSERT INTO Editore(ID,Nome) VALUES
@@ -685,13 +710,29 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 (9798780216834,20);
 
 INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Email,Password,Telefono) VALUES
-(1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','milano10','1597863412'),
-(1000000001,'Fiona','Rossi','1997-03-12','fior7','fiona12r@gmail.com','luna20','2548213745'),
-(1000000002,'Andrea','Pavin','1989-08-15','pavn5','andapav89@gmail.com','millevisi8','5878134625'),
-(1000000003,'Marco','Danielli','2005-11-28','dan28','marcodan@gmail.com','quarantaventi88','7225846192'),
-(1000000004,'Lucia','Verdi','1964-08-20','luc64','luciaverdi12@gmail.com','fabbionicola2','9736182341'),
-(1000000005,'Davide','Nosella','1995-11-14','nov15','davide95@gmail.com','barcelona88','4612546158'),
-(1000000006,'Admin','admin','1999-12-09','admin','admin@gmail.com','admin1234','6380571935');
+(1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','cbd2dafa01e61db179075c568e9291ff58cf575b55df75c671c67f4629698778','1597863412'),
+(1000000001,'Fiona','Rossi','1997-03-12','fior7','fiona12r@gmail.com','a9359ac376014796b24e769a768cf051588f63977d9ebb1d1a10df1d1d030215','2548213745'),
+(1000000002,'Andrea','Pavin','1989-08-15','pavn5','andapav89@gmail.com','b63d62a03ee2141a8158652173db58b09c0744ff0a6191a43b18b9a16895b1c4','5878134625'),
+(1000000003,'Marco','Danielli','2005-11-28','dan28','marcodan@gmail.com','6131ff58fb651ccf4f936edc3e459a1970fc2d402cbb1a9cd70b3809a0383fc4','7225846192'),
+(1000000004,'Lucia','Verdi','1964-08-20','luc64','luciaverdi12@gmail.com','e5b782a8f0b6b73e3207edfdec79e58f634b8e197c4033d656125354cc44178a','9736182341'),
+(1000000005,'Davide','Nosella','1995-11-14','nov15','davide95@gmail.com','9c61313ef568ab4ad89c252b5c5c27fc81956da92f80fb11188f511a2343d30d','4612546158'),
+(1000000006,'Admin','admin','1999-12-09','admin','admin@gmail.com','ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270','6380571935');
+
+INSERT INTO Wishlist(Libro_ISBN, Cliente_Codice) VALUES
+(9788822760265,1000000000),
+(9788830901988,1000000000),
+(9791280022486,1000000001),
+(9788804728191,1000000001),
+(9788804742364,1000000002),
+(9788833751627,1000000002),
+(9788832063479,1000000003),
+(9788807900846,1000000003),
+(9788858018460,1000000004),
+(9788875788049,1000000004),
+(9798529792254,1000000005),
+(9798482387986,1000000005),
+(9788817144988,1000000006),
+(9798650853428,1000000006);
 
 INSERT INTO Indirizzo(Codice,Via,Città,Cap,Num_civico,Utente) VALUES
 (100000, 'Via Giambattista Belzoni', 'Padova', 35121 , 12, 1000000000),
