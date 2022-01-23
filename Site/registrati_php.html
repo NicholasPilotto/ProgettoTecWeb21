@@ -39,25 +39,24 @@
         /^[0-9]{10}$/,
         "Inserire un numero telefonico corretto"
       ],
-      "inputDataNascita": [
-        "Data di nascita",
-        /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/,
-        "Inserire un formato di data corretto"
-      ],
+      // "inputDataNascita": [
+      //   "Data di nascita",
+      //   /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))$/,
+      //   "Inserire un formato di data corretto"
+      // ],
       "inputEmail": [
         "Indirizzo mail",
-        // /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Inserire un indirizzo mail corretto"
       ],
       "inputPassword": [
         "Password",
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})$/,
+        /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/,
         "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
       ],
       "inputConfermaPassword": [
         "Password",
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})$/,
+        /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/,
         "Le due password non coincidono"
       ]
     };
@@ -87,6 +86,14 @@
       }
     }
 
+    function mostraErrore(input) {
+      var padre = input.parentNode;
+      var errore = document.createElement("strong");
+      errore.className = "errorSuggestion";
+      errore.appendChild(document.createTextNode(dettagli_form[input.id][2]));
+      padre.appendChild(errore);
+    }
+
     function validazioneCampo(input) {
       var padre = input.parentNode;
 
@@ -95,20 +102,30 @@
       }
 
       if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
-        input.value = dettagli_form[input.id][2];
+        mostraErrore(input);
         input.focus();
         input.select();
         return false;
       }
 
       if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
-        input.value = dettagli_form[input.id][2];
+        mostraErrore(input);
         input.focus();
         input.select();
         return false;
 
       }
       return true;
+    }
+
+    function validazioneForm() {
+      for (var key in dettagli_form) {
+        var input = document.getElementById(key);
+        if (!validazioneCampo(input)) {
+          return false;
+        }
+        return true;
+      }
     }
   </script>
 
@@ -139,25 +156,27 @@
         <h2>Registrati</h2>
 
         <label for="inputNome">Nome</label>
-        <input class="styleInput" id="inputNome" name="nome" type="text">
+        <span><input class="styleInput" id="inputNome" name="nome" type="text"></span>
 
         <label for="inputCognome">Cognome</label>
-        <input class="styleInput" id="inputCognome" name="cognome" type="text">
+        <span><input class="styleInput" id="inputCognome" name="cognome" type="text"></span>
 
         <label for="inputTelefono">Telefono</label>
-        <input class="styleInput" id="inputTelefono" name="telefono" type="tel">
+        <span><input class="styleInput" id="inputTelefono" name="telefono" type="tel"></span>
 
         <label for="inputDataNascita">Data di Nascita</label>
-        <input class="styleInput" id="inputDataNascita" name="nascita" type="date">
+        <span><input class="styleInput" id="inputDataNascita" name="nascita" type="date" min="1950-01-01"
+            max="2022-12-31"></span>
 
         <label for="inputEmail">Email</label>
-        <input class="styleInput" id="inputEmail" name="email" type="email">
+        <span><input class="styleInput" id="inputEmail" name="email" type="email"></span>
 
         <label for="inputPassword">Password</label>
-        <input class="styleInput" id="inputPassword" name="password" type="password">
+        <span><input class="styleInput" id="inputPassword" name="password" type="password"></span>
 
         <label for="inputConfermaPassword">Conferma Password</label>
-        <input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword" type="password">
+        <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword"
+            type="password"></span>
 
         <input type="submit" value="Accedi">
       </fieldset>
