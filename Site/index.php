@@ -1,66 +1,70 @@
 <?php
-    use DB\Service;
-    require_once('backend/db.php');
 
-    require_once "graphics.php";
-    
-    $paginaHTML = graphics::getPage("index_php.html");
+use DB\Service;
 
-    // Accesso al database
-    $connessione = new Service();
-    $a = $connessione->openConnection();
+require_once('backend/db.php');
 
-    $limit = 7;
-    // ---- BESTSELLER ----
-    $queryBestseller = $connessione->get_bestsellers();
+require_once "graphics.php";
 
+$paginaHTML = graphics::getPage("index_php.html");
+
+// Accesso al database
+$connessione = new Service();
+$a = $connessione->openConnection();
+
+$limit = 7;
+// ---- BESTSELLER ----
+$queryBestseller = $connessione->get_bestsellers();
+
+if ($queryBestseller->ok()) {
     $listaBestseller = "<ul class='bookCards'>";
     $cont = 0;
-    foreach($queryBestseller as $libro)
-    {
-        if($cont++ < $limit)
-        {
-            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+    foreach ($queryBestseller->get_result() as $libro) {
+        if ($cont++ < $limit) {
+            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaBestseller .= "</ul>";
+}
 
-    // ---- NUOVE USCITE ----
-    $queryNuovi = $connessione->get_new_books();
-    
+
+// ---- NUOVE USCITE ----
+$queryNuovi = $connessione->get_new_books();
+
+if ($queryNuovi->ok()) {
     $listaNuovi = "<ul class='bookCards'>";
     $cont = 0;
-    foreach($queryNuovi as $libro)
-    {
-        if($cont++ < $limit)
-        {
-            $listaNuovi .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+    foreach ($queryNuovi->get_result() as $libro) {
+        if ($cont++ < $limit) {
+            $listaNuovi .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaNuovi .= "</ul>";
+}
 
-    // ---- SOTTO I 5 EURO ----
-    $queryUnder5 = $connessione->get_books_under_5();
-    
+
+// ---- SOTTO I 5 EURO ----
+$queryUnder5 = $connessione->get_books_under_5();
+
+if ($queryUnder5->ok()) {
     $listaUnder5 = "<ul class='bookCards'>";
     $cont = 0;
-    foreach($queryUnder5 as $libro)
-    {
-        if($cont++ < $limit)
-        {
-            $listaUnder5 .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] ."' alt=''>" . $libro['Titolo'] . "</a></li>";
+    foreach ($queryUnder5->get_result() as $libro) {
+        if ($cont++ < $limit) {
+            $listaUnder5 .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
         }
     }
     $listaUnder5 .= "</ul>";
+}
 
 
 
-    $paginaHTML = str_replace("</listaBestseller>", $listaBestseller, $paginaHTML);
-    $paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
-    $paginaHTML = str_replace("</listaUnder5>", $listaUnder5, $paginaHTML);
 
-    $connessione->closeConnection();
-    // -------------------
+$paginaHTML = str_replace("</listaBestseller>", $listaBestseller, $paginaHTML);
+$paginaHTML = str_replace("</listaNuovi>", $listaNuovi, $paginaHTML);
+$paginaHTML = str_replace("</listaUnder5>", $listaUnder5, $paginaHTML);
 
-    echo $paginaHTML;
-?>
+$connessione->closeConnection();
+// -------------------
+
+echo $paginaHTML;
