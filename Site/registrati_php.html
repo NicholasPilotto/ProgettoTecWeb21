@@ -14,68 +14,158 @@
 <html lang="it">
 
 <head>
-    <meta charset="utf-8" />
+  <meta charset="utf-8" />
 
-    <title>Registrati - Second Read</title>
+  <title>Registrati - Second Read</title>
 
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-    <!-- Segnaposto -->
-    </linkSito>
+  <script>
+    var dettagli_form = {
+      "inputNome": [
+        "Nome",
+        /^[A-Za-zàèùìòé\s]\w{2,20}$/,
+        "Inserire un nome di lunghezza compresa tra i 2 e 20 caratteri"
+      ],
+      "inputCognome": [
+        "Cognome",
+        /^[A-Za-zàèùìòé\s]\w{2,20}$/,
+        "Inserire un cognome di lunghezza compresa tra i 2 e 20 caratteri"
+      ],
+      "inputTelefono": [
+        "Numero telefonico",
+        /^[0-9]{10}$/,
+        "Inserire un numero telefonico corretto"
+      ],
+      "inputDataNascita": [
+        "Data di nascita",
+        /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/,
+        "Inserire un formato di data corretto"
+      ],
+      "inputEmail": [
+        "Indirizzo mail",
+        // /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Inserire un indirizzo mail corretto"
+      ],
+      "inputPassword": [
+        "Password",
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})$/,
+        "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
+      ],
+      "inputConfermaPassword": [
+        "Password",
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})$/,
+        "Le due password non coincidono"
+      ]
+    };
+
+    function caricamento() {
+      for (var key in dettagli_form) {
+        var input = document.getElementById(key);
+        campoDefault(input);
+        input.onfocus = function () {
+          campoPerInput(this);
+        };
+        input.onblur = function () {
+          validazioneCampo(this);
+        };
+      }
+    }
+
+    function campoDefault(input) {
+      if (input.value == "") {
+        input.value = dettagli_form[input.id][0];
+      }
+    }
+
+    function campoPerInput(input) {
+      if (input.value == dettagli_form[input.id][0]) {
+        input.value = "";
+      }
+    }
+
+    function validazioneCampo(input) {
+      var padre = input.parentNode;
+
+      if (padre.children.length == 2) {
+        padre.removeChild(padre.children[1]);
+      }
+
+      if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
+        input.value = dettagli_form[input.id][2];
+        input.focus();
+        input.select();
+        return false;
+      }
+
+      if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
+        input.value = dettagli_form[input.id][2];
+        input.focus();
+        input.select();
+        return false;
+
+      }
+      return true;
+    }
+  </script>
+
+  <!-- Segnaposto -->
+  </linkSito>
 
 </head>
 
-<body>
-    <!-- Segnaposto -->
-    </headerSito>
+<body onload="caricamento();">
+  <!-- Segnaposto -->
+  </headerSito>
 
-    <nav id="breadcrumb">
-        <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; Registrati</p>
-    </nav>
+  <nav id="breadcrumb">
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; Registrati</p>
+  </nav>
 
-    <nav id="menu">
-        <ul>
-            <li><a href="generi.php">Generi</a></li>
-            <li><a href="bestseller.php">Bestseller</a></li>
-            <li><a href="">Offerte</a></li>
-        </ul>
-    </nav>
+  <nav id="menu">
+    <ul>
+      <li><a href="generi.php">Generi</a></li>
+      <li><a href="bestseller.php">Bestseller</a></li>
+      <li><a href="">Offerte</a></li>
+    </ul>
+  </nav>
 
-    <div id="content">
-        <form class="accediRegistrati" action="" method="post">
-            <fieldset>
-                <h2>Registrati</h2>
+  <div id="content">
+    <form class="accediRegistrati" action="" method="post">
+      <fieldset>
+        <h2>Registrati</h2>
 
-                <label for="inputNome">Nome</label>
-                <input class="styleInput" id="inputNome" name="nome" type="text">
+        <label for="inputNome">Nome</label>
+        <input class="styleInput" id="inputNome" name="nome" type="text">
 
-                <label for="inputCognome">Cognome</label>
-                <input class="styleInput" id="inputCognome" name="cognome" type="text">
+        <label for="inputCognome">Cognome</label>
+        <input class="styleInput" id="inputCognome" name="cognome" type="text">
 
-                <label for="inputTelefono">Telefono</label>
-                <input class="styleInput" id="inputTelefono" name="telefono" type="tel">
+        <label for="inputTelefono">Telefono</label>
+        <input class="styleInput" id="inputTelefono" name="telefono" type="tel">
 
-                <label for="inputDataNascita">Data di Nascita</label>
-                <input class="styleInput" id="inputDataNascita" name="nascita" type="date">
+        <label for="inputDataNascita">Data di Nascita</label>
+        <input class="styleInput" id="inputDataNascita" name="nascita" type="date">
 
-                <label for="inputEmail">Email</label>
-                <input class="styleInput" id="inputEmail" name="email" type="email">
+        <label for="inputEmail">Email</label>
+        <input class="styleInput" id="inputEmail" name="email" type="email">
 
-                <label for="inputPassword">Password</label>
-                <input class="styleInput" id="inputPassword" name="password" type="password">
+        <label for="inputPassword">Password</label>
+        <input class="styleInput" id="inputPassword" name="password" type="password">
 
-                <label for="inputConfermaPassword">Conferma Password</label>
-                <input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword" type="password">
+        <label for="inputConfermaPassword">Conferma Password</label>
+        <input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword" type="password">
 
-                <input type="submit" value="Accedi">
-            </fieldset>
-        </form>
-    </div>
+        <input type="submit" value="Accedi">
+      </fieldset>
+    </form>
+  </div>
 
-    <!-- Segnaposto -->
-    </footerSito>
+  <!-- Segnaposto -->
+  </footerSito>
 </body>
 
 </html>
