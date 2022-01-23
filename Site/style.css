@@ -504,6 +504,18 @@ a.titolo {
 
 /*
 ==================
+SEZIONE ERRORI
+==================
+*/
+.errorSuggestion {
+    color:rgb(201, 98, 98);
+    font-size: 0.8em;
+    display: block;
+    /* margin-top: -1em; */
+}
+
+/*
+==================
 SEZIONE FOOTER
 ==================
 */
