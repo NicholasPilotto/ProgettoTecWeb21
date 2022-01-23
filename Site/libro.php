@@ -27,12 +27,52 @@
             $imgLibro = "<img id='imgLibro' src=" . $queryIsbn[0]['Percorso'] . ">";
 
             // ---- INFO GENERALI ----
-            $infoGenerali = "<ul>";
-            $infoGenerali .= "<li id='titolo'>" . $queryIsbn[0]['Titolo'] ."</li>";
-            $infoGenerali .= "<li>" . $queryIsbn[0]['autore_nome'] ." " . $queryIsbn[0]['autore_cognome'] . "</li>";
-            $infoGenerali .= "<li>" . $queryIsbn[0]['Prezzo'] ."&euro;</li>";
-            $infoGenerali .= "<li>" . $queryIsbn[0]['Quantita'] ." pz.</li>";
-            $infoGenerali .= "</ul>";
+
+            $infoGenerali = "<p id='titolo'>" . $queryIsbn[0]['Titolo'] ."</p>";
+
+            ///
+            $infoGenerali .= "<p>";
+            foreach($queryIsbn as $riga)
+            {
+                $infoGenerali .= $riga['autore_nome'] . " " . $riga['autore_cognome'] . ", ";
+            }
+            $infoGenerali = substr($infoGenerali, 0, strlen($infoGenerali)-2);
+            $infoGenerali .= "</p>";
+            ///
+
+            // stelle
+            $queryStelle = $connessione->get_avg_review($isbn);
+
+            if(count($queryStelle) > 0)
+            {
+                $mediaStelle = $queryStelle[0]['media'];
+                $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
+
+                //$infoGenerali .= "<li>Valutazione di " . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+
+                $infoGenerali .= "<p>";// . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+
+                for($i = 0; $i < 5; $i++)
+                {
+                    if($i < $roundStelle)
+                    {
+                        $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
+                    }
+                    else
+                    {
+                        $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
+                    }
+                }
+
+                $infoGenerali .= " " . round($mediaStelle, 1) . " su 5</p>";
+            }
+            else
+            {
+                $infoGenerali .= "<p>Non ci sono recensioni</p>";
+            }
+
+            //
+            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $queryIsbn[0]['Prezzo'] ."</p>";
 
             // ---- TRAMA ----
             $trama = "<h3>Descrizione</h3>";
@@ -40,18 +80,54 @@
 
             // ---- DETTAGLI LIBRO ----
             $dettagliLibro = "<ul>";
-            $dettagliLibro .= "<h3>Dettagli Libro</h3>";
-            $dettagliLibro .= "<li>Titolo: " . $queryIsbn[0]['Titolo'] . "</li>";
-            $dettagliLibro .= "<li>Autore: " . $queryIsbn[0]['autore_nome'] ." " . $queryIsbn[0]['autore_cognome'] . "</li>";
-            $dettagliLibro .= "<li>ISBN:" . $queryIsbn[0]['ISBN'] . "</li>";
-            $dettagliLibro .= "<li>Editore:" . $queryIsbn[0]['editore_nome'] . "</li>";
-            $dettagliLibro .= "<li>Data pubblicazione: " . $queryIsbn[0]['Data_Pubblicazione'] . "</li>";
-            $dettagliLibro .= "<li>Numero Pagine: " . $queryIsbn[0]['Pagine'] . "</li>";
+            $dettagliLibro .= "<h3>Informazioni Libro</h3>";
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Titolo:</span> " . $queryIsbn[0]['Titolo'] . "</li>";
+
+            // autore
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Autore:</span> ";
+            foreach($queryIsbn as $riga)
+            {
+                $dettagliLibro .= $riga['autore_nome'] . " " . $riga['autore_cognome'] . ", ";
+            }
+            $dettagliLibro = substr($dettagliLibro, 0, strlen($dettagliLibro)-2);
+            $dettagliLibro .= "</li>";
+            //
+
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Editore:</span> " . $queryIsbn[0]['editore_nome'] . "</li>";
+
+            // data
+            //$dettagliLibro .= "<li><span class='miniGrassetto'>Data pubblicazione:</span> " . $queryIsbn[0]['Data_Pubblicazione'] . "</li>";
+
+            $arrayData = explode("-", $queryIsbn[0]['Data_Pubblicazione']);
+            $anno = $arrayData[0];
+            $mese = $arrayData[1];
+            $giorno = $arrayData[2];
+
+            $arrayMesi = array(
+                "01" => "Gennaio",
+                "02" => "Febbraio",
+                "03" => "Marzo",
+                "04" => "Aprile",
+                "05" => "Maggio",
+                "06" => "Giugno",
+                "07" => "Luglio",
+                "08" => "Agosto",
+                "09" => "Settembre",
+                "10" => "Ottobre",
+                "11" => "Novembre",
+                "12" => "Dicembre",
+            );
+
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Data pubblicazione:</span> " . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</li>";
+            //
+
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Numero pagine:</span> " . $queryIsbn[0]['Pagine'] . "</li>";
             
             // generi
             $queryGeneri = $connessione->get_genres_from_isbn($isbn);
-            $generi = "<li>Gener";
-            $generi .= (count($queryGeneri) > 1) ? "i: " : "e: ";
+            $generi = "<li><span class='miniGrassetto'>Gener";
+            $generi .= (count($queryGeneri) > 1) ? "i:" : "e:";
+            $generi .= "</span> ";
 
             $cont = 0;
             foreach($queryGeneri as $genere)
@@ -66,6 +142,9 @@
             $generi .= "</li>";
 
             $dettagliLibro .= $generi;
+
+            // isbn
+            $dettagliLibro .= "<li><span class='miniGrassetto'>ISBN:</span> " . $queryIsbn[0]['ISBN'] . "</li>";
 
             $dettagliLibro .= "</ul>";
 
