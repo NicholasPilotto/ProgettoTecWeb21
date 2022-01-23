@@ -145,9 +145,11 @@ class Service extends Constant {
 
   public function get_books_by_genre($id): response_manager {
     $query = "SELECT libro.*, categoria.nome AS categoria_nome 
-              FROM libro 
-              INNER JOIN appartenenza 
-              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
+    FROM libro 
+    INNER JOIN appartenenza 
+    
+    ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?
+    INNER JOIN categoria ON categoria.ID_Categoria = appartenenza.Codice_Categoria";
     $stmt = $this->connection->prepare($query);
     $result = array();
 

@@ -4,6 +4,8 @@ namespace DB;
 
 use mysqli;
 
+require_once('response_manager.php');
+
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
@@ -145,38 +147,34 @@ class Service extends Constant {
     return $result;
   }
 
-  public function get_books_by_genre($id): array {
+  public function get_books_by_genre($id): response_manager {
     $query = "SELECT libro.*, categoria.nome AS categoria_nome 
               FROM libro 
               INNER JOIN appartenenza 
-              
-              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?
-              INNER JOIN categoria ON categoria.ID_Categoria = appartenenza.Codice_Categoria";
-    
+              INNER JOIN categoria ON categoria.ID_Categoria = appartenenza.Codice_Categoria
+              ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $id) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro appartenente a questo genere");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
   public function get_new_books_by_genre($id): array {
@@ -213,34 +211,32 @@ class Service extends Constant {
   }
 
 
-  public function get_genre_by_id($id): array {
+  public function get_genre_by_id($id): response_manager {
     $query = "SELECT *
               FROM categoria 
               WHERE id_categoria = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $id) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun genere possiede questo ID");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
   public function get_utente_by_email($email): array {
@@ -274,7 +270,7 @@ class Service extends Constant {
   }
 
 
-  public function get_bestsellers(): array {
+  public function get_bestsellers(): response_manager {
     $query = "SELECT libro.*, count(libro.isbn) AS sold 
               FROM libro
               INNER JOIN composizione
@@ -284,17 +280,23 @@ class Service extends Constant {
 
     $stmt = $this->connection->query($query);
 
-    if ($stmt->num_rows == 0) {
-      return NULL;
-    } else {
-      $result = array();
+    $result = array();
 
-      while ($row = $stmt->fetch_assoc()) {
-        array_push($result, $row);
-      }
-      $stmt->free();
-      return $result;
+    while ($row = $stmt->fetch_assoc()) {
+      array_push($result, $row);
     }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun besteller trovato");
+    }
+
+    $stmt->free();
+    return $res;
+
+
+    return $result;
   }
 
   public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
@@ -721,7 +723,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_new_books(): array {
+  public function get_new_books(): response_manager {
     $query = "SELECT * 
               FROM libro 
               ORDER BY libro.Data_Pubblicazione DESC 
@@ -729,37 +731,49 @@ class Service extends Constant {
 
     $stmt = $this->connection->query($query);
 
-    if ($stmt->num_rows == 0) {
-      return NULL;
-    } else {
-      $result = array();
+    $result = array();
 
-      while ($row = $stmt->fetch_assoc()) {
-        array_push($result, $row);
-      }
-      $stmt->free();
-      return $result;
+    while ($row = $stmt->fetch_assoc()) {
+      array_push($result, $row);
     }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun nuovo libro trovato");
+    }
+
+    $stmt->free();
+    return $res;
+
+
+    return $result;
   }
 
-  public function get_books_under_5(): array {
+  public function get_books_under_5(): response_manager {
     $query = "SELECT * 
               FROM libro 
               WHERE prezzo < 5";
 
     $stmt = $this->connection->query($query);
 
-    if ($stmt->num_rows == 0) {
-      return NULL;
-    } else {
-      $result = array();
+    $result = array();
 
-      while ($row = $stmt->fetch_assoc()) {
-        array_push($result, $row);
-      }
-      $stmt->free();
-      return $result;
+    while ($row = $stmt->fetch_assoc()) {
+      array_push($result, $row);
     }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro con prezzo inferiore a €5 trovato");
+    }
+
+    $stmt->free();
+    return $res;
+
+
+    return $result;
   }
 
   public function get_all_books(): array {
