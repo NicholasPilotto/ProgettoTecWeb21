@@ -7,7 +7,7 @@ use mysqli;
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "root";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
@@ -783,7 +783,9 @@ class Service extends Constant {
 
   public function get_genres_from_isbn($isbn): array {
     $query = "SELECT * FROM categoria
-              INNER JOIN appartenenza ON categoria.ID_Categoria = appartenenza.Codice_Categoria WHERE appartenenza.Libro_ISBN = ?";
+              INNER JOIN appartenenza 
+              ON categoria.ID_Categoria = appartenenza.Codice_Categoria
+              WHERE appartenenza.Libro_ISBN = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -810,5 +812,3 @@ class Service extends Constant {
     return $result;
   }
 }
-
-?>
