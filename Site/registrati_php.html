@@ -39,12 +39,11 @@
         /^[0-9]{10}$/,
         "Inserire un numero telefonico corretto"
       ],
-      "inputDataNascita": [
-        "Data di nascita",
-        /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/,
-        "Inserire un formato di data corretto",
-        "Devi essere maggiorenne per utilizzare il nostro servizio!"
-      ],
+      // "inputDataNascita": [
+      //   "Data di nascita",
+      //   /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))$/,
+      //   "Inserire un formato di data corretto"
+      // ],
       "inputEmail": [
         "Indirizzo mail",
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -87,6 +86,14 @@
       }
     }
 
+    function mostraErrore(input) {
+      var padre = input.parentNode;
+      var errore = document.createElement("strong");
+      errore.className = "errorSuggestion";
+      errore.appendChild(document.createTextNode(dettagli_form[input.id][2]));
+      padre.appendChild(errore);
+    }
+
     function validazioneCampo(input) {
       var padre = input.parentNode;
 
@@ -94,53 +101,21 @@
         padre.removeChild(padre.children[1]);
       }
 
-      if (input.id == "inputDataNascita") {
-        if (input.value.search(dettagli_form[input.id][1]) != 0) {
-          mostraErrore(input);
-          input.focus();
-          input.select();
-          return false;
-        }
-        var today = new Date();
-        var birthDate = new Date(input.value);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-          age--;
-        }
-        if (age < 18) {
-          console.log(input.value);
-          mostraErrore(input, 1);
-          input.focus();
-          input.select();
-          return false;
-        }
-      }
-
-
-      if ((input.id != "inputConfermaPassword") && (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0])) {
+      if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
+        mostraErrore(input);
         input.focus();
         input.select();
-        mostraErrore(input);
         return false;
-      } else {
-        if (input.id == "inputConfermaPassword" && input.value != document.getElementById("inputPassword").value) {
-          mostraErrore(input);
-          input.focus();
-          input.select();
-          return false;
-        }
       }
 
-      return true;
-    }
+      if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
+        mostraErrore(input);
+        input.focus();
+        input.select();
+        return false;
 
-    function mostraErrore(input, increment = 0) {
-      var padre = input.parentNode;
-      var errore = document.createElement("strong");
-      errore.className = "errorSuggestion";
-      errore.appendChild(document.createTextNode(dettagli_form[input.id][2 + increment]));
-      padre.appendChild(errore);
+      }
+      return true;
     }
 
     function validazioneForm() {
@@ -152,7 +127,6 @@
         return true;
       }
     }
-
   </script>
 
   <!-- Segnaposto -->
@@ -170,6 +144,7 @@
 
   <nav id="menu">
     <ul>
+      <li><a href="ricerca.php">Ricerca</a></li>
       <li><a href="generi.php">Generi</a></li>
       <li><a href="bestseller.php">Bestseller</a></li>
       <li><a href="">Offerte</a></li>
@@ -182,26 +157,26 @@
         <h2>Registrati</h2>
 
         <label for="inputNome">Nome</label>
-        <span><input class="styleInput" id="inputNome" name="inputNome" type="text"></span>
+        <span><input class="styleInput" id="inputNome" name="nome" type="text"></span>
 
         <label for="inputCognome">Cognome</label>
-        <span><input class="styleInput" id="inputCognome" name="inputCognome" type="text"></span>
+        <span><input class="styleInput" id="inputCognome" name="cognome" type="text"></span>
 
         <label for="inputTelefono">Telefono</label>
-        <span><input class="styleInput" id="inputTelefono" name="inputTelefono" type="tel"></span>
+        <span><input class="styleInput" id="inputTelefono" name="telefono" type="tel"></span>
 
         <label for="inputDataNascita">Data di Nascita</label>
-        <span><input class="styleInput" id="inputDataNascita" name="inputDataNascita" type="date" min="1950-01-01"
+        <span><input class="styleInput" id="inputDataNascita" name="nascita" type="date" min="1950-01-01"
             max="2022-12-31"></span>
 
         <label for="inputEmail">Email</label>
-        <span><input class="styleInput" id="inputEmail" name="inputEmail" type="email"></span>
+        <span><input class="styleInput" id="inputEmail" name="email" type="email"></span>
 
         <label for="inputPassword">Password</label>
-        <span><input class="styleInput" id="inputPassword" name="inputPassword" type="password"></span>
+        <span><input class="styleInput" id="inputPassword" name="password" type="password"></span>
 
         <label for="inputConfermaPassword">Conferma Password</label>
-        <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="inputConfermaPassword"
+        <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword"
             type="password"></span>
 
         <input type="submit" value="Accedi">
