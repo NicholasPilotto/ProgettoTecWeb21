@@ -16,7 +16,7 @@ if ($_GET["f"] == 'a') {
   // $aux = $connessione->insert_book(9788817108331, "Io sono il calcio", 3030, 300, 12.5, 10, "2018-10-03", "");
 
   // $aux = $connessione->get_addresses(1000000000);
-  $aux = $connessione->get_bestsellers();
+  $aux = $connessione->get_all_books();
   print_r(json_encode($aux->get_result()));
   echo var_export($aux->is_empty());
   echo $aux->get_error_message();

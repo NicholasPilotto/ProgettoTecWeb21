@@ -777,23 +777,26 @@ class Service extends Constant {
     return $result;
   }
 
-  public function get_all_books(): array {
+  public function get_all_books(): response_manager {
     $query = "SELECT * 
               FROM libro";
 
     $stmt = $this->connection->query($query);
 
-    if ($stmt->num_rows == 0) {
-      return NULL;
-    } else {
-      $result = array();
+    $result = array();
 
-      while ($row = $stmt->fetch_assoc()) {
-        array_push($result, $row);
-      }
-      $stmt->free();
-      return $result;
+    while ($row = $stmt->fetch_assoc()) {
+      array_push($result, $row);
     }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro con prezzo inferiore a €5 trovato");
+    }
+
+    $stmt->free();
+    return $res;
   }
 
   public function get_genres_from_isbn($isbn): array {

@@ -740,11 +740,9 @@ class Service extends Constant {
     return $result;
   }
 
-  public function get_all_books(): array {
+  public function get_all_books(): response_manager {
     $query = "SELECT * 
               FROM libro";
-
-    $stmt = $this->connection->query($query);
 
     $stmt = $this->connection->query($query);
 
@@ -757,7 +755,7 @@ class Service extends Constant {
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessun libro trovato");
+      $res->set_error_message("Nessun libro con prezzo inferiore a €5 trovato");
     }
 
     $stmt->free();
