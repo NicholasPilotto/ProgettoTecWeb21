@@ -1,104 +1,103 @@
 <?php
-    use DB\Service;
-    require_once('backend/db.php');
 
-    require_once "graphics.php";
-    
-    $paginaHTML = graphics::getPage("libro_php.html");
+use DB\Service;
 
-    // Accesso al database
+require_once('backend/db.php');
 
-    $trovatoErrore = false;
+require_once "graphics.php";
 
-    if(isset($_GET['isbn']))
-    {
-        $isbn = $_GET['isbn'];
+$paginaHTML = graphics::getPage("libro_php.html");
 
-        $connessione = new Service();
-        $a = $connessione->openConnection();
+// Accesso al database
 
-        $queryIsbn = $connessione->get_book_by_isbn($isbn);
+$trovatoErrore = false;
 
-        if(count($queryIsbn) > 0)
-        {
+if (isset($_GET['isbn'])) {
+    $isbn = $_GET['isbn'];
+
+    $connessione = new Service();
+    $a = $connessione->openConnection();
+
+    $queryIsbn = $connessione->get_book_by_isbn($isbn);
+
+    if ($queryIsbn->ok()) {
+
+        if ($queryIsbn->get_element_count() > 0) {
+            $tmp = $queryIsbn->get_result();
             // Ce un libro con quell'isbn, posso andare avanti
 
             // ---- IMG LIBRO ----
-            $imgLibro = "<img id='imgLibro' src=" . $queryIsbn[0]['Percorso'] . ">";
+            $imgLibro = "<img id='imgLibro' src=" . $tmp[0]['Percorso'] . ">";
 
             // ---- INFO GENERALI ----
 
-            $infoGenerali = "<p id='titolo'>" . $queryIsbn[0]['Titolo'] ."</p>";
+            $infoGenerali = "<p id='titolo'>" . $tmp[0]['Titolo'] . "</p>";
 
             ///
             $infoGenerali .= "<p>";
-            foreach($queryIsbn as $riga)
-            {
+            foreach ($tmp as $riga) {
                 $infoGenerali .= $riga['autore_nome'] . " " . $riga['autore_cognome'] . ", ";
             }
-            $infoGenerali = substr($infoGenerali, 0, strlen($infoGenerali)-2);
+            $infoGenerali = substr($infoGenerali, 0, strlen($infoGenerali) - 2);
             $infoGenerali .= "</p>";
             ///
 
             // stelle
             $queryStelle = $connessione->get_avg_review($isbn);
 
-            if(count($queryStelle) > 0)
-            {
-                $mediaStelle = $queryStelle[0]['media'];
-                $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
+            if ($queryStelle->ok()) {
 
-                //$infoGenerali .= "<li>Valutazione di " . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+                if ($queryStelle->get_element_count() > 0) {
+                    $aux = $queryStelle->get_result();
+                    $mediaStelle = $aux[0]['media'];
+                    $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
 
-                $infoGenerali .= "<p>";// . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+                    //$infoGenerali .= "<li>Valutazione di " . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
 
-                for($i = 0; $i < 5; $i++)
-                {
-                    if($i < $roundStelle)
-                    {
-                        $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
+                    $infoGenerali .= "<p>"; // . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+
+                    for ($i = 0; $i < 5; $i++) {
+                        if ($i < $roundStelle) {
+                            $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
+                        } else {
+                            $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
+                        }
                     }
-                    else
-                    {
-                        $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
-                    }
+
+                    $infoGenerali .= " " . round($mediaStelle, 1) . " su 5</p>";
+                } else {
+                    $infoGenerali .= "<p>Non ci sono recensioni</p>";
                 }
+            }
 
-                $infoGenerali .= " " . round($mediaStelle, 1) . " su 5</p>";
-            }
-            else
-            {
-                $infoGenerali .= "<p>Non ci sono recensioni</p>";
-            }
 
             //
-            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $queryIsbn[0]['Prezzo'] ."</p>";
+            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $tmp[0]['Prezzo'] . "</p>";
 
             // ---- TRAMA ----
             $trama = "<h3>Descrizione</h3>";
-            $trama .= "<p>" . $queryIsbn[0]['Trama'] ."</p>";
+            $trama .= "<p>" . $tmp[0]['Trama'] . "</p>";
 
             // ---- DETTAGLI LIBRO ----
             $dettagliLibro = "<ul>";
             $dettagliLibro .= "<h3>Informazioni Libro</h3>";
-            $dettagliLibro .= "<li><span class='miniGrassetto'>Titolo:</span> " . $queryIsbn[0]['Titolo'] . "</li>";
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Titolo:</span> " . $tmp[0]['Titolo'] . "</li>";
 
             // autore
             $dettagliLibro .= "<li><span class='miniGrassetto'>Autore:</span> ";
-            foreach($queryIsbn as $riga)
-            {
+            foreach ($tmp as $riga) {
                 $dettagliLibro .= $riga['autore_nome'] . " " . $riga['autore_cognome'] . ", ";
             }
-            $dettagliLibro = substr($dettagliLibro, 0, strlen($dettagliLibro)-2);
+            $dettagliLibro = substr($dettagliLibro, 0, strlen($dettagliLibro) - 2);
             $dettagliLibro .= "</li>";
             //
 
-            $dettagliLibro .= "<li><span class='miniGrassetto'>Editore:</span> " . $queryIsbn[0]['editore_nome'] . "</li>";
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Editore:</span> " . $tmp[0]['editore_nome'] . "</li>";
 
             // data
             //$dettagliLibro .= "<li><span class='miniGrassetto'>Data pubblicazione:</span> " . $queryIsbn[0]['Data_Pubblicazione'] . "</li>";
 
-            $arrayData = explode("-", $queryIsbn[0]['Data_Pubblicazione']);
+            $arrayData = explode("-", $tmp[0]['Data_Pubblicazione']);
             $anno = $arrayData[0];
             $mese = $arrayData[1];
             $giorno = $arrayData[2];
@@ -121,36 +120,37 @@
             $dettagliLibro .= "<li><span class='miniGrassetto'>Data pubblicazione:</span> " . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</li>";
             //
 
-            $dettagliLibro .= "<li><span class='miniGrassetto'>Numero pagine:</span> " . $queryIsbn[0]['Pagine'] . "</li>";
-            
+            $dettagliLibro .= "<li><span class='miniGrassetto'>Numero pagine:</span> " . $tmp[0]['Pagine'] . "</li>";
+
             // generi
             $queryGeneri = $connessione->get_genres_from_isbn($isbn);
-            $generi = "<li><span class='miniGrassetto'>Gener";
-            $generi .= (count($queryGeneri) > 1) ? "i:" : "e:";
-            $generi .= "</span> ";
 
-            $cont = 0;
-            foreach($queryGeneri as $genere)
-            {
-                $generi .= $genere['Nome'];
+            if ($queryGeneri->ok()) {
+                $generi = "<li><span class='miniGrassetto'>Gener";
+                $generi .= ($queryGeneri->get_element_count() > 1) ? "i:" : "e:";
+                $generi .= "</span> ";
 
-                if(++$cont < count($queryGeneri))
-                {
-                    $generi .= ", ";
+                $cont = 0;
+                foreach ($queryGeneri->get_result() as $genere) {
+                    $generi .= $genere['Nome'];
+
+                    if (++$cont < $queryGeneri->get_element_count()) {
+                        $generi .= ", ";
+                    }
                 }
+                $generi .= "</li>";
             }
-            $generi .= "</li>";
 
             $dettagliLibro .= $generi;
 
             // isbn
-            $dettagliLibro .= "<li><span class='miniGrassetto'>ISBN:</span> " . $queryIsbn[0]['ISBN'] . "</li>";
+            $dettagliLibro .= "<li><span class='miniGrassetto'>ISBN:</span> " . $tmp[0]['ISBN'] . "</li>";
 
             $dettagliLibro .= "</ul>";
 
             // ---- QUANTITA ----
-            $inputQuantita = "<input type='number' id='quantita' name='quantita' value='1' min='1' step='1' max='" . $queryIsbn[0]['Quantita'] . "'/>";
-            
+            $inputQuantita = "<input type='number' id='quantita' name='quantita' value='1' min='1' step='1' max='" . $tmp[0]['Quantita'] . "'/>";
+
 
 
             // Replace
@@ -160,29 +160,24 @@
             $paginaHTML = str_replace("</dettagliLibro>", $dettagliLibro, $paginaHTML);
             $paginaHTML = str_replace("</generi>", $generi, $paginaHTML);
             $paginaHTML = str_replace("</inputQuantita>", $inputQuantita, $paginaHTML);
-        }
-        else
-        {
+        } else {
             $trovatoErrore = true;
         }
-
-        $connessione->closeConnection();
-    }
-    else
-    {
-        $trovatoErrore = true;
     }
 
-    if($trovatoErrore)
-    {
-        // Errore, pagina senza genereId o con idGenere sbagliato
-        $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
+    $connessione->closeConnection();
+} else {
+    $trovatoErrore = true;
+}
 
-        $paginaHTML = str_replace("</listaNuovi>", $errore, $paginaHTML);
-        $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
-    }
+if ($trovatoErrore) {
+    // Errore, pagina senza genereId o con idGenere sbagliato
+    $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
 
-    // -------------------
+    $paginaHTML = str_replace("</listaNuovi>", $errore, $paginaHTML);
+    $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
+}
 
-    echo $paginaHTML;
-?>
+// -------------------
+
+echo $paginaHTML;
