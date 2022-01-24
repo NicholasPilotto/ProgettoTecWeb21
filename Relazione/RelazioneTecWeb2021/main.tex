@@ -1,0 +1,77 @@
+\documentclass[times, 10pt]{thesisMDH}
+\usepackage[ddmmyyyy]{datetime}
+\usepackage[pdfborder={0 0 0},colorlinks=true,urlcolor=blue,citecolor=red,bookmarks=false]{hyperref}
+\addbibresource{references.bib}
+
+\fancyHeader{Short title of the thesis}{Authors}
+
+\university{Università degli Studi di Padova}
+
+\department{Scienze Informatiche\\ Padova, Italia}
+
+\subject{Progetto valido per il Corso Tecnologie Web}
+\thesisTitle{SecondRead}
+\authorOne{Nicholas Pilotto}{nicholas.pilotto@studenti.unipd.it - 1230237}
+\authorTwo{Michele Bonavigo}{studentEmail@student.mdh.se}
+\authorThree{Mattia Casarotto}{studentEmail@student.mdh.se}
+\authorFour{Anita Meta}{anita.meta@studenti.unipd.it - 1192890}
+
+\examiner{prof.ssa Gaggi Ombretta}{Università degli Studi di Padova, Italia}
+% \supervisors{Supervisor\_Name}{Mälardalen University, Västerås, Sweden}
+% \companySupervisors{Supervisor\_Name}{Company name, location}
+
+\theDate{\today} 
+
+\begin{document}
+\titlePage
+% Begin actual text
+\frontmatter
+\input{sections/000-guideline} % Remove 000-guideline section
+\input{sections/abstract}
+\newpage
+%========= Tables ==========
+{\hypersetup{linkcolor=black}\tableofcontents}
+\clearpage
+{\hypersetup{linkcolor=black}\listoffigures}
+\clearpage
+{\hypersetup{linkcolor=black}\listoftables}
+ 
+\mainmatter
+% ===== Content: Modify the structure according to your needs =======
+\input{sections/introduction}
+\newpage
+\input{sections/background} %SOTA
+\newpage
+\input{sections/relatedWork}
+\newpage
+\input{sections/method}
+\newpage
+\input{sections/etics}
+\newpage
+\input{sections/contribs}
+\newpage
+\input{sections/results}
+\newpage
+\input{sections/discussion}
+\newpage
+\input{sections/conclusions}
+\newpage
+%\input{sections/Acknowledgments}
+% ============================= References ============================
+% \newpage
+\printbibliography
+\addcontentsline{toc}{section}{References}
+
+% ============================ Appendices =============================
+%\newpage
+%\begin{appendices}
+
+	%\input{appendices/appendices1}
+	%\clearpage
+	
+	%\input{appendices/appendices2}
+	%\clearpage
+	
+%\end{appendices}
+
+\end{document}
