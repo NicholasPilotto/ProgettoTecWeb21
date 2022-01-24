@@ -31,7 +31,7 @@ class Service extends Constant {
     $this->connection->close();
   }
 
-  public function get_book_by_isbn($isbn): array {
+  public function get_book_by_isbn($isbn): response_manager {
     $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
               FROM libro 
               INNER JOIN pubblicazione 
@@ -42,22 +42,15 @@ class Service extends Constant {
               ON libro.editore = editore.id 
               WHERE libro.isbn = ?";
     $stmt = $this->connection->prepare($query);
+
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('s', $isbn) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
-
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
 
     $result = array();
 
@@ -65,8 +58,14 @@ class Service extends Constant {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro trovato con questo ISBN");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
   public function get_book_by_title($title): array {
@@ -487,7 +486,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_avg_review($isbn): array {
+  public function get_avg_review($isbn): response_manager {
     $query = "SELECT libro_isbn, AVG(valutazione) AS media
               FROM recensione 
               WHERE libro_isbn = ?
@@ -495,28 +494,25 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('s', $isbn) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
-    $stmt->close();
+    $res = new response_manager($result, $this->connection, "");
 
-    return $result;
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione trovata per questo libro");
+    }
+
+    $stmt->close();
+    return $res;
   }
 
   public function get_reviews_by_isbn($isbn): array {
@@ -792,14 +788,14 @@ class Service extends Constant {
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessun libro con prezzo inferiore a €5 trovato");
+      $res->set_error_message("Nessun libro trovato");
     }
 
     $stmt->free();
     return $res;
   }
 
-  public function get_genres_from_isbn($isbn): array {
+  public function get_genres_from_isbn($isbn): response_manager {
     $query = "SELECT * FROM categoria
               INNER JOIN appartenenza 
               ON categoria.ID_Categoria = appartenenza.Codice_Categoria
@@ -807,26 +803,24 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $isbn) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna genere per questo ISBN");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 }
