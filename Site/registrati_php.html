@@ -103,15 +103,11 @@
 
       if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
         mostraErrore(input);
-        input.focus();
-        input.select();
         return false;
       }
 
       if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
         mostraErrore(input);
-        input.focus();
-        input.select();
         return false;
 
       }
