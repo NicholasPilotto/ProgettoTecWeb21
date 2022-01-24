@@ -30,9 +30,8 @@ if (isset($_GET['genere'])) {
             $nomeGenere = $queryNomeGenere->get_result()[0]['Nome'];
             $libri = $connessione->get_books_by_genre($idGenere);
 
-            if ($libri->ok()) {
-
-
+            if ($libri->ok())
+            {
                 $listaLibri = "<ul class='bookCards'>";
 
                 foreach ($libri->get_result() as $libro) {
@@ -43,10 +42,10 @@ if (isset($_GET['genere'])) {
 
                 $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
                 $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
-            } else {
-                $listaLibri .= "<ul>" . $libri->get_element_count() . "</ul>";
-                $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
-                $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
+            } 
+            else 
+            {
+                // errore
             }
         } else {
             $trovatoErrore = true;
