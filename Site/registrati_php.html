@@ -86,14 +86,6 @@
       }
     }
 
-    function mostraErrore(input) {
-      var padre = input.parentNode;
-      var errore = document.createElement("strong");
-      errore.className = "errorSuggestion";
-      errore.appendChild(document.createTextNode(dettagli_form[input.id][2]));
-      padre.appendChild(errore);
-    }
-
     function validazioneCampo(input) {
       var padre = input.parentNode;
 
@@ -101,21 +93,31 @@
         padre.removeChild(padre.children[1]);
       }
 
-      if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
+      if ((input.id != "inputConfermaPassword") && (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0])) {
         mostraErrore(input);
         input.focus();
         input.select();
         return false;
+      } else {
+        if (input.id == "inputConfermaPassword" && input.value != document.getElementById("inputPassword").value) {
+          mostraErrore(input);
+          console.log(input.value);
+          console.log(document.getElementById("inputPassword").value);
+          input.focus();
+          input.select();
+          return false;
+        }
       }
 
-      if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
-        mostraErrore(input);
-        input.focus();
-        input.select();
-        return false;
-
-      }
       return true;
+    }
+
+    function mostraErrore(input) {
+      var padre = input.parentNode;
+      var errore = document.createElement("strong");
+      errore.className = "errorSuggestion";
+      errore.appendChild(document.createTextNode(dettagli_form[input.id][2]));
+      padre.appendChild(errore);
     }
 
     function validazioneForm() {
@@ -127,6 +129,7 @@
         return true;
       }
     }
+
   </script>
 
   <!-- Segnaposto -->
@@ -156,26 +159,26 @@
         <h2>Registrati</h2>
 
         <label for="inputNome">Nome</label>
-        <span><input class="styleInput" id="inputNome" name="nome" type="text"></span>
+        <span><input class="styleInput" id="inputNome" name="inputNome" type="text"></span>
 
         <label for="inputCognome">Cognome</label>
-        <span><input class="styleInput" id="inputCognome" name="cognome" type="text"></span>
+        <span><input class="styleInput" id="inputCognome" name="inputCognome" type="text"></span>
 
         <label for="inputTelefono">Telefono</label>
-        <span><input class="styleInput" id="inputTelefono" name="telefono" type="tel"></span>
+        <span><input class="styleInput" id="inputTelefono" name="inputTelefono" type="tel"></span>
 
         <label for="inputDataNascita">Data di Nascita</label>
-        <span><input class="styleInput" id="inputDataNascita" name="nascita" type="date" min="1950-01-01"
+        <span><input class="styleInput" id="inputDataNascita" name="inputDataNascita" type="date" min="1950-01-01"
             max="2022-12-31"></span>
 
         <label for="inputEmail">Email</label>
-        <span><input class="styleInput" id="inputEmail" name="email" type="email"></span>
+        <span><input class="styleInput" id="inputEmail" name="inputEmail" type="email"></span>
 
         <label for="inputPassword">Password</label>
-        <span><input class="styleInput" id="inputPassword" name="password" type="password"></span>
+        <span><input class="styleInput" id="inputPassword" name="inputPassword" type="password"></span>
 
         <label for="inputConfermaPassword">Conferma Password</label>
-        <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword"
+        <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="inputConfermaPassword"
             type="password"></span>
 
         <input type="submit" value="Accedi">
