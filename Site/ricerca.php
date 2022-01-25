@@ -1,4 +1,15 @@
 <?php
+    session_start();
+
+    class CoppiaRicerca
+    {
+        public $isbn;
+        public $value;
+    }
+
+    use DB\Service;
+    require_once('backend/db.php');
+
     require_once "graphics.php";
     
     $paginaHTML = graphics::getPage("ricerca_php.html");
@@ -10,7 +21,7 @@
         "genere11" => "Fumetti e Manga",
         "genere12" => "Classici e Romanzi",
         "genere13" => "Avventura e Azione",
-        "genere14" => "Scuole e Universit&aacute",
+        "genere14" => "Scuole e Universit&agrave;",
         "genere15" => "Arte e Tempo Libero",
 
         "genere16" => "Filosofia e Psicologia",
@@ -45,39 +56,126 @@
 
     $paginaHTML = str_replace("</listaFiltriGenere>", $listaFiltriGenere, $paginaHTML);
 
-    /*
-        <ul>
-            <li>
-                <input type="checkbox" id="genere1" name="genere1" </valoreGenere1> />
-                <label for="genere1">Genere1</label>
-            </li>
-            <li>
-                <input type="checkbox" id="genere2" name="genere2" valoreGenere2/>
-                <label for="genere2">Genere2</label>
-            </li>
-            <li>
-                <input type="checkbox" id="genere3" name="genere3" valoreGenere3/>
-                <label for="genere3">Genere3</label>
-            </li>
-        </ul>
-    */
-
-    /*
-    $genere1 = $_GET['genere1'];
-    $genere2 = $_GET['genere2'];
-    $genere3 = $_GET['genere3'];*/
-    /*
-    $genere1 = $genere2 = $genere3 = "";
-    if(isset($_GET['genere1'])) $genere1 = "checked";
-    if(isset($_GET['genere2'])) $genere2 = "checked";
-    if(isset($_GET['genere3'])) $genere3 = "checked";
-
-    $paginaHTML = str_replace("valoreGenere1", $genere1, $paginaHTML);
-    $paginaHTML = str_replace("valoreGenere2", $genere2, $paginaHTML);
-    $paginaHTML = str_replace("valoreGenere3", $genere3, $paginaHTML);*/
-
     // Accesso al database
+    $connessione = new Service();
+    $a = $connessione->openConnection();
 
+    $queryLibri = $connessione->get_all_books();
+
+    $search = isset($_GET['search']) ? $_GET['search'] : "";
+
+    $arrayDistanze = array();
+    $arrayAutori = array();
+
+    // controllo se è un isbn
+    $isISBN = (is_numeric($search) && strlen($search) == 13);
+
+    if($isISBN)
+    {
+        // lo cerco nel db
+        $queryIsbn = $connessione->get_book_by_isbn($search);        
+
+        if(count($queryIsbn) > 0)
+        {
+            $coppiaISBN = new CoppiaRicerca();
+            $coppiaISBN->isbn = $search;
+            $coppiaISBN->value = 0; // distanza minima
+
+            array_push($arrayDistanze, $coppiaISBN);
+        }
+        else
+        {
+            // errore, non c'è un libro con quell' isbn
+        }
+    }
+    else
+    {
+        $coppieAggiunte = array();
+        foreach($queryLibri as $libro)
+        {
+            $titolo = strip_tags($libro['Titolo']);
+            $autore = strip_tags($libro['autore_nome']) ." " . strip_tags($libro['autore_cognome']);
+
+            if(!in_array($libro['ISBN'], $coppieAggiunte))
+            {
+                array_push($coppieAggiunte, $libro['ISBN']);
+
+                $coppiaTitolo = new CoppiaRicerca();
+                $coppiaTitolo->isbn = $libro['ISBN'];
+                $coppiaTitolo->value = levenshtein(strtoupper($search), strtoupper($titolo), 0, 4, 4);
+
+                array_push($arrayDistanze, $coppiaTitolo);
+
+                $arrayAutori[$libro['ISBN']] = "";
+            }
+            $coppiaAutore = new CoppiaRicerca();
+            $coppiaAutore->isbn = $libro['ISBN'];
+            $coppiaAutore->value = levenshtein(strtoupper($search), strtoupper($autore), 0, 4, 4);
+
+            $arrayAutori[$libro['ISBN']] .= $autore . ", ";
+
+            array_push($arrayDistanze, $coppiaAutore);
+        }   
+    }
+
+    usort($arrayDistanze, function($a, $b) {return $a->value - $b->value; }); // ordino per valore
+
+    //asort($arrayDistanze); // ordino per valore
+
+    $cont = 0;
+    $limit = 5;
+    $daTogliere = array("_ISBN", "_titolo", "_autore");
+    $libriAggiunti = array();
+
+    $libriTrovati = "<ul class='advertsCards'>";
+    
+    foreach($arrayDistanze as $coppia)
+    {
+        if($cont == $limit) break; // ho preso tutti i libri che voglio, esco dal ciclo
+
+        $key = $coppia->isbn;
+
+        if(!in_array($key, $libriAggiunti))
+        {
+            array_push($libriAggiunti, $key);
+
+            foreach($queryLibri as $libro)
+            {
+                if($libro['ISBN'] == $key)
+                {
+                    $libriTrovati .= "<li class='imgLi";
+                    if($cont == 0)
+                    {
+                        $libriTrovati .= " primaInserzione";
+                    }
+                    $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['Percorso'] . "' alt=''></a></li>";
+
+                    $libriTrovati .= "<li class='textLi";
+                    if($cont == 0)
+                    {
+                        $libriTrovati .= " primaInserzione";
+                    }
+                    $libriTrovati .= "'>";
+
+                    $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
+                    $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, strlen($arrayAutori[$key]) - 2) . "</p>";
+                    $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
+
+                    $libriTrovati .= "</li>";
+
+                    $cont++;
+
+                    break; // ho trovato il libro, esco dal ciclo
+                }
+            }
+        }
+    }
+
+    $libriTrovati .= "</ul>";
+
+    $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
+
+    $connessione->closeConnection();
     // -------------------
 
     echo $paginaHTML;

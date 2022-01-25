@@ -59,11 +59,12 @@ SEZIONE HEADER
 ==================
 */
 header {
+    /*
     display: flex;
     flex-wrap: wrap;
     align-items: center;
 
-    min-height: 5em;
+    min-height: 5em;*/
 
     /*border-bottom: 1px solid #000;*/
 
@@ -71,6 +72,9 @@ header {
     background-color: white;
 
     padding-left: 1em;
+    display: flex;
+    align-items: center;
+
 }
 
 header h1 {
@@ -85,56 +89,12 @@ header h1 {
     min-width: 280px;
     */
     flex-basis: 280px;
-}
-
-header form {
-    /*width: 45%;*/
-    /*flex-basis: 500px;*/
-    flex-shrink: 1;
     flex-grow: 1;
 }
 
-#searchBar {
-    width: 82%;
-    height: 2em;
-    border-radius: 3px;
-    border-width: 1px;
-    font-size: large;
-    text-indent: 0.3em;
-}
 
-#searchButton {
-    width: 15%;
-
-    height: 2em;
-    /*
-    border-radius: 3px;
-    border-width: 1px;
-    font-size: large;
-    */
-
-    margin-left: -0.3em;
-    min-width: fit-content;
-
-    /*
-    color: white;
-    background-color: #146e53;
-
-    cursor: pointer;
-    */
-}
-
-#accedi {
-    margin-left: 0.5%;
-}
-
-#registrati {
-    margin-left: 2%;
-}
-
-#carrello {
-    margin-left: 2%;
-    margin-right: 2%;
+.linkUtente {
+    margin-right: 1em;
 }
 
 /*
@@ -307,20 +267,20 @@ SEZIONE CONTENT
 }
 
 #filtri {
-    flex-basis: 25%;
+    flex-basis: 35%;
     border-right: 1px solid #aaaaaa;
     padding-bottom: 1em;
 }
 
 #contentDx {
-    flex-basis: 75%;
+    flex-basis: 65%;
 }
 
-.genreForm fieldset {
+#filtriForm fieldset {
     border: none;
 }
 
-.genreForm fieldset legend {
+#filtriForm fieldset legend {
     padding-left: 0.5em;
     /*padding-top: 1em;*/
     margin-left: 0.3em;
@@ -331,7 +291,7 @@ SEZIONE CONTENT
     font-weight: bold;
 }
 
-.genreForm input[type=number] {
+#filtriForm input[type=number] {
     width: 4em;
 }
 
@@ -369,6 +329,31 @@ SEZIONE CONTENT
     border-width: 1px;
 
     cursor: pointer;*/
+}
+
+#searchBar {
+    width: 70%;
+    height: 2em;
+    border-radius: 3px;
+    border-width: 1px;
+    font-size: large;
+    text-indent: 0.3em;
+
+    margin-left: 5%;
+    margin-top: 0.5em;
+}
+
+#searchButton {
+    width: 20%;
+    margin-right: 5%;
+    margin-top: 0.5em;
+
+    height: 2em;
+
+    /*margin-left: -0.3em;*/
+    /*min-width: fit-content;*/
+
+    float: right;
 }
 
 .advertsCards {

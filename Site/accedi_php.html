@@ -69,6 +69,8 @@
       }
 
       if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
+        input.focus();
+        input.select();
         mostraErrore(input);
         return false;
       }
@@ -129,7 +131,7 @@
 
         <a href="">Ho dimenticato la password</a>
 
-        <input type="submit" value="Accedi">
+        <input type="submit" class="button" value="Accedi">
       </fieldset>
     </form>
   </div>

@@ -103,11 +103,15 @@
 
       if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
         mostraErrore(input);
+        input.focus();
+        input.select();
         return false;
       }
 
       if (input.id = "inputConfermaPassword" && input.value != document.getElementById('inputPassword').value) {
         mostraErrore(input);
+        input.focus();
+        input.select();
         return false;
 
       }
@@ -175,7 +179,7 @@
         <span><input class="styleInput ultimoInput" id="inputConfermaPassword" name="confermaPassword"
             type="password"></span>
 
-        <input type="submit" value="Accedi">
+        <input type="submit" class="button" value="Registrati">
       </fieldset>
     </form>
   </div>

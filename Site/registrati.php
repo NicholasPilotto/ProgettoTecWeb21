@@ -1,11 +1,19 @@
 <?php
-    require_once "graphics.php";
-    
-    $paginaHTML = graphics::getPage("registrati_php.html");
+    session_start();
+    if(isset($_SESSION["Nome"]))
+    {
+        header("Location: index.php");
+    }
+    else
+    {    
+        require_once "graphics.php";
+        
+        $paginaHTML = graphics::getPage("registrati_php.html");
 
-    // Accesso al database
+        // Accesso al database
 
-    // -------------------
+        // -------------------
 
-    echo $paginaHTML;
+        echo $paginaHTML;
+    }
 ?>

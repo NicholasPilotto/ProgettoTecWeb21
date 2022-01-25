@@ -4,6 +4,30 @@
         public static function getPage($nome)
         {
             $headerHTML = file_get_contents("header.html");
+            
+            $linkUtente = "";
+
+            if(isset($_SESSION["Nome"]))
+            {
+                $linkUtente .= "<a class='linkUtente' href='account.php'>Benvenuto " . $_SESSION["Nome"] . "</a>";
+                $linkUtente .= "<a class='linkUtente' href=''>Carrello</a>";
+                $linkUtente .= "<a class='linkUtente' href='esci.php'>Esci</a>";
+            }
+            else
+            {           
+                $linkUtente .= "<a class='linkUtente' href='accedi.php'>Accedi</a>";
+                $linkUtente .= "<a class='linkUtente' href='registrati.php'>Registrati</a>";
+                $linkUtente .= "<a class='linkUtente' href=''>Carrello</a>";
+            }
+            $headerHTML = str_replace("</linkUtente>", $linkUtente, $headerHTML);
+            
+            /*
+            <a id="accedi" href="accedi.php">Accedi</a>
+            <a id="registrati" href="registrati.php">Registrati</a>
+            <a id="carrello" href="">Carrello</a>
+            */
+
+
             $linkHTML = file_get_contents("link.html");
             $paginaHTML = file_get_contents($nome);
             $footerHTML = file_get_contents("footer.html");
