@@ -17,21 +17,19 @@ $log = $connessione->login($email, $password);
 if ($log->ok()) {
   if (!$log->is_empty()) {
 
-    $utente = $log->get_result()[0];
-    $_SESSION["Codice_identificativo"] = $utente["Codice_identificativo"];
-    $_SESSION["Nome"] = $utente["nome"];
-    $_SESSION["Cognome"] = $utente["cognome"];
-    $_SESSION["Data_nascita"] = $utente["data_nascita"];
-    $_SESSION["Username"] = $utente["username"];
-    $_SESSION["Email"] = $utente["email"];
-    $_SESSION["Telefono"] = $utente["telefono"];
-
     $connessione->closeConnection(); // chiudo la connessione
+
+    $_SESSION["Codice_identificativo"] = $log->get_result()[0]['codice_identificativo'];
+            $_SESSION["Nome"] = $log->get_result()[0]['nome'];
+            $_SESSION["Cognome"] = $log->get_result()[0]['cognome'];
+            $_SESSION["Data_nascita"] = $log->get_result()[0]['data_nascita'];
+            $_SESSION["Username"] = $log->get_result()[0]['username'];
+            $_SESSION["Email"] = $log->get_result()[0]['email'];
+            $_SESSION["Telefono"] = $log->get_result()[0]['telefono'];
     header("Location: index.php");
   } else {
     // nessun utente trovato
-    $connessione->closeConnection();
-    header("Location: index.php?vuoto=si");
+    header("Location: index.php");
   }
 } else {
   $connessione->closeConnection(); // chiudo la connessione
