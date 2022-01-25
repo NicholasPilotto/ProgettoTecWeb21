@@ -17,20 +17,21 @@ $log = $connessione->login($email, $password);
 if ($log->ok()) {
   if (!$log->is_empty()) {
 
+    $utente = $log->get_result()[0];
+    $_SESSION["Codice_identificativo"] = $utente["Codice_identificativo"];
+    $_SESSION["Nome"] = $utente["nome"];
+    $_SESSION["Cognome"] = $utente["cognome"];
+    $_SESSION["Data_nascita"] = $utente["data_nascita"];
+    $_SESSION["Username"] = $utente["username"];
+    $_SESSION["Email"] = $utente["email"];
+    $_SESSION["Telefono"] = $utente["telefono"];
+
     $connessione->closeConnection(); // chiudo la connessione
-
-    $_SESSION["Codice_identificativo"] = $utente[0]["Codice_identificativo"];
-    $_SESSION["Nome"] = $utente[0]["Nome"];
-    $_SESSION["Cognome"] = $utente[0]["Cognome"];
-    $_SESSION["Data_nascita"] = $utente[0]["Data_nascita"];
-    $_SESSION["Username"] = $utente[0]["Username"];
-    $_SESSION["Email"] = $utente[0]["Email"];
-    $_SESSION["Telefono"] = $utente[0]["Telefono"];
-
     header("Location: index.php");
   } else {
     // nessun utente trovato
-    header("Location: index.php");
+    $connessione->closeConnection();
+    header("Location: index.php?vuoto=si");
   }
 } else {
   $connessione->closeConnection(); // chiudo la connessione
