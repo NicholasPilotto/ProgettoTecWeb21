@@ -388,25 +388,23 @@ class Service extends Constant {
     return $res;
   }
 
-  public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): bool {
+  public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): response_manager {
     $query = "INSERT INTO Utente (Nome,Cognome,Data_nascita,Username,Email,password,Telefono) VALUES (?,?,?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
     $psw = hash('sha256', $pass);
 
-    if ($stmt === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('sssssss', $nome, $cognome, $nascita, $username, $email, $psw, $tel) === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
-    if ($stmt->bind_param('sssssss', $nome, $cognome, $nascita, $username, $email, $psw, $tel) === false) {
-      return false;
-    }
-
-    $res = $stmt->execute();
+    $response = $stmt->execute();
 
     $stmt->close();
 
-
-    return $res;
+    if (!$response) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    return $this->login($email, $pass);
   }
 
   public function login($mail, $pass): response_manager {
