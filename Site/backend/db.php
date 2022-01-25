@@ -774,8 +774,14 @@ class Service extends Constant {
   }
 
   public function get_all_books(): response_manager {
-    $query = "SELECT * 
-              FROM libro";
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
+              FROM libro 
+              INNER JOIN pubblicazione 
+              ON pubblicazione.libro_isbn = libro.isbn 
+              INNER JOIN autore 
+              ON autore.id = pubblicazione.autore_id 
+              INNER JOIN editore 
+              ON libro.editore = editore.id";
 
     $stmt = $this->connection->query($query);
 
