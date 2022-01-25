@@ -9,7 +9,8 @@
 
             if(isset($_SESSION["Nome"]))
             {
-                $linkUtente .= "<a class='linkUtente' href='account.php'>Benvenuto " . $_SESSION["Nome"] . "</a>";
+                $linkUtente .= "<p id='benvenuto'>Benvenuto, " . $_SESSION["Nome"] . "</p>";
+                $linkUtente .= "<a class='linkUtente' href='account.php'>Account</a>";
                 $linkUtente .= "<a class='linkUtente' href=''>Carrello</a>";
                 $linkUtente .= "<a class='linkUtente' href='esci.php'>Esci</a>";
             }
