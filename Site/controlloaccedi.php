@@ -1,36 +1,39 @@
 <?php
-    session_start();
+session_start();
 
-    use DB\Service;
-    require_once('backend/db.php');
+use DB\Service;
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    
-    $connessione = new Service();
+require_once('backend/db.php');
 
-    $a = $connessione->openConnection();
+$email = $_POST["email"];
+$password = $_POST["password"];
 
-    if($connessione->login($email,$password))
-    {
-        $utente = $connessione->get_utente_by_email($email);
+$connessione = new Service();
 
-        // METTERE CHIUSURA CONNESSIONE FUORI DALL'IF
-        $connessione->closeConnection(); // chiudo la connessione
+$connessione->openConnection();
 
-        $_SESSION["Codice_identificativo"] = $utente[0]["Codice_identificativo"];
-        $_SESSION["Nome"] = $utente[0]["Nome"];
-        $_SESSION["Cognome"] = $utente[0]["Cognome"];
-        $_SESSION["Data_nascita"] = $utente[0]["Data_nascita"];
-        $_SESSION["Username"] = $utente[0]["Username"];
-        $_SESSION["Email"] = $utente[0]["Email"];
-        $_SESSION["Telefono"] = $utente[0]["Telefono"];
+$log = $connessione->login($email, $password);
 
-        header("Location: index.php");
-    }
-    else
-    {
-        $connessione->closeConnection(); // chiudo la connessione
-        header("Location: index.php?sbagliato=si");
-    }
-?>
+if ($log->ok()) {
+  if (!$log->is_empty()) {
+
+    $connessione->closeConnection(); // chiudo la connessione
+
+    $_SESSION["Codice_identificativo"] = $utente[0]["Codice_identificativo"];
+    $_SESSION["Nome"] = $utente[0]["Nome"];
+    $_SESSION["Cognome"] = $utente[0]["Cognome"];
+    $_SESSION["Data_nascita"] = $utente[0]["Data_nascita"];
+    $_SESSION["Username"] = $utente[0]["Username"];
+    $_SESSION["Email"] = $utente[0]["Email"];
+    $_SESSION["Telefono"] = $utente[0]["Telefono"];
+
+    header("Location: index.php");
+  } else {
+    // nessun utente trovato
+    header("Location: index.php");
+  }
+} else {
+  $connessione->closeConnection(); // chiudo la connessione
+  // messaggio errore: $log->get_error_message()
+  header("Location: index.php?sbagliato=si");
+}

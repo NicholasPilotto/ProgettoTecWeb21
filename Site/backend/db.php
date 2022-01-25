@@ -409,32 +409,34 @@ class Service extends Constant {
     return $res;
   }
 
-  public function login($mail, $pass): bool {
+  public function login($mail, $pass): response_manager {
     $query = "SELECT codice_identificativo, nome, cognome, data_nascita, username, email, telefono
               FROM utente
               WHERE email = ? AND password = ?";
     $stmt = $this->connection->prepare($query);
-    $result = false;
+    $result = array();
 
     $psw = hash('sha256', $pass);
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('ss', $mail, $psw) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('ss', $mail, $psw) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
-    $stmt->store_result();
+    $tmp = $stmt->get_result();
 
-    if ($stmt->num_rows != 0) {
-      $result = true;
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
     }
-    $stmt->close();
 
-    return $result;
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione effettuata da questo utente");
+    }
+
+    $stmt->close();
+    return $res;
   }
 
   public function get_addresses($utente_id): array {
