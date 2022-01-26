@@ -7,10 +7,10 @@ use mysqli;
 require_once('response_manager.php');
 
 class Constant {
-  protected const HOST_DB = "127.0.0.1";
+  protected const HOST_DB = "localhost";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
-  protected const PASSWORD = "";
+  protected const USERNAME = "turkey";
+  protected const PASSWORD = "turrrkey123";
 }
 
 class Service extends Constant {
@@ -32,7 +32,7 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): response_manager {
-    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
@@ -829,4 +829,60 @@ class Service extends Constant {
     $stmt->close();
     return $res;
   }
+
+  public function get_books_with_offers() : response_manager
+  {
+    $query = "SELECT * FROM libro
+              INNER JOIN offerte
+              ON offerte.libro_ISBN = libro.ISBN
+              WHERE offerte.data_fine > DATE(NOW())";
+    $stmt = $this->connection->query($query);
+
+    $result = array();
+
+    while ($row = $stmt->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro trovato");
+    }
+
+    $stmt->free();
+    return $res;
+  }
+
+  public function get_active_offer_by_isbn($isbn): response_manager {
+    $query = "SELECT sconto
+              FROM offerte
+              WHERE libro_isbn = ? AND data_fine > DATE(NOW())";
+    $stmt = $this->connection->prepare($query);
+
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna offerta trovata con questo ISBN");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
 }
