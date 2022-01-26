@@ -277,9 +277,10 @@
                         $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
                         $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, strlen($arrayAutori[$key]) - 2) . "</p>";
                         
-                        // CASI MODIFICA QUAAAAA glu glu
-                        $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
-                        // CASI MODIFICA QUAAAAA glu glu
+                        if(isset($libro['sconto']))
+                            $libriTrovati .= "<p>&euro;" . number_format((float)$libro['Prezzo'] * (100-$libro['sconto'])/100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
+                        else
+                            $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
 
                         $libriTrovati .= "</li>";
 

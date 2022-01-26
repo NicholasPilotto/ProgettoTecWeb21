@@ -41,6 +41,18 @@ if (isset($_GET['isbn'])) {
             }
             $infoGenerali = substr($infoGenerali, 0, strlen($infoGenerali) - 2);
             $infoGenerali .= "</p>";
+
+            $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
+
+            if(isset($offertaQuery))
+            {
+                $prezzo = number_format((float)$tmp[0]['Prezzo'] * (100-$offertaQuery->get_result()[0]['sconto'])/100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
+            }
+            else
+            {
+                $prezzo = $tmp[0]['Prezzo'];
+            }
+
             ///
 
             // stelle
@@ -73,7 +85,7 @@ if (isset($_GET['isbn'])) {
 
 
             //
-            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $tmp[0]['Prezzo'] . "</p>";
+            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
 
             // ---- TRAMA ----
             $trama = "<h3>Descrizione</h3>";
