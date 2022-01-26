@@ -732,7 +732,9 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 (9798489916943,20),
 (9788808931238,14),
 (9788808931238,20),
-(9798780216834,20);
+(9798780216834,20),
+(9788804604044,17),
+(9788804604044,21);
 
 INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Email,Password,Telefono) VALUES
 (1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','cbd2dafa01e61db179075c568e9291ff58cf575b55df75c671c67f4629698778','1597863412'),
