@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Composizione ;
 DROP Table IF EXISTS Appartenenza ;
 DROP Table IF EXISTS Pubblicazione ;
 DROP TABLE IF EXISTS Wishlist;
+DROP TABLE IF EXISTS Offerte;
 DROP TABLE IF EXISTS Libro;
 DROP TABLE IF EXISTS Editore;
 DROP TABLE IF EXISTS Categoria;
@@ -153,6 +154,17 @@ CREATE TABLE Recensione (
   FOREIGN KEY(idUtente) REFERENCES Utente(Codice_identificativo)
   ON DELETE CASCADE
   );
+
+CREATE TABLE Offerte (
+  Libro_ISBN BIGINT(13) UNSIGNED,
+  Data_Inizio DATE,
+  Data_Fine DATE NOT NULL,
+  Sconto INT(2) NOT NULL,
+  PRIMARY KEY(Libro_ISBN,Data_Inizio),
+  CONSTRAINT FK_OfferteISBN
+  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  ON DELETE CASCADE
+);
 
 INSERT INTO Editore(ID,Nome) VALUES
 (3000,'Newton Compton Editori'),
@@ -320,6 +332,19 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,
 (9798489916943, 'Medicina di Laboratorio', 3049, 198, 9.99, 10, '2021-10-04', 'images/books/medicinadilaboratorio.jpg', "Stai cercando una guida semplice ma completa per capire e approfondire la medicina di laboratorio, in modo da saperne di più e ripassare nozioni che possono sempre tornare utili? Questo libro è un concentrato di tutte quelle nozioni e informazioni fondamentali che ti farà avere a portata di mano tutto ciò che ti serve sapere." ),
 (9788808931238, 'Unitutor Medicina - Test di ammissione per Medicina', 3025, 1288, 52.99, 20, '2021-10-19', 'images/books/unitutormedicina.jpg', "Se stai pensando di iscriverti a una Facoltà universitaria a numero chiuso, probabilmente dovrai affrontare dei test d'ammissione. Grazie ai manuali della collana Unitutor edita da Zanichelli puoi ripassare ed esercitarti nelle discipline richieste. I libri contengono infatti sia un apparato teorico arricchito con immagini per aiutare la memorizzazione, sia una ricca componente di quiz per fare pratica e arrivare preparati ad affrontare l'esame. " ),
 (9798780216834, 'Suture Chirurgiche', 3049, 203, 9.99, 10, '2021-12-06', 'images/books/suturechirurgiche.jpg', "Sei appassionato di medicina e chirurgia e vorresti conoscere qualcosa di più su come fare una vera sutura? Sei uno studente di medicina o un professionista nel settore medico e hai bisogno di un manuale pratico e semplice per ripassare i punti fondamentali dei nodi di sutura al momento giusto? Suture Chirurgiche è il manuale semplice e pratico, da sfogliare quando ne hai più bisogno, per tenere sempre a mente i principi di sutura e i principali nodi e tecniche che ti troverai ad affrontare sul campo." );
+
+INSERT INTO Offerte(Libro_ISBN,Data_Inizio,Data_Fine,Sconto) VALUES
+(9788830901988, '2022-01-01', '2022-03-30', 20),
+(9788893291019, '2022-01-01', '2022-03-30', 20),
+(9798489916943, '2022-01-01', '2022-03-30', 20),
+(9798780216834, '2022-01-01', '2022-03-30', 20),
+(9788830102712, '2022-01-01', '2022-03-30', 20),
+(9788830105263, '2022-01-01', '2022-03-30', 25),
+(9788811602880, '2022-01-01', '2022-03-30', 25),
+(9782496700480, '2022-01-01', '2022-03-30', 25),
+(9788863365474, '2022-01-01', '2022-03-30', 50),
+(9791220500548, '2022-01-01', '2022-03-30', 40);
+
 
 INSERT INTO Categoria(ID_Categoria,Nome) VALUES
 (10,'Storia e Biografie'),
