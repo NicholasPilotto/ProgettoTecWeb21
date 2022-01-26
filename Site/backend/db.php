@@ -32,7 +32,7 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): response_manager {
-    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
@@ -774,16 +774,14 @@ class Service extends Constant {
   }
 
   public function get_all_books(): response_manager {
-    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome, offerte.sconto, offerte.data_fine 
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
               INNER JOIN autore 
               ON autore.id = pubblicazione.autore_id 
               INNER JOIN editore 
-              ON libro.editore = editore.id
-              LEFT JOIN offerte
-              ON libro.isbn = offerte.libro_isbn AND offerte.data_fine > DATE(NOW())";
+              ON libro.editore = editore.id";
 
     $stmt = $this->connection->query($query);
 
@@ -832,59 +830,57 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_books_with_offers() : response_manager
-  {
-    $query = "SELECT * FROM libro
-              INNER JOIN offerte
-              ON offerte.libro_ISBN = libro.ISBN
-              WHERE offerte.data_fine > DATE(NOW())";
-    $stmt = $this->connection->query($query);
+  public function insert_order($cliente, $indirizzo, $totale, $carrello): response_manager {
+    $this->connection->autocommit(false);
+    $this->connection->begin_transaction();
+    try {
+      $query1 = "INSERT INTO ordine (Cliente_Codice, Data, Data_Partenza, Data_Consegna, Indirizzo, Totale)
+              VALUES (?,?,?,?,?,?)";
+      $stmt = $this->connection->prepare($query1);
 
-    $result = array();
+      $result = array();
 
-    while ($row = $stmt->fetch_assoc()) {
-      array_push($result, $row);
-    }
+      $today = date('Y-m-d');
+      $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
+      $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
 
-    $res = new response_manager($result, $this->connection, "");
+      if ($stmt === false || $stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
+        echo print_r($stmt);
+        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      }
 
-    if (!$res->ok()) {
-      $res->set_error_message("Nessun libro trovato");
-    }
+      $tmp = $stmt->execute();
 
-    $stmt->free();
-    return $res;
-  }
+      $orderID = $stmt->insert_id;
 
-  public function get_active_offer_by_isbn($isbn): response_manager {
-    $query = "SELECT sconto
-              FROM offerte
-              WHERE libro_isbn = ? AND data_fine > DATE(NOW())";
-    $stmt = $this->connection->prepare($query);
+      foreach ($carrello as $libro => $quant) {
+        $query2 = "INSERT INTO composizione(elemento, codice_ordine, Quantita) VALUES (?,?,?)";
+        $stmt = $this->connection->prepare($query2);
+        if ($stmt === false || $stmt->bind_param('ssi', $libro, $orderID, $quant) === false) {
+          return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+      }
 
-    $result = array();
-
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      $this->connection->commit();
+    } catch (\Throwable $exception) {
+      $this->connection->rollback();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
-    $stmt->execute();
-    $tmp = $stmt->get_result();
+    $this->connection->autocommit(true);
 
-    $result = array();
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
+    if ($tmp) {
+      array_push($result, $tmp);
     }
 
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessuna offerta trovata con questo ISBN");
+      $res->set_error_message("Non è stato possibile inserire l'ordine");
     }
 
     $stmt->close();
     return $res;
   }
-
 }
