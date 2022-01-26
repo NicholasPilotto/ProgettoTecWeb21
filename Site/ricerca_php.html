@@ -30,7 +30,7 @@
       });
 
       document.getElementById("prezzoMin").value = 0;
-      document.getElementById("prezzoMax").value = 10;
+      document.getElementById("prezzoMax").value = 15;
 
       return false;
     }
@@ -70,11 +70,11 @@
           <legend>Prezzo</legend>
           <ul>
             <li>
-              <input type="number" id="prezzoMin" name="prezzoMin" min="0.00" max="100" step="any" />
+              <input type="number" id="prezzoMin" name="prezzoMin" min="0.00" max="100" step="any" value=0 />
               <label for="prezzoMin">Min</label>
             </li>
             <li>
-              <input type="number" id="prezzoMax" name="prezzoMax" min="0.00" max="100" step="any" />
+              <input type="number" id="prezzoMax" name="prezzoMax" min="0.00" max="100" step="any" value=15 />
               <label for="prezzoMax">Max</label>
             </li>
           </ul>
