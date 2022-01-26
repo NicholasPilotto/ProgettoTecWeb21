@@ -44,7 +44,7 @@ if (isset($_GET['isbn'])) {
 
             $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
 
-            if(isset($offertaQuery))
+            if($offertaQuery->ok())
             {
                 $prezzo = number_format((float)$tmp[0]['Prezzo'] * (100-$offertaQuery->get_result()[0]['sconto'])/100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
             }
