@@ -7,10 +7,10 @@ use mysqli;
 require_once('response_manager.php');
 
 class Constant {
-  protected const HOST_DB = "localhost";
+  protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "turkey";
-  protected const PASSWORD = "turrrkey123";
+  protected const USERNAME = "";
+  protected const PASSWORD = "";
 }
 
 class Service extends Constant {
@@ -774,14 +774,16 @@ class Service extends Constant {
   }
 
   public function get_all_books(): response_manager {
-    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome 
+    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome, offerte.sconto, offerte.data_fine 
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
               INNER JOIN autore 
               ON autore.id = pubblicazione.autore_id 
               INNER JOIN editore 
-              ON libro.editore = editore.id";
+              ON libro.editore = editore.id
+              LEFT JOIN offerte
+              ON libro.isbn = offerte.libro_isbn AND offerte.data_fine > DATE(NOW())";
 
     $stmt = $this->connection->query($query);
 
