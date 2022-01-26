@@ -43,9 +43,8 @@
     }
     else
     {
-        $_SESSION["error"] = "La registrazione non è andata a buon fine";
+        $_SESSION["error"] = $utente->get_error_message();
         $connessione->closeConnection();
         header("Location: registrati.php");
         die();
     }
-?>
