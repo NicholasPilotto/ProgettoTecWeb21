@@ -92,6 +92,14 @@ header h1 {
     flex-grow: 1;
 }
 
+#benvenuto {
+    margin-top: 0.2em;
+    margin-right: 7%;
+    margin-left: 1em;
+
+    font-weight: 550;
+}
+
 
 .linkUtente {
     margin-right: 1em;
@@ -136,7 +144,7 @@ SEZIONE MENU'
 #menu ul {
     /*column-count: 4;*/
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
 }
 
 #menu ul li {
@@ -293,6 +301,7 @@ SEZIONE CONTENT
 
 #filtriForm input[type=number] {
     width: 4em;
+    text-align: center;
 }
 
 #filtri ul li {
@@ -483,16 +492,6 @@ a.titolo {
 
     width: 100%;
     height: 2em;
-    /*
-    border-radius: 3px;
-    border-width: 1px;
-    font-size: medium;
-
-    color: white;
-    background-color: #146e53;
-
-    cursor: pointer;
-    */
 
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -538,6 +537,45 @@ a.titolo {
 .miniGrassetto {
     font-weight: 550;
 }
+
+/* ------------------- ACCOUNT ------------------- */
+
+.accountCards {
+    text-align: center;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.accountCards li {    
+    background-color: cornsilk;
+    border: 1px solid #000;
+    border-radius: 5px;
+
+    flex-basis: 48%;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+.accountCards img {
+    object-fit: cover;
+    
+    border-radius: 5px;
+
+    width: 7em;
+    height: 9.3em;
+
+    border: 1px solid rgb(255, 0, 179);
+}
+
+.accountCards div {
+    border: 1px solid rgb(4, 21, 255);
+}
+
 
 /* ------------------- ERRORE ------------------- */
 

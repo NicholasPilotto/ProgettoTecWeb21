@@ -14,131 +14,73 @@
 <html lang="it">
 
 <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 
-  <title>Ricerca - Second Read</title>
+    <title>Ricerca - Second Read</title>
 
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
-  <script>
-    function resetFilters() {
-      var checkElement = document.querySelectorAll('input[type=checkbox]');
-      checkElement.forEach(check => {
-        check.checked = false;
-      });
-
-      document.getElementById("prezzoMin").value = 0;
-      document.getElementById("prezzoMax").value = 15;
-
-      return false;
-    }
-  </script>
-
-  <!-- Segnaposto -->
-  </linkSito>
+    <!-- Segnaposto -->
+    </linkSito>
 
 </head>
 
-<body onload="">
-  <!-- Segnaposto -->
-  </headerSito>
+<body>
+    <!-- Segnaposto -->
+    </headerSito>
 
-  <nav id="breadcrumb">
-    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; Ricerca</p>
-  </nav>
+    <nav id="breadcrumb">
+        <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; Ricerca</p>
+    </nav>
 
-  <nav id="menu">
-    <ul>
-      <li><a href="generi.php">Generi</a></li>
-      <li><a href="bestseller.php">Bestseller</a></li>
-      <li><a href="">Offerte</a></li>
-    </ul>
-  </nav>
+    <nav id="menu">
+        <ul>
+            <li>Ricerca</li>
+            <li><a href="generi.php">Generi</a></li>
+            <li><a href="bestseller.php">Bestseller</a></li>
+            <li><a href="">Offerte</a></li>
+        </ul>
+    </nav>
 
-  <div id="content" class="contentRicerca">
+    <div id="content" class="contentRicerca">
 
-    <div id="filtri">
-      <form class="genreForm" action="ricerca.php" method="get">
-        <fieldset>
-          <legend>Genere</legend>
-          </listaFiltriGenere>
-        </fieldset>
+        <div id="filtri">
+            <form id="filtriForm" action="ricerca.php" method="get">
+                <fieldset>
+                    <legend>Ricerca</legend>
+                    </barraRicerca>
+                    <input type="submit" id="searchButton" class="button" value="Cerca" formaction=""/>
+                </fieldset>
 
-        <fieldset>
-          <legend>Prezzo</legend>
-          <ul>
-            <li>
-              <input type="number" id="prezzoMin" name="prezzoMin" min="0.00" max="100" step="any" value=0 />
-              <label for="prezzoMin">Min</label>
-            </li>
-            <li>
-              <input type="number" id="prezzoMax" name="prezzoMax" min="0.00" max="100" step="any" value=15 />
-              <label for="prezzoMax">Max</label>
-            </li>
-          </ul>
-        </fieldset>
+                <fieldset>
+                    <legend>Genere</legend>
+                    </listaFiltriGenere>
+                </fieldset>
+    
+                <fieldset>
+                    <legend>Prezzo</legend>
+                    </listaFiltriPrezzo>
+                </fieldset>
+    
+                <input class="btnFiltri button" type="submit" value="Reset" formaction=""/>
+                <input class="btnFiltri button" type="submit" value="Applica"/>
+    
+            </form>
+        </div>
 
-        <input class="btn" type="submit" value="Reset" formaction="" onclick="return resetFilters();">
-        <input class="btn" type="submit" value="Applica">
+        <div id="contentDx">
 
-      </form>
+            <!-- Segnaposto -->
+            </libriTrovati>
+        </div>
     </div>
 
-    <div id="contentDx">
-      <ul class="advertsCards">
-        <li class="imgLi primaInserzione"><a href=""><img class="advertsImg" src="images/books/adrenalina.jpg"
-              alt=""></a></li>
-        <li class="textLi primaInserzione">
-          <a class="titolo" href="">Titolo</a>
-          <p>Venditore</p>
-          <p>Prezzo</p>
-        </li>
-        <li class="tramaLi primaInserzione">
-          <p class="tramaRicerca">
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-          </p>
-        </li>
+    
 
-        <li class="imgLi"><a href=""><img class="advertsImg" src="images/books/alexrider1.jpg" alt=""></a></li>
-        <li class="textLi">
-          <a class="titolo" href="">Titolo</a>
-          <p>Venditore</p>
-          <p>Prezzo</p>
-        </li>
-        <li class="tramaLi">
-          <p class="tramaRicerca">
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-          </p>
-        </li>
-
-        <li class="imgLi"><a href=""><img class="advertsImg" src="images/books/caravaggio.jpg" alt=""></a></li>
-        <li class="textLi">
-          <a class="titolo" href="">Titolo</a>
-          <p>Venditore</p>
-          <p>Prezzo</p>
-        </li>
-        <li class="tramaLi">
-          <p class="tramaRicerca">
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-          </p>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-
-
-  <!-- Segnaposto -->
-  </footerSito>
+    <!-- Segnaposto -->
+    </footerSito>
 </body>
 
 </html>
