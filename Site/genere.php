@@ -24,34 +24,29 @@ if (isset($_GET['genere'])) {
     $a = $connessione->openConnection();
 
     $queryNomeGenere = $connessione->get_genre_by_id($idGenere);
-    if ($queryNomeGenere->ok()) {
+    if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty()) {
 
-        if ($queryNomeGenere->get_element_count() > 0) {
-            // Ce un genere con quell'id, posso andare avanti
-            $nomeGenere = $queryNomeGenere->get_result()[0]['Nome'];
-            $libri = $connessione->get_books_by_genre($idGenere);
 
-            if ($libri->ok())
-            {
-                $listaLibri = "<ul class='bookCards'>";
+        // Ce un genere con quell'id, posso andare avanti
+        $nomeGenere = $queryNomeGenere->get_result()[0]['Nome'];
+        $libri = $connessione->get_books_by_genre($idGenere);
 
-                foreach ($libri->get_result() as $libro) {
-                    $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
-                }
+        if ($libri->ok()) {
+            $listaLibri = "<ul class='bookCards'>";
 
-                $listaLibri .= "</ul>";
-
-                $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
-                $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
-            } 
-            else 
-            {
-                // errore
+            foreach ($libri->get_result() as $libro) {
+                $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
             }
+
+            $listaLibri .= "</ul>";
+
+            $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
+            $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
         } else {
-            $trovatoErrore = true;
+            // errore
         }
     } else {
+        $trovatoErrore = true;
     }
 
     $connessione->closeConnection();
@@ -61,10 +56,11 @@ if (isset($_GET['genere'])) {
 
 if ($trovatoErrore) {
     // Errore, pagina senza genereId o con idGenere sbagliato
-    $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
+    // $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
 
-    $paginaHTML = str_replace("</listaLibri>", $errore, $paginaHTML);
-    $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
+    // $paginaHTML = str_replace("</listaLibri>", $errore, $paginaHTML);
+    // $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
+    header("Location: error.php");
 }
 
 // -------------------
