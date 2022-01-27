@@ -22,8 +22,8 @@
     $paginaHTML = str_replace("</barraRicerca>", $barraRicerca, $paginaHTML);
 
     // Stampa filtri PREZZO
-    $prezzoMin = -1;
-    $prezzoMax = -1;
+    $prezzoMin = 1;
+    $prezzoMax = 20;
     if(isset($_GET['prezzoMin']) && $_GET['prezzoMin'] != "")
     {
         $prezzoMin = $_GET['prezzoMin'];
@@ -35,25 +35,13 @@
     $listaFiltriPrezzo = "<ul>";
 
     $listaFiltriPrezzo .= "<li>";
-    $listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any'";
-
-    if($prezzoMin != -1)
-    {
-        $listaFiltriPrezzo .= " value='" . $prezzoMin . "'";
-    }
-    $listaFiltriPrezzo .= "/>";
+    $listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' value='" . $prezzoMin . "'/>";
 
     $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
     $listaFiltriPrezzo .= "</li>";
 
     $listaFiltriPrezzo .= "<li>";
-    $listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any'";
-
-    if($prezzoMax != -1)
-    {
-        $listaFiltriPrezzo .= " value='" . $prezzoMax . "'";
-    }
-    $listaFiltriPrezzo .= "/>";
+    $listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any' value='" . $prezzoMax . "'/>";
 
     $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
     $listaFiltriPrezzo .= "</li>";
@@ -131,21 +119,23 @@
             {
                 // controllo che sia del prezzo giusto
                 $skip = false;
-                if($prezzoMin != -1)
+
+                $prezzoConfronto = $queryIsbn->get_result()[0]['Prezzo'];
+                
+                if(isset($queryIsbn->get_result()[0]['sconto']))
                 {
-                    if($queryIsbn->get_result()['Prezzo'] < $prezzoMin)
-                    {
-                        // non va bene
-                        $skip = true;
-                    }
+                    $prezzoConfronto = number_format((float)$queryIsbn->get_result()[0]['Prezzo'] * (100-$queryIsbn->get_result()[0]['sconto'])/100, 2, '.', '');
                 }
-                if($prezzoMax != -1)
+
+                if($prezzoConfronto < $prezzoMin)
                 {
-                    if($queryIsbn->get_result()['Prezzo'] > $prezzoMax)
-                    {
-                        // non va bene
-                        $skip = true;
-                    }
+                    // non va bene
+                    $skip = true;
+                }
+                if($prezzoConfronto > $prezzoMax)
+                {
+                    // non va bene
+                    $skip = true;
                 }
 
                 if(!$skip)
@@ -155,6 +145,15 @@
                     $coppiaISBN->value = 0; // distanza minima
 
                     array_push($arrayDistanze, $coppiaISBN);
+
+                    $autore = "";
+                    foreach($queryIsbn->get_result() as $libro)
+                    {
+                        $autore .= $libro['autore_nome'] . " " . $libro['autore_cognome'] . ", ";
+                    }
+                    $autore = substr($autore, 0, -2);
+
+                    $arrayAutori[$queryIsbn->get_result()[0]['ISBN']] = $autore;
                 }
             }
             else
@@ -172,21 +171,23 @@
 
                 // controllo che sia del prezzo giusto
                 $skip = false;
-                if($prezzoMin != -1)
+
+                $prezzoConfronto = $libro['Prezzo'];
+                
+                if(isset($libro['sconto']))
                 {
-                    if($libro['Prezzo'] < $prezzoMin)
-                    {
-                        // non va bene
-                        $skip = true;
-                    }
+                    $prezzoConfronto = number_format((float)$libro['Prezzo'] * (100-$libro['sconto'])/100, 2, '.', '');
                 }
-                if($prezzoMax != -1)
+
+                if($prezzoConfronto < $prezzoMin)
                 {
-                    if($libro['Prezzo'] > $prezzoMax)
-                    {
-                        // non va bene
-                        $skip = true;
-                    }
+                    // non va bene
+                    $skip = true;
+                }
+                if($prezzoConfronto > $prezzoMax)
+                {
+                    // non va bene
+                    $skip = true;
                 }
 
                 if(!$skip)
@@ -275,12 +276,16 @@
                         $libriTrovati .= "'>";
 
                         $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
-                        $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, strlen($arrayAutori[$key]) - 2) . "</p>";
-                        
+                        $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, -2) . "</p>";
+
                         if(isset($libro['sconto']))
+                        {
                             $libriTrovati .= "<p>&euro;" . number_format((float)$libro['Prezzo'] * (100-$libro['sconto'])/100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
+                        }
                         else
+                        {
                             $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
+                        }
 
                         $libriTrovati .= "</li>";
 

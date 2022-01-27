@@ -19,6 +19,20 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
+    <script>
+        function resetFilters() {
+          var checkElement = document.querySelectorAll('input[type=checkbox]');
+          checkElement.forEach(check => {
+            check.checked = false;
+          });
+    
+          document.getElementById("prezzoMin").value = 1;
+          document.getElementById("prezzoMax").value = 20;
+    
+          return false;
+        }
+    </script>
+
     <!-- Segnaposto -->
     </linkSito>
 
@@ -61,7 +75,7 @@
                     </listaFiltriPrezzo>
                 </fieldset>
     
-                <input class="btnFiltri button" type="submit" value="Reset" formaction=""/>
+                <input class="btnFiltri button" type="submit" value="Reset" onclick="return resetFilters();"/>
                 <input class="btnFiltri button" type="submit" value="Applica"/>
     
             </form>
