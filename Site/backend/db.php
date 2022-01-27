@@ -834,8 +834,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_books_with_offers() : response_manager
-  {
+  public function get_books_with_offers(): response_manager {
     $query = "SELECT * FROM libro
               INNER JOIN offerte
               ON offerte.libro_ISBN = libro.ISBN
@@ -889,4 +888,56 @@ class Service extends Constant {
     return $res;
   }
 
+  public function insert_order($cliente, $indirizzo, $totale, $carrello): response_manager {
+    $this->connection->autocommit(false);
+    $this->connection->begin_transaction();
+    try {
+      $query1 = "INSERT INTO ordine (Cliente_Codice, Data, Data_Partenza, Data_Consegna, Indirizzo, Totale)
+              VALUES (?,?,?,?,?,?)";
+      $stmt = $this->connection->prepare($query1);
+
+      $result = array();
+
+      $today = date('Y-m-d');
+      $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
+      $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
+
+      if ($stmt === false || $stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
+        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      }
+
+      $tmp = $stmt->execute();
+
+      $orderID = $stmt->insert_id;
+
+      foreach ($carrello as $libro => $quant) {
+        $query2 = "INSERT INTO composizione(elemento, codice_ordine, Quantita) VALUES (?,?,?)";
+        $stmt = $this->connection->prepare($query2);
+        if ($stmt === false || $stmt->bind_param('ssi', $libro, $orderID, $quant) === false) {
+          return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+      }
+
+      $this->connection->commit();
+    } catch (\Throwable $exception) {
+      $this->connection->rollback();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $this->connection->autocommit(true);
+
+    if ($tmp) {
+      array_push($result, $tmp);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile inserire l'ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
 }
