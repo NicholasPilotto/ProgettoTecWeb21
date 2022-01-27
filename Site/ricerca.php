@@ -1,309 +1,273 @@
 <?php
-    session_start();
+session_start();
 
-    class CoppiaRicerca
-    {
-        public $isbn;
-        public $value;
+class CoppiaRicerca {
+    public $isbn;
+    public $value;
+}
+
+use DB\Service;
+
+require_once('backend/db.php');
+
+require_once "graphics.php";
+
+$paginaHTML = graphics::getPage("ricerca_php.html");
+
+$generiOn = array();
+
+$search = isset($_GET['search']) ? $_GET['search'] : "";
+// Stampa barra di ricerca
+$barraRicerca = "<input type='search' id='searchBar' name='search' placeholder='Titolo, autore o ISBN' value='" . $search . "'/>";
+$paginaHTML = str_replace("</barraRicerca>", $barraRicerca, $paginaHTML);
+
+// Stampa filtri PREZZO
+$prezzoMin = 1;
+$prezzoMax = 20;
+if (isset($_GET['prezzoMin']) && $_GET['prezzoMin'] != "") {
+    $prezzoMin = $_GET['prezzoMin'];
+}
+if (isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "") {
+    $prezzoMax = $_GET['prezzoMax'];
+}
+$listaFiltriPrezzo = "<ul>";
+
+$listaFiltriPrezzo .= "<li>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' value='" . $prezzoMin . "'/>";
+
+$listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
+$listaFiltriPrezzo .= "</li>";
+
+$listaFiltriPrezzo .= "<li>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any' onchange='controlNumber();' value='" . $prezzoMax . "'/>";
+
+$listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
+$listaFiltriPrezzo .= "</li>";
+
+$listaFiltriPrezzo .= "</ul>";
+
+$paginaHTML = str_replace("</listaFiltriPrezzo>", $listaFiltriPrezzo, $paginaHTML);
+
+// Stampa filtri GENERE
+
+$generi = array(
+    "genere10" => "Storia e Biografie",
+    "genere11" => "Fumetti e Manga",
+    "genere12" => "Classici e Romanzi",
+    "genere13" => "Avventura e Azione",
+    "genere14" => "Scuole e Universit&agrave;",
+    "genere15" => "Arte e Tempo Libero",
+
+    "genere16" => "Filosofia e Psicologia",
+    "genere17" => "Scienza e Fantascienza",
+    "genere18" => "Economia e Business",
+    "genere19" => "Dizionari ed Enciclopedie",
+    "genere20" => "Medicina e Salute",
+    "genere21" => "Bambini e Ragazzi",
+);
+
+$listaFiltriGenere =  "<ul>";
+
+foreach ($generi as $key => $value) {
+    $listaFiltriGenere .= "<li>";
+
+    $listaFiltriGenere .= "<input type='checkbox' id='" . $key . "' name='" . $key . "' ";
+
+    if (isset($_GET[$key]) && $_GET[$key] == "on") {
+        $listaFiltriGenere .= "checked";
+
+        array_push($generiOn, $key);
     }
 
-    use DB\Service;
-    require_once('backend/db.php');
+    $listaFiltriGenere .= "/>";
 
-    require_once "graphics.php";
-    
-    $paginaHTML = graphics::getPage("ricerca_php.html");
+    $listaFiltriGenere .= "<label for=" . $key . ">" . $value . "</label>";
 
-    $generiOn = array();
+    $listaFiltriGenere .= "</li>";
+}
 
-    $search = isset($_GET['search']) ? $_GET['search'] : "";
-    // Stampa barra di ricerca
-    $barraRicerca = "<input type='search' id='searchBar' name='search' placeholder='Titolo, autore o ISBN' value='" . $search . "'/>";
-    $paginaHTML = str_replace("</barraRicerca>", $barraRicerca, $paginaHTML);
+$listaFiltriGenere .= "</ul>";
 
-    // Stampa filtri PREZZO
-    $prezzoMin = 1;
-    $prezzoMax = 20;
-    if(isset($_GET['prezzoMin']) && $_GET['prezzoMin'] != "")
-    {
-        $prezzoMin = $_GET['prezzoMin'];
-    }
-    if(isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "")
-    {
-        $prezzoMax = $_GET['prezzoMax'];
-    }
-    $listaFiltriPrezzo = "<ul>";
+$paginaHTML = str_replace("</listaFiltriGenere>", $listaFiltriGenere, $paginaHTML);
 
-    $listaFiltriPrezzo .= "<li>";
-    $listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' value='" . $prezzoMin . "'/>";
+// Accesso al database
+$connessione = new Service();
+$a = $connessione->openConnection();
 
-    $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
-    $listaFiltriPrezzo .= "</li>";
+$queryLibri = $connessione->get_all_books();
 
-    $listaFiltriPrezzo .= "<li>";
-    $listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any' value='" . $prezzoMax . "'/>";
+if ($queryLibri->ok()) {
+    // SE NON E' VUOTO NON CERCARE NULLA
 
-    $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
-    $listaFiltriPrezzo .= "</li>";
+    $arrayDistanze = array();
+    $arrayAutori = array();
 
-    $listaFiltriPrezzo .= "</ul>";
+    // controllo se è un isbn
+    $isISBN = (is_numeric($search) && strlen($search) == 13);
 
-    $paginaHTML = str_replace("</listaFiltriPrezzo>", $listaFiltriPrezzo, $paginaHTML);
+    if ($isISBN) {
+        // lo cerco nel db
+        $queryIsbn = $connessione->get_book_by_isbn($search);
 
-    // Stampa filtri GENERE
-
-    $generi = array(
-        "genere10" => "Storia e Biografie",
-        "genere11" => "Fumetti e Manga",
-        "genere12" => "Classici e Romanzi",
-        "genere13" => "Avventura e Azione",
-        "genere14" => "Scuole e Universit&agrave;",
-        "genere15" => "Arte e Tempo Libero",
-
-        "genere16" => "Filosofia e Psicologia",
-        "genere17" => "Scienza e Fantascienza",
-        "genere18" => "Economia e Business",
-        "genere19" => "Dizionari ed Enciclopedie",
-        "genere20" => "Medicina e Salute",
-        "genere21" => "Bambini e Ragazzi",
-    );
-
-    $listaFiltriGenere =  "<ul>";
-
-    foreach($generi as $key => $value)
-    {
-        $listaFiltriGenere .= "<li>";
-
-        $listaFiltriGenere .= "<input type='checkbox' id='" . $key . "' name='" . $key . "' ";
-
-        if(isset($_GET[$key]) && $_GET[$key] == "on")
-        {
-            $listaFiltriGenere .= "checked";
-
-            array_push($generiOn, $key);
-        }
-
-        $listaFiltriGenere .= "/>";
-
-        $listaFiltriGenere .= "<label for=" . $key . ">" . $value . "</label>";
-
-        $listaFiltriGenere .= "</li>";
-    }
-
-    $listaFiltriGenere .= "</ul>";
-
-    $paginaHTML = str_replace("</listaFiltriGenere>", $listaFiltriGenere, $paginaHTML);
-
-    // Accesso al database
-    $connessione = new Service();
-    $a = $connessione->openConnection();
-
-    $queryLibri = $connessione->get_all_books();
-
-    if($queryLibri->ok())
-    {
-        // SE NON E' VUOTO NON CERCARE NULLA
-
-        $arrayDistanze = array();
-        $arrayAutori = array();
-
-        // controllo se è un isbn
-        $isISBN = (is_numeric($search) && strlen($search) == 13);
-
-        if($isISBN)
-        {
-            // lo cerco nel db
-            $queryIsbn = $connessione->get_book_by_isbn($search);
-
-            if($queryIsbn->ok() && !$queryIsbn->is_empty())
-            {
-                // controllo che sia del prezzo giusto
-                $skip = false;
-
-                $prezzoConfronto = $queryIsbn->get_result()[0]['Prezzo'];
-                
-                if(isset($queryIsbn->get_result()[0]['sconto']))
-                {
-                    $prezzoConfronto = number_format((float)$queryIsbn->get_result()[0]['Prezzo'] * (100-$queryIsbn->get_result()[0]['sconto'])/100, 2, '.', '');
-                }
-
-                if($prezzoConfronto < $prezzoMin)
-                {
-                    // non va bene
-                    $skip = true;
-                }
-                if($prezzoConfronto > $prezzoMax)
-                {
-                    // non va bene
-                    $skip = true;
-                }
-
-                if(!$skip)
-                {
-                    $coppiaISBN = new CoppiaRicerca();
-                    $coppiaISBN->isbn = $search;
-                    $coppiaISBN->value = 0; // distanza minima
-
-                    array_push($arrayDistanze, $coppiaISBN);
-
-                    $autore = "";
-                    foreach($queryIsbn->get_result() as $libro)
-                    {
-                        $autore .= $libro['autore_nome'] . " " . $libro['autore_cognome'] . ", ";
-                    }
-                    $autore = substr($autore, 0, -2);
-
-                    $arrayAutori[$queryIsbn->get_result()[0]['ISBN']] = $autore;
-                }
-            }
-            else
-            {
-                // errore, non c'è un libro con quell' isbn
-            }
-        }
-        else
-        {
-            $coppieAggiunte = array();
-            foreach($queryLibri->get_result() as $libro)
-            {
-                $titolo = strip_tags($libro['Titolo']);
-                $autore = strip_tags($libro['autore_nome']) ." " . strip_tags($libro['autore_cognome']);
-
-                // controllo che sia del prezzo giusto
-                $skip = false;
-
-                $prezzoConfronto = $libro['Prezzo'];
-                
-                if(isset($libro['sconto']))
-                {
-                    $prezzoConfronto = number_format((float)$libro['Prezzo'] * (100-$libro['sconto'])/100, 2, '.', '');
-                }
-
-                if($prezzoConfronto < $prezzoMin)
-                {
-                    // non va bene
-                    $skip = true;
-                }
-                if($prezzoConfronto > $prezzoMax)
-                {
-                    // non va bene
-                    $skip = true;
-                }
-
-                if(!$skip)
-                {
-                    if(!in_array($libro['ISBN'], $coppieAggiunte))
-                    {
-                        array_push($coppieAggiunte, $libro['ISBN']);
-
-                        $coppiaTitolo = new CoppiaRicerca();
-                        $coppiaTitolo->isbn = $libro['ISBN'];
-                        $coppiaTitolo->value = levenshtein(strtoupper($search), strtoupper($titolo), 0, 4, 4);
-
-                        array_push($arrayDistanze, $coppiaTitolo);
-
-                        $arrayAutori[$libro['ISBN']] = "";
-                    }
-                    $coppiaAutore = new CoppiaRicerca();
-                    $coppiaAutore->isbn = $libro['ISBN'];
-                    $coppiaAutore->value = levenshtein(strtoupper($search), strtoupper($autore), 0, 4, 4);
-
-                    $arrayAutori[$libro['ISBN']] .= $autore . ", ";
-
-                    array_push($arrayDistanze, $coppiaAutore);
-                }
-            }   
-        }
-
-        usort($arrayDistanze, function($a, $b) {return $a->value - $b->value; }); // ordino per valore
-
-        $cont = 0;
-        $limit = 5;
-        $daTogliere = array("_ISBN", "_titolo", "_autore");
-        $libriAggiunti = array();
-
-        $libriTrovati = "<ul class='advertsCards'>";
-        
-        foreach($arrayDistanze as $coppia)
-        {
-            if($cont == $limit) break; // ho preso tutti i libri che voglio, esco dal ciclo
-
-            $key = $coppia->isbn;
-
-            // controllo se ci sono generi selezionati
+        if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
+            // controllo che sia del prezzo giusto
             $skip = false;
-            if(count($generiOn) > 0)
-            {
-                // controllo se è del genere giusto
-                $generiLibro = $connessione->get_genres_from_isbn($key);
-                if($generiLibro->ok())
-                {
-                    foreach($generiLibro->get_result() as $genere)
-                    {
-                        if(in_array("genere" . $genere['Codice_Categoria'], $generiOn))
-                        {
-                            $skip = false;
-                            break;
-                        }
-                        else
-                        {
-                            $skip = true;
-                        }
-                    }
-                }
+
+            $prezzoConfronto = $queryIsbn->get_result()[0]['Prezzo'];
+
+            if (isset($queryIsbn->get_result()[0]['sconto'])) {
+                $prezzoConfronto = number_format((float)$queryIsbn->get_result()[0]['Prezzo'] * (100 - $queryIsbn->get_result()[0]['sconto']) / 100, 2, '.', '');
             }
 
-            if(!in_array($key, $libriAggiunti) && !$skip)
-            {
-                array_push($libriAggiunti, $key);
+            if ($prezzoConfronto < $prezzoMin) {
+                // non va bene
+                $skip = true;
+            }
+            if ($prezzoConfronto > $prezzoMax) {
+                // non va bene
+                $skip = true;
+            }
 
-                foreach($queryLibri->get_result() as $libro)
-                {
-                    if($libro['ISBN'] == $key)
-                    {
-                        $libriTrovati .= "<li class='imgLi";
-                        if($cont == 0)
-                        {
-                            $libriTrovati .= " primaInserzione";
-                        }
-                        $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['Percorso'] . "' alt=''></a></li>";
+            if (!$skip) {
+                $coppiaISBN = new CoppiaRicerca();
+                $coppiaISBN->isbn = $search;
+                $coppiaISBN->value = 0; // distanza minima
 
-                        $libriTrovati .= "<li class='textLi";
-                        if($cont == 0)
-                        {
-                            $libriTrovati .= " primaInserzione";
-                        }
-                        $libriTrovati .= "'>";
+                array_push($arrayDistanze, $coppiaISBN);
 
-                        $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
-                        $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, -2) . "</p>";
+                $autore = "";
+                foreach ($queryIsbn->get_result() as $libro) {
+                    $autore .= $libro['autore_nome'] . " " . $libro['autore_cognome'] . ", ";
+                }
+                $autore = substr($autore, 0, -2);
 
-                        if(isset($libro['sconto']))
-                        {
-                            $libriTrovati .= "<p>&euro;" . number_format((float)$libro['Prezzo'] * (100-$libro['sconto'])/100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
-                        }
-                        else
-                        {
-                            $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
-                        }
+                $arrayAutori[$queryIsbn->get_result()[0]['ISBN']] = $autore;
+            }
+        } else {
+            // errore, non c'è un libro con quell' isbn
+        }
+    } else {
+        $coppieAggiunte = array();
+        foreach ($queryLibri->get_result() as $libro) {
+            $titolo = strip_tags($libro['Titolo']);
+            $autore = strip_tags($libro['autore_nome']) . " " . strip_tags($libro['autore_cognome']);
 
-                        $libriTrovati .= "</li>";
+            // controllo che sia del prezzo giusto
+            $skip = false;
 
-                        $cont++;
+            $prezzoConfronto = $libro['Prezzo'];
 
-                        break; // ho trovato il libro, esco dal ciclo
+            if (isset($libro['sconto'])) {
+                $prezzoConfronto = number_format((float)$libro['Prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '');
+            }
+
+            if ($prezzoConfronto < $prezzoMin) {
+                // non va bene
+                $skip = true;
+            }
+            if ($prezzoConfronto > $prezzoMax) {
+                // non va bene
+                $skip = true;
+            }
+
+            if (!$skip) {
+                if (!in_array($libro['ISBN'], $coppieAggiunte)) {
+                    array_push($coppieAggiunte, $libro['ISBN']);
+
+                    $coppiaTitolo = new CoppiaRicerca();
+                    $coppiaTitolo->isbn = $libro['ISBN'];
+                    $coppiaTitolo->value = levenshtein(strtoupper($search), strtoupper($titolo), 0, 4, 4);
+
+                    array_push($arrayDistanze, $coppiaTitolo);
+
+                    $arrayAutori[$libro['ISBN']] = "";
+                }
+                $coppiaAutore = new CoppiaRicerca();
+                $coppiaAutore->isbn = $libro['ISBN'];
+                $coppiaAutore->value = levenshtein(strtoupper($search), strtoupper($autore), 0, 4, 4);
+
+                $arrayAutori[$libro['ISBN']] .= $autore . ", ";
+
+                array_push($arrayDistanze, $coppiaAutore);
+            }
+        }
+    }
+
+    usort($arrayDistanze, function ($a, $b) {
+        return $a->value - $b->value;
+    }); // ordino per valore
+
+    $cont = 0;
+    $limit = 5;
+    $daTogliere = array("_ISBN", "_titolo", "_autore");
+    $libriAggiunti = array();
+
+    $libriTrovati = "<ul class='advertsCards'>";
+
+    foreach ($arrayDistanze as $coppia) {
+        if ($cont == $limit) break; // ho preso tutti i libri che voglio, esco dal ciclo
+
+        $key = $coppia->isbn;
+
+        // controllo se ci sono generi selezionati
+        $skip = false;
+        if (count($generiOn) > 0) {
+            // controllo se è del genere giusto
+            $generiLibro = $connessione->get_genres_from_isbn($key);
+            if ($generiLibro->ok()) {
+                foreach ($generiLibro->get_result() as $genere) {
+                    if (in_array("genere" . $genere['Codice_Categoria'], $generiOn)) {
+                        $skip = false;
+                        break;
+                    } else {
+                        $skip = true;
                     }
                 }
             }
         }
 
-        $libriTrovati .= "</ul>";
+        if (!in_array($key, $libriAggiunti) && !$skip) {
+            array_push($libriAggiunti, $key);
 
-        $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
+            foreach ($queryLibri->get_result() as $libro) {
+                if ($libro['ISBN'] == $key) {
+                    $libriTrovati .= "<li class='imgLi";
+                    if ($cont == 0) {
+                        $libriTrovati .= " primaInserzione";
+                    }
+                    $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['Percorso'] . "' alt=''></a></li>";
+
+                    $libriTrovati .= "<li class='textLi";
+                    if ($cont == 0) {
+                        $libriTrovati .= " primaInserzione";
+                    }
+                    $libriTrovati .= "'>";
+
+                    $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
+                    $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, -2) . "</p>";
+
+                    if (isset($libro['sconto'])) {
+                        $libriTrovati .= "<p>&euro;" . number_format((float)$libro['Prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
+                    } else {
+                        $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
+                    }
+
+                    $libriTrovati .= "</li>";
+
+                    $cont++;
+
+                    break; // ho trovato il libro, esco dal ciclo
+                }
+            }
+        }
     }
 
-    $connessione->closeConnection();
-    // -------------------
+    $libriTrovati .= "</ul>";
 
-    echo $paginaHTML;
-?>
+    $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
+}
+
+$connessione->closeConnection();
+// -------------------
+
+echo $paginaHTML;
