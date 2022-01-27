@@ -33,13 +33,13 @@ if (isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "") {
 $listaFiltriPrezzo = "<ul>";
 
 $listaFiltriPrezzo .= "<li>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' value='" . $prezzoMin . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' onchange='controlNumberMin();' value='" . $prezzoMin . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
 $listaFiltriPrezzo .= "</li>";
 
 $listaFiltriPrezzo .= "<li>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any' onchange='controlNumber();' value='" . $prezzoMax . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any' onchange='controlNumberMax();' value='" . $prezzoMax . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
 $listaFiltriPrezzo .= "</li>";

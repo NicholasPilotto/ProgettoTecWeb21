@@ -32,12 +32,21 @@
             return false;
         }
 
-        function controlNumber() {
+        function controlNumberMin() {
+            var min = document.getElementById("prezzoMin");
+            var max = document.getElementById("prezzoMax");
+
+            if (min.value == max.value - 1) {
+                min.max = min.value;
+            }
+        }
+
+        function controlNumberMax() {
             var min = document.getElementById("prezzoMin");
             var max = document.getElementById("prezzoMax");
             min.max = max.value - 1;
 
-            if (min.value > max.value) {
+            if (min.value == max.value) {
                 min.value = max.value - 1;
             }
         }
