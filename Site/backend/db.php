@@ -955,7 +955,34 @@ class Service extends Constant {
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessun besteller trovato");
+      $res->set_error_message("Non è stato possibile generare il codice");
+    }
+
+    return $res;
+  }
+
+  public function is_code_correct($id, $utente): response_manager {
+    $query = "SELECT *
+              FROM Recupero
+              WHERE id = ? AND utente = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('ss', $id, $utente) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Il codice non corrisponde");
     }
 
     return $res;

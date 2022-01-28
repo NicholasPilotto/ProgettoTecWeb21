@@ -15,9 +15,9 @@ if ($_GET["f"] == 'a') {
 
   // $aux = $connessione->get_addresses(1000000000);
   // $aux = $connessione->get_avg_review(9788822760265);
-  $aux = $connessione->restore_code(1000000000);
+  $aux = $connessione->is_code_correct('c6dc9113ab65fe1b84814815028957d8', 1000000000);
   // var_dump(md5(uniqid(rand(), true)));
-  // print_r($aux->get_result());
+  print_r($aux->get_result());
   $connessione->closeConnection();
 }
 
