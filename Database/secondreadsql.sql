@@ -167,7 +167,7 @@ CREATE TABLE Offerte (
 );
 
 CREATE TABLE Recupero (
-  id VARCHAR(10),
+  id VARCHAR(32),
   utente INT(10) UNSIGNED,
   PRIMARY KEY (id, utente),
   CONSTRAINT FK_Utente
