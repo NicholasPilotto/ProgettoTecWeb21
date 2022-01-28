@@ -9,7 +9,7 @@ require_once('response_manager.php');
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -271,6 +271,35 @@ class Service extends Constant {
     return $result;
   }
 
+  public function get_utente_by_id($id): array {
+    $query = "SELECT *
+              FROM utente
+              WHERE Codice_identificativo = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return $result;
+    }
+
+    if ($stmt->bind_param('i', $id) === false) {
+      return $result;
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    if ($tmp->num_rows == 0) {
+      return $result;
+    }
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $stmt->close();
+    return $result;
+  }
 
   public function get_bestsellers(): response_manager {
     $query = "SELECT libro.*, count(libro.isbn) AS sold 
@@ -296,6 +325,9 @@ class Service extends Constant {
 
     $stmt->free();
     return $res;
+
+
+    return $result;
   }
 
   public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
@@ -831,7 +863,8 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_books_with_offers(): response_manager {
+  public function get_books_with_offers() : response_manager
+  {
     $query = "SELECT * FROM libro
               INNER JOIN offerte
               ON offerte.libro_ISBN = libro.ISBN
@@ -885,152 +918,4 @@ class Service extends Constant {
     return $res;
   }
 
-  public function insert_order($cliente, $indirizzo, $totale, $carrello): response_manager {
-    $this->connection->autocommit(false);
-    $this->connection->begin_transaction();
-    try {
-      $query1 = "INSERT INTO ordine (Cliente_Codice, Data, Data_Partenza, Data_Consegna, Indirizzo, Totale)
-              VALUES (?,?,?,?,?,?)";
-      $stmt = $this->connection->prepare($query1);
-
-      $result = array();
-
-      $today = date('Y-m-d');
-      $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
-      $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
-
-      if ($stmt === false || $stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
-        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-      }
-
-      $tmp = $stmt->execute();
-
-      $orderID = $stmt->insert_id;
-
-      foreach ($carrello as $libro => $quant) {
-        $query2 = "INSERT INTO composizione(elemento, codice_ordine, Quantita) VALUES (?,?,?)";
-        $stmt = $this->connection->prepare($query2);
-        if ($stmt === false || $stmt->bind_param('ssi', $libro, $orderID, $quant) === false) {
-          return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-        }
-        $tmp = $stmt->execute();
-      }
-
-      $this->connection->commit();
-    } catch (\Throwable $exception) {
-      $this->connection->rollback();
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $this->connection->autocommit(true);
-
-    if ($tmp) {
-      array_push($result, $tmp);
-    }
-
-    $res = new response_manager($result, $this->connection, "");
-
-    if (!$res->ok()) {
-      $res->set_error_message("Non è stato possibile inserire l'ordine");
-    }
-
-    $stmt->close();
-    return $res;
-  }
-
-  public function restore_code($utente): response_manager {
-    $query = "INSERT INTO Recupero (id, utente) VALUES (?,?)";
-    $id = md5(uniqid(rand(), true));
-    $stmt = $this->connection->prepare($query);
-    $result = array();
-
-    if ($stmt === false || $stmt->bind_param('ss', $id, $utente) === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $stmt->execute();
-
-    array_push($result, $id);
-
-    $res = new response_manager($result, $this->connection, "");
-
-    if (!$res->ok()) {
-      $res->set_error_message("Non è stato possibile generare il codice");
-    }
-
-    $stmt->close();
-
-    return $res;
-  }
-
-  public function is_code_correct($id, $utente): response_manager {
-    $query = "SELECT *
-              FROM Recupero
-              WHERE id = ? AND utente = ?";
-    $stmt = $this->connection->prepare($query);
-    $result = array();
-
-    if ($stmt === false || $stmt->bind_param('ss', $id, $utente) === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-
-    while ($row = $tmp->fetch_assoc()) {
-      array_push($result, $row);
-    }
-
-    $res = new response_manager($result, $this->connection, "");
-
-    if (!$res->ok()) {
-      $res->set_error_message("Il codice non corrisponde");
-    }
-
-    $stmt->close();
-
-    return $res;
-  }
-
-  public function restore_psw($utente, $pass, $code): response_manager {
-    $query = "UPDATE utente SET password = ?";
-    $psw = hash('sha256', $pass);
-
-    $stmt = $this->connection->prepare($query);
-
-    $result = array();
-
-    if ($stmt === false || $stmt->bind_param('s', $psw) === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $response = $stmt->execute();
-
-    $stmt->close();
-
-    if (!$response) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $query2 = "DELETE recupero WHERE id = ? AND utente = ?";
-    $stmt = $this->connection->prepare($query2);
-
-    if ($stmt === false || $stmt->bind_param('ss', $code, $utente) === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $stmt->execute();
-    $tmp = $stmt->get_result();
-    array_push($result, $tmp);
-
-    $res = new response_manager($result, $this->connection, "");
-
-    if (!$res->ok()) {
-      $res->set_error_message("Non è stato possibile generare il codice");
-    }
-
-    $stmt->close();
-
-    return $res;
-  }
 }
