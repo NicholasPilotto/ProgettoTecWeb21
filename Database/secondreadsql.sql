@@ -166,6 +166,15 @@ CREATE TABLE Offerte (
   ON DELETE CASCADE
 );
 
+CREATE TABLE Recupero (
+  id VARCHAR(10),
+  utente INT(10) UNSIGNED,
+  PRIMARY KEY (id, utente),
+  CONSTRAINT FK_Utente
+  FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
+  ON DELETE CASCADE
+);
+
 INSERT INTO Editore(ID,Nome) VALUES
 (3000,'Newton Compton Editori'),
 (3001,'Baldini & Castoldi'),
