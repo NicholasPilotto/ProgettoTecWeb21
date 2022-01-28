@@ -169,7 +169,7 @@ CREATE TABLE Offerte (
 CREATE TABLE Recupero (
   id VARCHAR(32),
   utente INT(10) UNSIGNED,
-  PRIMARY KEY (id, utente),
+  PRIMARY KEY (utente),
   CONSTRAINT FK_Utente
   FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
   ON DELETE CASCADE
