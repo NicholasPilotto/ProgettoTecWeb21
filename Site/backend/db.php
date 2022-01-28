@@ -241,64 +241,60 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_utente_by_email($email): array {
+  public function get_utente_by_email($email): response_manager {
     $query = "SELECT *
               FROM utente
               WHERE email = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('s', $email) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('s', $email) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun utente possiede questa mail");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
-  public function get_utente_by_id($id): array {
+  public function get_utente_by_id($id): response_manager {
     $query = "SELECT *
               FROM utente
               WHERE Codice_identificativo = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $id) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun utente possiede questo ID");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
   public function get_bestsellers(): response_manager {
