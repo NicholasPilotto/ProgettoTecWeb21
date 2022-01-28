@@ -296,9 +296,6 @@ class Service extends Constant {
 
     $stmt->free();
     return $res;
-
-
-    return $result;
   }
 
   public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
@@ -938,6 +935,29 @@ class Service extends Constant {
     }
 
     $stmt->close();
+    return $res;
+  }
+
+  public function restore_code($utente): response_manager {
+    $query = "INSERT INTO Recupero (id, utente) VALUES (?,?)";
+    $id = md5(uniqid(rand(), true));
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('ss', $id, $utente) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+
+    array_push($result, $id);
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun besteller trovato");
+    }
+
     return $res;
   }
 }
