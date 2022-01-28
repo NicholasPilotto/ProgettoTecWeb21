@@ -958,6 +958,8 @@ class Service extends Constant {
       $res->set_error_message("Non è stato possibile generare il codice");
     }
 
+    $stmt->close();
+
     return $res;
   }
 
@@ -984,6 +986,50 @@ class Service extends Constant {
     if (!$res->ok()) {
       $res->set_error_message("Il codice non corrisponde");
     }
+
+    $stmt->close();
+
+    return $res;
+  }
+
+  public function restore_psw($utente, $pass, $code): response_manager {
+    $query = "UPDATE utente SET password = ?";
+    $psw = hash('sha256', $pass);
+
+    $stmt = $this->connection->prepare($query);
+
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('s', $psw) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $response = $stmt->execute();
+
+    $stmt->close();
+
+    if (!$response) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $query2 = "DELETE recupero WHERE id = ? AND utente = ?";
+    $stmt = $this->connection->prepare($query2);
+
+    if ($stmt === false || $stmt->bind_param('ss', $code, $utente) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    array_push($result, $tmp);
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile generare il codice");
+    }
+
+    $stmt->close();
 
     return $res;
   }
