@@ -974,26 +974,8 @@ class Service extends Constant {
   }
 
   public function restore_psw($utente, $pass, $code): response_manager {
-    $query = "UPDATE utente SET password = ?";
-    $psw = hash('sha256', $pass);
-
-    $stmt = $this->connection->prepare($query);
-
     $result = array();
-
-    if ($stmt === false || $stmt->bind_param('s', $psw) === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $response = $stmt->execute();
-
-    $stmt->close();
-
-    if (!$response) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $query2 = "DELETE recupero WHERE id = ? AND utente = ?";
+    $query2 = "DELETE FROM recupero WHERE id = ? AND utente = ?";
     $stmt = $this->connection->prepare($query2);
 
     if ($stmt === false || $stmt->bind_param('ss', $code, $utente) === false) {
@@ -1001,18 +983,31 @@ class Service extends Constant {
     }
 
     $stmt->execute();
-    $tmp = $stmt->get_result();
-    array_push($result, $tmp);
 
-    $res = new response_manager($result, $this->connection, "");
+    if ($stmt->affected_rows != 0) {
+      $query1 = "UPDATE utente SET password = ? WHERE codice_identificativo = ?";
+      $stmt = $this->connection->prepare($query1);
+      $psw = hash('sha256', $pass);
 
-    if (!$res->ok()) {
-      $res->set_error_message("Non è stato possibile generare il codice");
+      if ($stmt === false || $stmt->bind_param('ss', $psw, $utente) === false) {
+        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      }
+
+      $tmp = $stmt->execute();
+
+      array_push($result, $tmp);
+
+      $res = new response_manager($result, $this->connection, "");
+
+      if (!$res->ok()) {
+        $res->set_error_message("Non è stato possibile generare il codice");
+      }
+
+      $stmt->close();
+
+      return $res;
     }
-
-    $stmt->close();
-
-    return $res;
+    return new response_manager($result, $this->connection, "Il codice inserito non è stato trovato");
   }
 
   public function insert_order($cliente, $indirizzo, $totale, $carrello): response_manager {
