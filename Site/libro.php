@@ -7,7 +7,21 @@ require_once('backend/db.php');
 
 require_once "graphics.php";
 
+// Breadcrumb
+$paginaPrecedente = " &gt;&gt; Dettaglio Libro"; // caso dalla home
+if(isset($_SESSION["paginaPrecedente"]))
+{
+    $paginaPrecedente = $_SESSION["paginaPrecedente"];
+    $paginaPrecedente .= " &gt;&gt; Dettaglio Libro";
+
+    unset($_SESSION['paginaPrecedente']);
+}
+
+// prima di fare il getPage() che cancella la sessione, prendo da che pagina vengo, e poi cancello la sessione
 $paginaHTML = graphics::getPage("libro_php.html");
+
+// replace della breadcrumb
+$paginaHTML = str_replace("</paginaPrecedente>", $paginaPrecedente, $paginaHTML);
 
 // Accesso al database
 
@@ -44,9 +58,12 @@ if (isset($_GET['isbn'])) {
 
         $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
 
-        if ($offertaQuery->ok()) {
+        if ($offertaQuery->ok())
+        {
             $prezzo = number_format((float)$tmp[0]['Prezzo'] * (100 - $offertaQuery->get_result()[0]['sconto']) / 100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
-        } else {
+        }
+        else
+        {
             $prezzo = $tmp[0]['Prezzo'];
         }
 
@@ -55,31 +72,39 @@ if (isset($_GET['isbn'])) {
         // stelle
         $queryStelle = $connessione->get_avg_review($isbn);
 
-        if ($queryStelle->ok()) {
+        if ($queryStelle->ok())
+        {
 
-            if ($queryStelle->get_element_count() > 0) {
+            if ($queryStelle->get_element_count() > 0)
+            {
                 $aux = $queryStelle->get_result();
                 $mediaStelle = $aux[0]['media'];
                 $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
 
-                //$infoGenerali .= "<li>Valutazione di " . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+                $scrittaStella = "stell";
+                $scrittaStella .= (round($mediaStelle, 1) == 1) ? "a" : "e";
 
-                $infoGenerali .= "<p>"; // . round($queryStelle[0]['media'], 1) . " stelle su 5</li>";
+                $infoGenerali .= "<p><abbr title='" . round($mediaStelle, 1) . " " . $scrittaStella . " su 5'>";
 
-                for ($i = 0; $i < 5; $i++) {
-                    if ($i < $roundStelle) {
+                for ($i = 0; $i < 5; $i++)
+                {
+                    if ($i < $roundStelle)
+                    {
                         $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
-                    } else {
+                    }
+                    else
+                    {
                         $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
                     }
                 }
 
-                $infoGenerali .= " " . round($mediaStelle, 1) . " su 5</p>";
-            } else {
+                $infoGenerali .= "</abbr></p>";
+            }
+            else
+            {
                 $infoGenerali .= "<p>Non ci sono recensioni</p>";
             }
         }
-
 
         //
         $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
@@ -105,7 +130,6 @@ if (isset($_GET['isbn'])) {
         $dettagliLibro .= "<li><span class='miniGrassetto'>Editore:</span> " . $tmp[0]['editore_nome'] . "</li>";
 
         // data
-        //$dettagliLibro .= "<li><span class='miniGrassetto'>Data pubblicazione:</span> " . $queryIsbn[0]['Data_Pubblicazione'] . "</li>";
 
         $arrayData = explode("-", $tmp[0]['Data_Pubblicazione']);
         $anno = $arrayData[0];
@@ -163,7 +187,91 @@ if (isset($_GET['isbn'])) {
         // ---- QUANTITA ----
         $inputQuantita = "<input type='number' id='quantita' name='quantita' value='1' min='1' step='1' max='" . $tmp[0]['Quantita'] . "'/>";
 
+        // ---- RECENSIONI ----
+        $queryRecensioni = $connessione->get_reviews_by_isbn($isbn);
+        $listaRecensioni = "<ul id='listaRecensioni'>";
+        $cont = 0;
+        $maxRec = 10;
+        // if ok
+        foreach($queryRecensioni->get_result() as $recensione)
+        {
+            if($cont >= $maxRec)
+            {
+                break;
+            }
+            $queryUtente = $connessione->get_utente_by_id($recensione['idUtente']);
+            
+            // if ok
+            $nomeUtente = $queryUtente->get_result()[0]['Username'];
+            $data = $recensione['DataInserimento'];
+            $valutazione = $recensione['Valutazione'];
+            $commento = $recensione['Commento'];
 
+            $listaRecensioni .= "<li";
+            
+            if($cont++ == 0)
+            {
+                $listaRecensioni .= " id='primaRecensione'";
+            }
+            
+            $listaRecensioni .= " class='recensione'>";
+
+            $listaRecensioni .= "<p class='miniGrassetto'>" . $nomeUtente . "</p>";
+
+            // data
+            $arrayData = explode("-", $data);
+            $anno = $arrayData[0];
+            $mese = $arrayData[1];
+            $giorno = $arrayData[2];
+            $listaRecensioni .= "<p>" . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</p>";
+
+            // stelle
+            $scrittaStella = "stell";
+            $scrittaStella .= ($valutazione == 1) ? "a" : "e";
+            $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
+
+            for ($i = 0; $i < 5; $i++)
+            {
+                if ($i < $valutazione)
+                {
+                    $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
+                }
+                else
+                {
+                    $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
+                }
+            }
+
+            $listaRecensioni .= "</abbr></p>";
+
+            $listaRecensioni .= "<p>" . $commento . "</p>";
+
+            $listaRecensioni .= "</li>";
+
+            /*
+                <ul id="listaRecensioni">
+                    <li id="primaRecensione" class="recensione">
+                        <p>Nome utente</p>
+                        <p>Data</p>
+                        <p>Valutazione</p>
+                        <p>Commento</p>
+                    </li>
+                    <li class="recensione">
+                        <p>Nome utente</p>
+                        <p>Data</p>
+                        <p>Valutazione</p>
+                        <p>Commento</p>
+                    </li>
+                    <li class="recensione">
+                        <p>Nome utente</p>
+                        <p>Data</p>
+                        <p>Valutazione</p>
+                        <p>Commento</p>
+                    </li>
+                </ul>
+            */
+        }
+        $listaRecensioni .= "</ul>";
 
         // Replace
         $paginaHTML = str_replace("</imgLibro>", $imgLibro, $paginaHTML);
@@ -172,10 +280,15 @@ if (isset($_GET['isbn'])) {
         $paginaHTML = str_replace("</dettagliLibro>", $dettagliLibro, $paginaHTML);
         $paginaHTML = str_replace("</generi>", $generi, $paginaHTML);
         $paginaHTML = str_replace("</inputQuantita>", $inputQuantita, $paginaHTML);
-    } else {
+        $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
+    } 
+    else 
+    {
         $trovatoErrore = true;
     }
-} else {
+} 
+else 
+{
     $trovatoErrore = true;
 }
 $connessione->closeConnection();

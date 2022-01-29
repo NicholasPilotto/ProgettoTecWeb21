@@ -14,6 +14,13 @@ require_once "graphics.php";
 
 $paginaHTML = graphics::getPage("ricerca_php.html");
 
+// setto sessione per paginaPrecedente, che era stata cancellata in getPage()
+$url = explode("/", $_SERVER['REQUEST_URI']);
+$current = end($url);
+
+$_SESSION['paginaPrecedente'] = " &gt;&gt; <a href='" . $current . "'>Ricerca</a>";
+// -------------------------------------------------------------------------
+
 $generiOn = array();
 
 $search = isset($_GET['search']) ? $_GET['search'] : "";

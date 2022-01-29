@@ -9,6 +9,10 @@ require_once "graphics.php";
 
 $paginaHTML = graphics::getPage("offerte_php.html");
 
+// setto sessione per paginaPrecedente, che era stata cancellata in getPage()
+$_SESSION['paginaPrecedente'] = " &gt;&gt; <a href='offerte.php'>Offerte</a>";
+// -------------------------------------------------------------------------
+
 // Accesso al database
 $connessione = new Service();
 $a = $connessione->openConnection();

@@ -3,7 +3,28 @@
     background-color: rgb(42, 165, 42);
 }
 */
-header h1 {
-    background-image: url("images/SecondReadLogo_medium.png");
-    flex-basis: 70px;
+
+#menu {
+    background-color: cornflowerblue;
+}
+
+/*
+==================
+SEZIONE CONTENT
+==================
+*/
+
+/* ------------------- RICERCA ------------------- */
+
+#searchBar {
+    width: 90%;
+
+    margin-left: 5%;
+}
+
+#searchButton {
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    clear: both;
 }

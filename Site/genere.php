@@ -9,6 +9,8 @@ require_once "graphics.php";
 
 $paginaHTML = graphics::getPage("genere_php.html");
 
+// la sessione per paginaPrecedente la setto più sotto perché mi serve il nome del genere
+
 // Accesso al database
 
 $trovatoErrore = false;
@@ -24,9 +26,8 @@ if (isset($_GET['genere'])) {
     $a = $connessione->openConnection();
 
     $queryNomeGenere = $connessione->get_genre_by_id($idGenere);
-    if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty()) {
-
-
+    if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty())
+    {
         // Ce un genere con quell'id, posso andare avanti
         $nomeGenere = $queryNomeGenere->get_result()[0]['Nome'];
         $libri = $connessione->get_books_by_genre($idGenere);
@@ -42,6 +43,10 @@ if (isset($_GET['genere'])) {
 
             $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
             $paginaHTML = str_replace("</nomeGenere>", $nomeGenere, $paginaHTML);
+
+            // setto sessione per paginaPrecedente, che era stata cancellata in getPage()
+            $_SESSION['paginaPrecedente'] = " &gt;&gt; <a href='generi.php'>Generi</a> &gt;&gt; <a href='genere.php?genere=" . $idGenere . "'>" . $nomeGenere . "</a>";
+            // -------------------------------------------------------------------------
         } else {
             // errore
         }
