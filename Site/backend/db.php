@@ -8,7 +8,7 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "secondread";
+  protected const DATABASE_NAME = "";
   protected const USERNAME = "";
   protected const PASSWORD = "";
 }
@@ -290,18 +290,19 @@ class Service extends Constant {
   }
 
   public function get_bestsellers(): response_manager {
-    $query = "SELECT libro.*, count(libro.isbn) AS sold 
-              FROM libro
-              INNER JOIN composizione
-              ON composizione.elemento = libro.isbn
-              GROUP BY libro.isbn
-              ORDER BY sold DESC";
+    $query = "SELECT Libro.*, count(Libro.isbn) AS sold FROM Libro INNER JOIN Composizione ON Composizione.elemento = Libro.isbn GROUP BY Libro.isbn ORDER BY sold DESC";
 
-    $stmt = $this->connection->query($query);
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
 
     $result = array();
 
-    while ($row = $stmt->fetch_assoc()) {
+    while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
@@ -311,11 +312,7 @@ class Service extends Constant {
       $res->set_error_message("Nessun besteller trovato");
     }
 
-    $stmt->free();
     return $res;
-
-
-    return $result;
   }
 
   public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
@@ -741,55 +738,60 @@ class Service extends Constant {
 
   public function get_new_books(): response_manager {
     $query = "SELECT * 
-              FROM libro 
-              ORDER BY libro.Data_Pubblicazione DESC 
+              FROM Libro 
+              ORDER BY Libro.Data_Pubblicazione DESC 
               LIMIT 7";
 
-    $stmt = $this->connection->query($query);
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
 
     $result = array();
 
-    while ($row = $stmt->fetch_assoc()) {
+    while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessun nuovo libro trovato");
+      $res->set_error_message("Nessun besteller trovato");
     }
 
-    $stmt->free();
     return $res;
-
-
-    return $result;
   }
 
   public function get_books_under_5(): response_manager {
     $query = "SELECT * 
-              FROM libro 
+              FROM Libro 
               WHERE prezzo < 5";
 
-    $stmt = $this->connection->query($query);
+    $result = array();
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
 
     $result = array();
 
-    while ($row = $stmt->fetch_assoc()) {
+    while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessun libro con prezzo inferiore a €5 trovato");
+      $res->set_error_message("Nessun besteller trovato");
     }
 
-    $stmt->free();
     return $res;
-
-
-    return $result;
   }
 
   public function get_all_books(): response_manager {
@@ -804,11 +806,17 @@ class Service extends Constant {
               LEFT JOIN offerte
               ON libro.isbn = offerte.libro_isbn AND offerte.data_fine > DATE(NOW())";
 
-    $stmt = $this->connection->query($query);
-
+    $stmt = $this->connection->prepare($query);
     $result = array();
 
-    while ($row = $stmt->fetch_assoc()) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
