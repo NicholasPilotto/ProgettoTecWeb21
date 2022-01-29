@@ -826,7 +826,7 @@ class Service extends Constant {
       $res->set_error_message("Nessun libro trovato");
     }
 
-    $stmt->free();
+    $stmt->close();
     return $res;
   }
 
