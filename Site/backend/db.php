@@ -70,7 +70,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_book_by_title($title): array {
+  public function get_book_by_title($title): response_manager {
     $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome  
               FROM libro 
               INNER JOIN pubblicazione 
@@ -83,32 +83,30 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
     $title = '%' . $title . '%';
 
-    if ($stmt->bind_param('s', $title) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('s', $title) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro ha questo titolo");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
-  public function get_books_by_author($author_firstname, $author_lastname): array {
+  public function get_books_by_author($author_firstname, $author_lastname): response_manager {
     $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome  
               FROM libro 
               INNER JOIN pubblicazione 
@@ -120,32 +118,28 @@ class Service extends Constant {
               WHERE autore.nome LIKE ? AND autore.cognome LIKE ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
-
-    if ($stmt === false) {
-      return $result;
-    }
-
     $first = '%' . $author_firstname . '%';
     $last = '%' . $author_lastname . '%';
 
-
-    if ($stmt->bind_param('ss', $first, $last) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('ss', $first, $last) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro ha questo autore");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
   public function get_books_by_genre($id): response_manager {
@@ -179,7 +173,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_new_books_by_genre($id): array {
+  public function get_new_books_by_genre($id): response_manager {
     $query = "SELECT libro.* 
               FROM libro 
               INNER JOIN appartenenza 
@@ -189,27 +183,25 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return $result;
-    }
-
-    if ($stmt->bind_param('i', $id) === false) {
-      return $result;
+    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro appartenente a questo genere");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
 
@@ -326,25 +318,25 @@ class Service extends Constant {
     return $result;
   }
 
-  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
+  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
     $query = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES (?,?,?,?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
 
-    if ($stmt === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
-    if ($stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
-      return false;
-    }
+    $response = $stmt->execute();
 
-    $res = $stmt->execute();
     $stmt->close();
 
-    return $res;
+    if (!$response) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
-  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): bool {
+  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
     $query = "UPDATE libro SET ";
     $components = array();
     $aux = "";
@@ -400,19 +392,18 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
 
 
-    if ($stmt === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
-
-    if ($stmt->bind_param($type, ...$components) === false) {
-      return false;
-    }
-
-    $res = $stmt->execute();
+    $response = $stmt->execute();
 
     $stmt->close();
-    return $res;
+
+    if (!$response) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
   public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): response_manager {
@@ -464,52 +455,57 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_addresses($utente_id): array {
+  public function get_addresses($utente_id): response_manager {
     $query = "SELECT *
               FROM indirizzo 
               WHERE utente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('s', $utente_id) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('s', $utente_id) === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun indirizzo trovato");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
-  public function insert_address($utente_id, $via, $citta, $cap, $civico): bool {
+  public function insert_address($utente_id, $via, $citta, $cap, $civico): response_manager {
     $query = "INSERT INTO Indirizzo(Via,Città,Cap,Num_civico,Utente) VALUES (?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
 
+    $result = array();
 
-    if ($stmt === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
-    if ($stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
-      return false;
+    $tmp = $stmt->execute();
+
+    if (!$tmp) {
+      return new response_manager($result, $this->connection, "Non è stato possibile inserire un indirizzo");
     }
 
-    $res = $stmt->execute();
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione effettuata da questo utente");
+    }
+
     $stmt->close();
-
     return $res;
   }
 
@@ -542,145 +538,146 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_reviews_by_isbn($isbn): array {
+  public function get_reviews_by_isbn($isbn): response_manager {
     $query = "SELECT *
               FROM recensione 
               WHERE libro_isbn = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('s', $isbn) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione trovata per questo libro");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
-  public function get_reviews_by_user($utente): array {
+  public function get_reviews_by_user($utente): response_manager {
     $query = "SELECT *
               FROM recensione 
               WHERE idutente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('s', $utente) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('s', $utente) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
-    }
-
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione trovata per questo libro");
+    }
+
     $stmt->close();
-    return $result;
+    return $res;
   }
 
-  public function get_review_by_user_book($utente, $isbn): array {
+  public function get_review_by_user_book($utente, $isbn): response_manager {
     $query = "SELECT *
               FROM recensione 
               WHERE idutente = ? AND libro_isbn = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false) {
-      return false;
-    }
-
-    if ($stmt->bind_param('ss', $utente, $isbn) === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param('ss', $utente, $isbn) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $stmt->execute();
     $tmp = $stmt->get_result();
 
-    if ($tmp->num_rows == 0) {
-      return $result;
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
     }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna recensione effettuata da questo utente per questo libro");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function get_orders(): response_manager {
+    $query = "SELECT *
+              FROM ordine";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
 
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
     }
 
-    $stmt->close();
-    return $result;
-  }
+    $res = new response_manager($result, $this->connection, "");
 
-  public function get_orders(): array {
-    $query = "SELECT *
-              FROM ordine";
-
-    $stmt = $this->connection->query($query);
-
-    if ($stmt->num_rows == 0) {
-      return NULL;
-    } else {
-      $result = array();
-
-      while ($row = $stmt->fetch_assoc()) {
-        array_push($result, $row);
-      }
-      $stmt->free();
-      return $result;
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun ordine");
     }
+
+    $stmt->close();
+    return $res;
   }
 
-  public function insert_review($utenteid, $isbn, $valore, $commento): string {
+  public function insert_review($utenteid, $isbn, $valore, $commento): response_manager {
     $query = "INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
 
     $stmt = $this->connection->prepare($query);
     $today = date('Y-m-d');
+    $result = array();
 
 
-    if ($stmt === false) {
-      return "a";
-    }
-
-    if ($stmt->bind_param('sssis', $utenteid, $isbn, $today, $valore, $commento) === false) {
-      return "b";
+    if ($stmt === false || $stmt->bind_param('sssis', $utenteid, $isbn, $today, $valore, $commento) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $res = $stmt->execute();
 
-    $stmt->close();
-
-
-    return $res;
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile inserire una recensione");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
-  public function edit_review($utenteid, $isbn, $valore, $commento): bool {
+  public function edit_review($utenteid, $isbn, $valore, $commento): response_manager {
     $query = "UPDATE recensione SET ";
 
     $components = array();
     $aux = "";
     $type = "";
 
+    $result = array();
 
     if (isset($valore)) {
       array_push($components, $valore);
@@ -708,21 +705,16 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
 
 
-    if ($stmt === false) {
-      return false;
+    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
-
-
-
-    if ($stmt->bind_param($type, ...$components) === false) {
-      return false;
-    }
-
 
     $res = $stmt->execute();
 
-    $stmt->close();
-    return $res;
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile inserire una recensione");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
   public function delete_review($utenteid, $isbn): bool {
