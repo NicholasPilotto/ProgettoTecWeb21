@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS Recensione ;
 DROP TABLE IF EXISTS Composizione ;
 DROP Table IF EXISTS Appartenenza ;
 DROP Table IF EXISTS Pubblicazione ;
-DROP TABLE IF EXISTS Wishlist;
+DROP TABLE IF EXISTS WishList;
 DROP TABLE IF EXISTS Offerte;
 DROP TABLE IF EXISTS Libro;
 DROP TABLE IF EXISTS Editore;
@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS Categoria;
 DROP TABLE IF EXISTS Autore;
 DROP TABLE IF EXISTS Ordine;
 DROP TABLE IF EXISTS Indirizzo;
+DROP TABLE IF EXISTS Recupero;
 DROP TABLE IF EXISTS Utente;
 
 CREATE TABLE Editore (
@@ -85,6 +86,17 @@ CREATE TABLE Utente (
   Telefono VARCHAR(15) NOT NULL UNIQUE,
   PRIMARY KEY(Codice_identificativo)
   );
+
+  CREATE TABLE Recupero (
+  id VARCHAR(32),
+  utente INT(10) UNSIGNED,
+  PRIMARY KEY (utente),
+  CONSTRAINT FK_Utente
+  FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
+  ON DELETE CASCADE
+);
+
+
 
 CREATE TABLE WishList(
   Cliente_Codice INT(10) UNSIGNED,
@@ -163,15 +175,6 @@ CREATE TABLE Offerte (
   PRIMARY KEY(Libro_ISBN,Data_Inizio),
   CONSTRAINT FK_OfferteISBN
   FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
-  ON DELETE CASCADE
-);
-
-CREATE TABLE Recupero (
-  id VARCHAR(32),
-  utente INT(10) UNSIGNED,
-  PRIMARY KEY (utente),
-  CONSTRAINT FK_Utente
-  FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
   ON DELETE CASCADE
 );
 
@@ -755,7 +758,7 @@ INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Emai
 (1000000006,'Admin','admin','1999-12-09','admin','admin@gmail.com','ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270','6380571935'),
 (1000000007, 'Utente', 'utente', '1999-12-08', 'utente', 'utente@gmail.com', 'b1bfb5065710db92625f15e59a641d8f3c472a298ddb88a91e9c937d61b461a4', '1111111111');
 
-INSERT INTO Wishlist(Libro_ISBN, Cliente_Codice) VALUES
+INSERT INTO WishList(Libro_ISBN, Cliente_Codice) VALUES
 (9788822760265,1000000000),
 (9788830901988,1000000000),
 (9791280022486,1000000001),
