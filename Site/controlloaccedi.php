@@ -29,10 +29,10 @@ if ($log->ok()) {
     header("Location: index.php");
   } else {
     // nessun utente trovato
-    header("Location: index.php");
+    // header("Location: index.php");
   }
 } else {
   $connessione->closeConnection(); // chiudo la connessione
   $_SESSION["error"] = $log->get_error_message();
-  header("Location: index.php?sbagliato=si");
+  header("Location: accedi.php");
 }
