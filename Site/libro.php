@@ -9,8 +9,7 @@ require_once "graphics.php";
 
 // Breadcrumb
 $paginaPrecedente = " &gt;&gt; Dettaglio Libro"; // caso dalla home
-if(isset($_SESSION["paginaPrecedente"]))
-{
+if (isset($_SESSION["paginaPrecedente"])) {
     $paginaPrecedente = $_SESSION["paginaPrecedente"];
     $paginaPrecedente .= " &gt;&gt; Dettaglio Libro";
 
@@ -58,12 +57,9 @@ if (isset($_GET['isbn'])) {
 
         $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
 
-        if ($offertaQuery->ok())
-        {
+        if ($offertaQuery->ok()) {
             $prezzo = number_format((float)$tmp[0]['Prezzo'] * (100 - $offertaQuery->get_result()[0]['sconto']) / 100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
-        }
-        else
-        {
+        } else {
             $prezzo = $tmp[0]['Prezzo'];
         }
 
@@ -72,11 +68,9 @@ if (isset($_GET['isbn'])) {
         // stelle
         $queryStelle = $connessione->get_avg_review($isbn);
 
-        if ($queryStelle->ok())
-        {
+        if ($queryStelle->ok()) {
 
-            if ($queryStelle->get_element_count() > 0)
-            {
+            if ($queryStelle->get_element_count() > 0) {
                 $aux = $queryStelle->get_result();
                 $mediaStelle = $aux[0]['media'];
                 $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
@@ -86,22 +80,16 @@ if (isset($_GET['isbn'])) {
 
                 $infoGenerali .= "<p><abbr title='" . round($mediaStelle, 1) . " " . $scrittaStella . " su 5'>";
 
-                for ($i = 0; $i < 5; $i++)
-                {
-                    if ($i < $roundStelle)
-                    {
+                for ($i = 0; $i < 5; $i++) {
+                    if ($i < $roundStelle) {
                         $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
-                    }
-                    else
-                    {
+                    } else {
                         $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
                     }
                 }
 
                 $infoGenerali .= "</abbr></p>";
-            }
-            else
-            {
+            } else {
                 $infoGenerali .= "<p>Non ci sono recensioni</p>";
             }
         }
@@ -193,14 +181,12 @@ if (isset($_GET['isbn'])) {
         $cont = 0;
         $maxRec = 10;
         // if ok
-        foreach($queryRecensioni->get_result() as $recensione)
-        {
-            if($cont >= $maxRec)
-            {
+        foreach ($queryRecensioni->get_result() as $recensione) {
+            if ($cont >= $maxRec) {
                 break;
             }
             $queryUtente = $connessione->get_utente_by_id($recensione['idUtente']);
-            
+
             // if ok
             $nomeUtente = $queryUtente->get_result()[0]['Username'];
             $data = $recensione['DataInserimento'];
@@ -208,12 +194,11 @@ if (isset($_GET['isbn'])) {
             $commento = $recensione['Commento'];
 
             $listaRecensioni .= "<li";
-            
-            if($cont++ == 0)
-            {
+
+            if ($cont++ == 0) {
                 $listaRecensioni .= " id='primaRecensione'";
             }
-            
+
             $listaRecensioni .= " class='recensione'>";
 
             $listaRecensioni .= "<p class='miniGrassetto'>" . $nomeUtente . "</p>";
@@ -230,14 +215,10 @@ if (isset($_GET['isbn'])) {
             $scrittaStella .= ($valutazione == 1) ? "a" : "e";
             $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
 
-            for ($i = 0; $i < 5; $i++)
-            {
-                if ($i < $valutazione)
-                {
+            for ($i = 0; $i < 5; $i++) {
+                if ($i < $valutazione) {
                     $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
-                }
-                else
-                {
+                } else {
                     $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
                 }
             }
@@ -281,14 +262,10 @@ if (isset($_GET['isbn'])) {
         $paginaHTML = str_replace("</generi>", $generi, $paginaHTML);
         $paginaHTML = str_replace("</inputQuantita>", $inputQuantita, $paginaHTML);
         $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
-    } 
-    else 
-    {
+    } else {
         $trovatoErrore = true;
     }
-} 
-else 
-{
+} else {
     $trovatoErrore = true;
 }
 $connessione->closeConnection();
