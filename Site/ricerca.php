@@ -74,7 +74,7 @@ $generi = array(
 );
 
 $listaFiltriGenere =  "<ul>";
-
+$libriTrovati = "";
 foreach ($generi as $key => $value) {
     $listaFiltriGenere .= "<li>";
 
@@ -270,9 +270,10 @@ if ($queryLibri->ok()) {
     }
 
     $libriTrovati .= "</ul>";
-
-    $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
+} else {
+    $libriTrovati .= "<p>" . $queryLibri->get_error_message() . "</p>";
 }
+$paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
 
 $connessione->closeConnection();
 // -------------------
