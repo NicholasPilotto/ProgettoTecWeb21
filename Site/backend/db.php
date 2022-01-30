@@ -290,7 +290,12 @@ class Service extends Constant {
   }
 
   public function get_bestsellers(): response_manager {
-    $query = "SELECT Libro.*, count(Libro.isbn) AS sold FROM Libro INNER JOIN Composizione ON Composizione.elemento = Libro.isbn GROUP BY Libro.isbn ORDER BY sold DESC";
+    $query = "SELECT libro.*, count(Libro.isbn) AS sold 
+              FROM libro 
+              INNER JOIN composizione 
+              ON composizione.elemento = libro.isbn 
+              GROUP BY libro.isbn 
+              ORDER BY sold DESC";
 
     $stmt = $this->connection->prepare($query);
     $result = array();
@@ -404,7 +409,7 @@ class Service extends Constant {
   }
 
   public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): response_manager {
-    $query = "INSERT INTO Utente (Nome,Cognome,Data_nascita,Username,Email,password,Telefono) VALUES (?,?,?,?,?,?,?)";
+    $query = "INSERT INTO utente (Nome,Cognome,Data_nascita,Username,Email,password,Telefono) VALUES (?,?,?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
     $psw = hash('sha256', $pass);
 
@@ -738,8 +743,8 @@ class Service extends Constant {
 
   public function get_new_books(): response_manager {
     $query = "SELECT * 
-              FROM Libro 
-              ORDER BY Libro.Data_Pubblicazione DESC 
+              FROM libro 
+              ORDER BY libro.data_pubblicazione DESC 
               LIMIT 7";
 
     $stmt = $this->connection->prepare($query);
@@ -767,7 +772,7 @@ class Service extends Constant {
 
   public function get_books_under_5(): response_manager {
     $query = "SELECT * 
-              FROM Libro 
+              FROM libro
               WHERE prezzo < 5";
 
     $result = array();
