@@ -70,7 +70,7 @@ header h1 {
     background-image: url("images/SecondReadLogo.png");
     background-size: contain;
     background-repeat: no-repeat;
-    text-indent: -9999999em;
+    text-indent: -999em;
     font-size: 3em;
 
     /*
