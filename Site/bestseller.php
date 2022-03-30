@@ -27,7 +27,7 @@ if ($queryBestseller->ok()) {
     $cont = 0;
     foreach ($queryBestseller->get_result() as $libro) {
         if ($cont++ < $limit) {
-            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
+            $listaBestseller .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='generiCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] . "</a></li>";
         }
     }
     $listaBestseller .= "</ul>";

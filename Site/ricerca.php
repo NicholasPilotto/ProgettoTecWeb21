@@ -74,7 +74,7 @@ $generi = array(
 );
 
 $listaFiltriGenere =  "<ul>";
-$libriTrovati = "";
+
 foreach ($generi as $key => $value) {
     $listaFiltriGenere .= "<li>";
 
@@ -120,10 +120,10 @@ if ($queryLibri->ok()) {
             // controllo che sia del prezzo giusto
             $skip = false;
 
-            $prezzoConfronto = $queryIsbn->get_result()[0]['Prezzo'];
+            $prezzoConfronto = $queryIsbn->get_result()[0]['prezzo'];
 
             if (isset($queryIsbn->get_result()[0]['sconto'])) {
-                $prezzoConfronto = number_format((float)$queryIsbn->get_result()[0]['Prezzo'] * (100 - $queryIsbn->get_result()[0]['sconto']) / 100, 2, '.', '');
+                $prezzoConfronto = number_format((float)$queryIsbn->get_result()[0]['prezzo'] * (100 - $queryIsbn->get_result()[0]['sconto']) / 100, 2, '.', '');
             }
 
             if ($prezzoConfronto < $prezzoMin) {
@@ -148,7 +148,7 @@ if ($queryLibri->ok()) {
                 }
                 $autore = substr($autore, 0, -2);
 
-                $arrayAutori[$queryIsbn->get_result()[0]['ISBN']] = $autore;
+                $arrayAutori[$queryIsbn->get_result()[0]['isbn']] = $autore;
             }
         } else {
             // errore, non c'è un libro con quell' isbn
@@ -156,16 +156,16 @@ if ($queryLibri->ok()) {
     } else {
         $coppieAggiunte = array();
         foreach ($queryLibri->get_result() as $libro) {
-            $titolo = strip_tags($libro['Titolo']);
+            $titolo = strip_tags($libro['titolo']);
             $autore = strip_tags($libro['autore_nome']) . " " . strip_tags($libro['autore_cognome']);
 
             // controllo che sia del prezzo giusto
             $skip = false;
 
-            $prezzoConfronto = $libro['Prezzo'];
+            $prezzoConfronto = $libro['prezzo'];
 
             if (isset($libro['sconto'])) {
-                $prezzoConfronto = number_format((float)$libro['Prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '');
+                $prezzoConfronto = number_format((float)$libro['prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '');
             }
 
             if ($prezzoConfronto < $prezzoMin) {
@@ -178,22 +178,22 @@ if ($queryLibri->ok()) {
             }
 
             if (!$skip) {
-                if (!in_array($libro['ISBN'], $coppieAggiunte)) {
-                    array_push($coppieAggiunte, $libro['ISBN']);
+                if (!in_array($libro['isbn'], $coppieAggiunte)) {
+                    array_push($coppieAggiunte, $libro['isbn']);
 
                     $coppiaTitolo = new CoppiaRicerca();
-                    $coppiaTitolo->isbn = $libro['ISBN'];
+                    $coppiaTitolo->isbn = $libro['isbn'];
                     $coppiaTitolo->value = levenshtein(strtoupper($search), strtoupper($titolo), 0, 4, 4);
 
                     array_push($arrayDistanze, $coppiaTitolo);
 
-                    $arrayAutori[$libro['ISBN']] = "";
+                    $arrayAutori[$libro['isbn']] = "";
                 }
                 $coppiaAutore = new CoppiaRicerca();
-                $coppiaAutore->isbn = $libro['ISBN'];
+                $coppiaAutore->isbn = $libro['isbn'];
                 $coppiaAutore->value = levenshtein(strtoupper($search), strtoupper($autore), 0, 4, 4);
 
-                $arrayAutori[$libro['ISBN']] .= $autore . ", ";
+                $arrayAutori[$libro['isbn']] .= $autore . ", ";
 
                 array_push($arrayDistanze, $coppiaAutore);
             }
@@ -223,7 +223,7 @@ if ($queryLibri->ok()) {
             $generiLibro = $connessione->get_genres_from_isbn($key);
             if ($generiLibro->ok()) {
                 foreach ($generiLibro->get_result() as $genere) {
-                    if (in_array("genere" . $genere['Codice_Categoria'], $generiOn)) {
+                    if (in_array("genere" . $genere['codice_categoria'], $generiOn)) {
                         $skip = false;
                         break;
                     } else {
@@ -237,12 +237,12 @@ if ($queryLibri->ok()) {
             array_push($libriAggiunti, $key);
 
             foreach ($queryLibri->get_result() as $libro) {
-                if ($libro['ISBN'] == $key) {
+                if ($libro['isbn'] == $key) {
                     $libriTrovati .= "<li class='imgLi";
                     if ($cont == 0) {
                         $libriTrovati .= " primaInserzione";
                     }
-                    $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['Percorso'] . "' alt=''></a></li>";
+                    $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['percorso'] . "' alt=''></a></li>";
 
                     $libriTrovati .= "<li class='textLi";
                     if ($cont == 0) {
@@ -250,13 +250,13 @@ if ($queryLibri->ok()) {
                     }
                     $libriTrovati .= "'>";
 
-                    $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['Titolo'] . "</a>";
+                    $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['titolo'] . "</a>";
                     $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, -2) . "</p>";
 
                     if (isset($libro['sconto'])) {
-                        $libriTrovati .= "<p>&euro;" . number_format((float)$libro['Prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
+                        $libriTrovati .= "<p>&euro;" . number_format((float)$libro['prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
                     } else {
-                        $libriTrovati .= "<p>&euro;" . $libro['Prezzo'] . "</p>";
+                        $libriTrovati .= "<p>&euro;" . $libro['prezzo'] . "</p>";
                     }
 
                     $libriTrovati .= "</li>";
@@ -270,10 +270,9 @@ if ($queryLibri->ok()) {
     }
 
     $libriTrovati .= "</ul>";
-} else {
-    $libriTrovati .= "<p>" . $queryLibri->get_error_message() . "</p>";
+
+    $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
 }
-$paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
 
 $connessione->closeConnection();
 // -------------------
