@@ -100,19 +100,25 @@
         return false;
       }
 
+      if (input.id == "conferma" && !confirmPass()) {
+        mostraErrore(input);
+        return false;
+      }
+
       return true;
     }
 
     function confirmPass() {
       const password = document.querySelector('input[name=password]');
       const confirm = document.querySelector('input[name=conferma]');
-      var padre = input.parentNode;
+
       if (confirm.value === password.value) {
         return true
       } else {
         return false;
       }
     }
+
     function mostraErrore(input) {
       var padre = input.parentNode;
       var errore = document.createElement("strong");
@@ -128,8 +134,7 @@
         if (!validazioneCampo(input)) {
           return false;
         }
-        if (input.id == "conferma" && confirmPass() === false) {
-          console.log(1);
+        if (input.id == "conferma" && !confirmPass(input)) {
           mostraErrore(input);
           return false;
         }
@@ -162,7 +167,7 @@
 
   <div id="content">
     </errorMsg>
-    <form class="accediRegistrati" action="controlloregistrati.php" method="post" onsubmit="return validazioneForm();">
+    <form class="accediRegistrati" action="controlloregistrati.php" method="post" onsubmit="validazioneForm();">
       <fieldset>
         <h2>Registrati</h2>
 
