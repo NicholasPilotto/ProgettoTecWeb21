@@ -974,6 +974,39 @@ class Service extends Constant {
     return $res;
   }
 
+  public function get_reward_badge($utente): response_manager {
+    $query = "SELECT utente.codice_identificativo AS utente, count(ordine.codice_univoco) AS total
+              FROM utente
+              LEFT JOIN ordine
+              ON ordine.cliente_codice = utente.codice_identificativo
+              WHERE utente.codice_identificativo = ?
+              GROUP BY utente.codice_identificativo";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('s', $utente) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun utente trovato");
+    }
+
+    $stmt->close();
+
+    return $res;
+  }
+
   public function restore_psw($utente, $pass, $code): response_manager {
     $result = array();
     $query2 = "DELETE FROM recupero WHERE id = ? AND utente = ?";
