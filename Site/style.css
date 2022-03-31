@@ -195,8 +195,10 @@ SEZIONE CONTENT
 
 
 .homeCardsImg {
-    width: 7em;
-    height: 11em;
+    /*width: 7em;
+    height: 11em;*/
+    width: 10.5em;
+    height: 16.5em;
 }
 
 /* ------------------- GENERI ------------------- */
@@ -574,50 +576,23 @@ a.titolo {
 }
 
 .accountCards li {    
+    
+    /*
     background-color: cornsilk;
     border: 1px solid #000;
     border-radius: 5px;
-
-    flex-basis: 48%;
-    flex-grow: 1;
-    flex-shrink: 0;
-
-    /* flex dentro al flex */
-    display: flex;
-    justify-content: center;
-}
-
-.accountCards img {
-    object-fit: cover;
+    */
     
-    border-radius: 5px;
-
-    width: 7em;
-    height: 9.3em;
-
-    border: 1px solid rgb(255, 0, 179);
-}
-
-.accountCards div {
-    border: 1px solid rgb(4, 21, 255);
-
-    flex-basis: 10em;/*150px;*/ /* 9.5em*/
+    flex-basis: 20%;
     flex-grow: 0;
     flex-shrink: 0;
 
-    padding-left: 0.8em;
-    padding-top: 1em;
+    
+    margin-left: 20%;
+    margin-top: 0.7em;
+    margin-bottom: 1em;
 
     text-align: left;
-}
-
-/*
-.accountCards div h3 {
-    
-}*/
-
-.accountCards div p {
-    padding-top: 0.4em;
 }
 
 
@@ -633,6 +608,7 @@ a.titolo {
 SEZIONE ERRORI
 ==================
 */
+
 .errorSuggestion {
     color:rgb(201, 98, 98);
     font-size: 0.8em;
@@ -653,7 +629,6 @@ footer {
     border-top: 1px solid #aaaaaa;
     padding: 0.5em;
 
-    /*background-color: white;*/
     background-color: #146e53;
 }
 
