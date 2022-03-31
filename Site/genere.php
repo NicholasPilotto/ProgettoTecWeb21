@@ -29,14 +29,14 @@ if (isset($_GET['genere'])) {
     if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty())
     {
         // Ce un genere con quell'id, posso andare avanti
-        $nomeGenere = $queryNomeGenere->get_result()[0]['Nome'];
+        $nomeGenere = $queryNomeGenere->get_result()[0]['nome'];
         $libri = $connessione->get_books_by_genre($idGenere);
 
         if ($libri->ok()) {
             $listaLibri = "<ul class='bookCards'>";
 
             foreach ($libri->get_result() as $libro) {
-                $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='generiCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
+                $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='generiCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] . "</a></li>";
             }
 
             $listaLibri .= "</ul>";

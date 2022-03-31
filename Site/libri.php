@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use DB\Service;
 
@@ -18,7 +19,7 @@ if ($queryLibri->ok()) {
     $listaLibri = "<ul class='bookCards'>";
     $cont = 0;
     foreach ($queryLibri->get_result() as $libro) {
-        $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['ISBN'] . "'><img class='homeCardsImg' src='" . $libro['Percorso'] . "' alt=''>" . $libro['Titolo'] . "</a></li>";
+        $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='homeCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] . "</a></li>";
     }
     $listaLibri .= "</ul>";
 
