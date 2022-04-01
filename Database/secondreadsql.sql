@@ -14,11 +14,29 @@ DROP TABLE IF EXISTS Ordine;
 DROP TABLE IF EXISTS Indirizzo;
 DROP TABLE IF EXISTS Recupero;
 DROP TABLE IF EXISTS Utente;
+DROP TABLE IF EXISTS recensione ;
+DROP TABLE IF EXISTS composizione ;
+DROP Table IF EXISTS appartenenza ;
+DROP Table IF EXISTS pubblicazione ;
+DROP TABLE IF EXISTS wishlist;
+DROP TABLE IF EXISTS offerte;
+DROP TABLE IF EXISTS libro;
+DROP TABLE IF EXISTS editore;
+DROP TABLE IF EXISTS categoria;
+DROP TABLE IF EXISTS autore;
+DROP TABLE IF EXISTS ordine;
+DROP TABLE IF EXISTS indirizzo;
+DROP TABLE IF EXISTS recupero;
+DROP TABLE IF EXISTS utente;
 
 CREATE TABLE Editore (
   ID INT(4) UNSIGNED AUTO_INCREMENT,
   Nome VARCHAR(50) NOT NULL,
   PRIMARY KEY(ID)
+CREATE TABLE editore (
+  id INT(4) UNSIGNED AUTO_INCREMENT,
+  nome VARCHAR(50) NOT NULL,
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE Libro (
@@ -32,8 +50,20 @@ CREATE TABLE Libro (
   Percorso VARCHAR(250) NOT NULL,
   Trama VARCHAR(2500) NOT NULL,
   PRIMARY KEY(ISBN),
+CREATE TABLE libro (
+  isbn BIGINT(13) UNSIGNED,
+  titolo VARCHAR(200) NOT NULL,
+  editore INT(4) UNSIGNED NOT NULL,
+  pagine INT(5) UNSIGNED NOT NULL,
+  prezzo DECIMAL(5,2) NOT NULL,
+  quantita INT(3) NOT NULL,
+  data_pubblicazione DATE NOT NULL,
+  percorso VARCHAR(250) NOT NULL,
+  trama VARCHAR(2500) NOT NULL,
+  PRIMARY KEY(isbn),
   CONSTRAINT FK_LibroEditore
   FOREIGN KEY (Editore) REFERENCES Editore(ID)
+  FOREIGN KEY (editore) REFERENCES editore(id)
   ON DELETE CASCADE
 );
 
@@ -42,6 +72,10 @@ CREATE TABLE Categoria (
   ID_Categoria INT(2) UNSIGNED AUTO_INCREMENT,
   Nome VARCHAR(45) NOT NULL,
   PRIMARY KEY(ID_Categoria)
+CREATE TABLE categoria (
+  id_categoria INT(2) UNSIGNED AUTO_INCREMENT,
+  nome VARCHAR(45) NOT NULL,
+  PRIMARY KEY(id_categoria)
 );
 
 CREATE TABLE Autore(
@@ -49,17 +83,28 @@ CREATE TABLE Autore(
   Nome VARCHAR(45) NOT NULL,
   Cognome VARCHAR(70) NOT NULL,
   PRIMARY KEY(ID)
+CREATE TABLE autore(
+  id INT(5) UNSIGNED AUTO_INCREMENT,
+  nome VARCHAR(45) NOT NULL,
+  cognome VARCHAR(70) NOT NULL,
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE Pubblicazione (
   Libro_ISBN BIGINT(13) UNSIGNED,
   Autore_ID INT(5) UNSIGNED,
   PRIMARY KEY (Libro_ISBN, Autore_ID),
+CREATE TABLE pubblicazione (
+  libro_isbn BIGINT(13) UNSIGNED,
+  autore_id INT(5) UNSIGNED,
+  PRIMARY KEY (libro_isbn, autore_id),
   CONSTRAINT FK_LibroPubblicazione
     FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN)
+    FOREIGN KEY (libro_isbn) REFERENCES libro(isbn)
     ON DELETE CASCADE,
   CONSTRAINT FK_AutorePubblicazione
     FOREIGN KEY (Autore_ID) REFERENCES Autore(ID)
+    FOREIGN KEY (autore_id) REFERENCES autore(id)
     ON DELETE CASCADE
   );
 
@@ -67,11 +112,17 @@ CREATE TABLE Appartenenza (
   Libro_ISBN BIGINT(13) UNSIGNED,
   Codice_Categoria INT(2) UNSIGNED,
   PRIMARY KEY (Libro_ISBN,Codice_Categoria),
+CREATE TABLE appartenenza (
+  libro_isbn BIGINT(13) UNSIGNED,
+  codice_categoria INT(2) UNSIGNED,
+  PRIMARY KEY (libro_isbn,codice_categoria),
   CONSTRAINT FK_LibroAppartenenza
     FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+    FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
     ON DELETE CASCADE,
   CONSTRAINT FK_CategoriaAppartenenza
     FOREIGN KEY(Codice_Categoria) REFERENCES Categoria(ID_Categoria)
+    FOREIGN KEY(codice_categoria) REFERENCES categoria(id_categoria)
     ON DELETE CASCADE
   );
 
@@ -85,14 +136,26 @@ CREATE TABLE Utente (
   Password VARCHAR(64) NOT NULL,
   Telefono VARCHAR(15) NOT NULL UNIQUE,
   PRIMARY KEY(Codice_identificativo)
+CREATE TABLE utente (
+  codice_identificativo INT(10) UNSIGNED AUTO_INCREMENT,
+  nome VARCHAR(45) NOT NULL,
+  cognome VARCHAR(45) NOT NULL,
+  data_nascita DATE NOT NULL,
+  username VARCHAR(10) NOT NULL UNIQUE,
+  email VARCHAR(60) NOT NULL UNIQUE ,
+  password VARCHAR(64) NOT NULL,
+  telefono VARCHAR(15) NOT NULL UNIQUE,
+  PRIMARY KEY(codice_identificativo)
   );
 
   CREATE TABLE Recupero (
+  CREATE TABLE recupero (
   id VARCHAR(32),
   utente INT(10) UNSIGNED,
   PRIMARY KEY (utente),
   CONSTRAINT FK_Utente
   FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
+  FOREIGN KEY (utente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
 );
 
@@ -102,11 +165,17 @@ CREATE TABLE WishList(
   Cliente_Codice INT(10) UNSIGNED,
   Libro_ISBN BIGINT(13) UNSIGNED,
   PRIMARY KEY(Libro_ISBN, Cliente_Codice),
+CREATE TABLE wishlist(
+  cliente_codice INT(10) UNSIGNED,
+  libro_isbn BIGINT(13) UNSIGNED,
+  PRIMARY KEY(libro_isbn, cliente_codice),
   CONSTRAINT FK_UtenteWishlist
     FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
+    FOREIGN KEY(cliente_codice) REFERENCES utente(codice_identificativo)
     ON DELETE CASCADE,
   CONSTRAINT FK_LibroWishlist
   FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE
 );
 
@@ -118,12 +187,22 @@ CREATE TABLE Indirizzo (
   Num_civico INT(3) UNSIGNED NOT NULL,
   Utente INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice),
+CREATE TABLE indirizzo (
+  codice INT(6) UNSIGNED AUTO_INCREMENT,
+  via VARCHAR(50) NOT NULL,
+  città VARCHAR(20) NOT NULL,
+  cap INT(5) UNSIGNED NOT NULL,
+  num_civico INT(3) UNSIGNED NOT NULL,
+  utente INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY(codice),
   CONSTRAINT FK_UtenteIndirizzo
   FOREIGN KEY(Utente) REFERENCES Utente(Codice_identificativo)
+  FOREIGN KEY(utente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
   );
 
 CREATE TABLE Ordine (
+CREATE TABLE ordine (
   Codice_univoco INT(8) UNSIGNED AUTO_INCREMENT,
   Cliente_Codice INT(10) UNSIGNED,
   Data DATE NOT NULL,
@@ -132,11 +211,20 @@ CREATE TABLE Ordine (
   Indirizzo INT(4) UNSIGNED NOT NULL,
   Totale DECIMAL(9,2) UNSIGNED NOT NULL,
   PRIMARY KEY(Codice_univoco),
+  cliente_codice INT(10) UNSIGNED,
+  data DATE NOT NULL,
+  data_partenza DATE NOT NULL,
+  data_consegna DATE NOT NULL,
+  indirizzo INT(4) UNSIGNED NOT NULL,
+  totale DECIMAL(9,2) UNSIGNED NOT NULL,
+  PRIMARY KEY(codice_univoco),
   CONSTRAINT FK_UtenteOrdine
   FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
+  FOREIGN KEY(cliente_codice) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE,
   CONSTRAINT FK_IndirizzoOrdine
   FOREIGN KEY (Indirizzo) REFERENCES Indirizzo(Codice)
+  FOREIGN KEY (indirizzo) REFERENCES indirizzo(codice)
   ON DELETE CASCADE
 );
 
@@ -145,25 +233,40 @@ CREATE TABLE Composizione (
   Codice_ordine INT(8) UNSIGNED NOT NULL,
   Quantita INT(3) UNSIGNED,
   PRIMARY KEY (Elemento,Codice_ordine),
+CREATE TABLE composizione (
+  elemento BIGINT(13) UNSIGNED,
+  codice_ordine INT(8) UNSIGNED NOT NULL,
+  quantita INT(3) UNSIGNED,
+  PRIMARY KEY (elemento,codice_ordine),
   CONSTRAINT FK_LibroComposizione
   FOREIGN KEY(Elemento) REFERENCES Libro(ISBN)
+  FOREIGN KEY(elemento) REFERENCES libro(isbn)
   ON DELETE CASCADE,
   CONSTRAINT FK_OrdineComposizione
   FOREIGN KEY(Codice_ordine) REFERENCES Ordine(Codice_univoco)
+  FOREIGN KEY(codice_ordine) REFERENCES ordine(codice_univoco)
   ON DELETE CASCADE
   );
 
 CREATE TABLE Recensione (
+CREATE TABLE recensione (
   idUtente INT(10) UNSIGNED,
   Libro_ISBN BIGINT(13) UNSIGNED,
   DataInserimento DATE NOT NULL,
   Valutazione INT(1) NOT NULL,
   Commento VARCHAR(500) NOT NULL,
   PRIMARY KEY(idUtente,Libro_ISBN),
+  libro_isbn BIGINT(13) UNSIGNED,
+  datainserimento DATE NOT NULL,
+  valutazione INT(1) NOT NULL,
+  commento VARCHAR(500) NOT NULL,
+  PRIMARY KEY(idutente,libro_isbn),
   CONSTRAINT FK_RecensioneLibro
   FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE,
   FOREIGN KEY(idUtente) REFERENCES Utente(Codice_identificativo)
+  FOREIGN KEY(idutente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
   );
 
@@ -173,12 +276,19 @@ CREATE TABLE Offerte (
   Data_Fine DATE NOT NULL,
   Sconto INT(2) NOT NULL,
   PRIMARY KEY(Libro_ISBN,Data_Inizio),
+CREATE TABLE offerte (
+  libro_isbn BIGINT(13) UNSIGNED,
+  data_inizio DATE,
+  data_fine DATE NOT NULL,
+  sconto INT(2) NOT NULL,
+  PRIMARY KEY(libro_isbn,data_inizio),
   CONSTRAINT FK_OfferteISBN
   FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
+  FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE
 );
 
-INSERT INTO Editore(ID,Nome) VALUES
+INSERT INTO editore(id,nome) VALUES
 (3000,'Newton Compton Editori'),
 (3001,'Baldini & Castoldi'),
 (3002,'Libreria Pienogiorno'),
@@ -237,7 +347,7 @@ INSERT INTO Editore(ID,Nome) VALUES
 (3055, 'Dix'),
 (3056, 'Marvel Libri');
 
-INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso, Trama) VALUES
+NSERT INTO libro(isbn,titolo,editore,pagine,prezzo,quantita,data_pubblicazione,percorso, trama) VALUES
 (9788822760265,'La canzone romana.',3000,320,11.40,15,'2021-10-28','images/books/lacanzoneromana.jpg',"Si sa, le canzoni sono da sempre lo specchio di un luogo e di un tempo: rappresentano i sentimenti più profondi delle città in cui sono nate e raccontano segreti e contraddizioni dei periodi in cui si sono diffuse. E naturalmente Roma e il suo patrimonio musicale tradizionale non fanno eccezione."),
 (9788893884167,'Il poeta che non sa parlare',3001,256,17.10,2,'2021-10-14', 'images/books/ilpoetachenonsaparlare.jpg', "La vita di Nino D’Angelo non è una favola, è l’emblema del cambiamento. La sua è una storia unica eppure esemplare: nato nella periferia napoletana, ha corso più veloce della miseria e ha realizzato il sogno di fare il cantante. Lui che è stato prima “il caschetto biondo” - neomelodico prima ancora che questo genere esistesse - e poi l’artista che evolve, che produce poesia, che rivoluziona la sua musica e i suoi dischi, fino a comporre anche per il cinema di qualità, raccoglie ora in questo libro alcuni frammenti della sua vita, la sintesi dei suoi stati d’animo, e traccia la sua storia personale e artistica. Questo volume potrebbe assomigliare a un’autobiografia, ma è in realtà molto di più: più che seguire un ordine cronologico, fa proprio l’andamento ondivago della memoria, che accarezza, accelera, che rallenta per ricordare un amico, un luogo, un aneddoto del passato; in queste pagine, scritte con ironia e leggerezza, ma segnate anche da tanta drammaticità e lirismo, si ha l’impressione di scavare in profondità e di arrivare a conoscere, di quello che è ormai un simbolo della canzone napoletana, anche le pieghe più intime, i trascorsi più remoti, i pensieri più veri. Il risultato è un affresco di luoghi e persone – dall’estrema periferia alle luci della ribalta, da Forcella alla vertigine del successo –, ma è anche e soprattutto un ritratto di un mondo che – sembra dirci Nino D’Angelo – forse ha molto da insegnare: un universo di povertà e dolore, ma fatto di piccole cose, di amicizie sincere, di famiglie numerose che si aiutano, di scherzi e scazzottate, un mondo in cui nessuno si salva da solo e in cui si può ridere di tutto, anche della miseria." ),
 (9791280229366,'La regina di Kabul',3002,173,16.02,4,'2021-11-17', 'images/books/lareginadikabul.jpg', "Un bambino che costruisce nel segreto il suo aquilone. Una donna con il burqa che sfida ogni convenzione per lavorare nel nuovo ospedale appena sorto nella capitale. Un calligrafo che accetta l'inaudito compito di dipingere ciò che è proibito. Un ragazzino arruolato a forza dai talebani mentre governa le sue pecore. Un'infermiera che si incammina lungo sentieri minati per prestare soccorso. E su tutti, lo spettro incombente della guerra, perché non ha conosciuto altro scenario la maggior parte della popolazione afgana." ),
@@ -345,7 +455,7 @@ INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,
 (9788808931238, 'Unitutor Medicina - Test di ammissione per Medicina', 3025, 1288, 52.99, 20, '2021-10-19', 'images/books/unitutormedicina.jpg', "Se stai pensando di iscriverti a una Facoltà universitaria a numero chiuso, probabilmente dovrai affrontare dei test d'ammissione. Grazie ai manuali della collana Unitutor edita da Zanichelli puoi ripassare ed esercitarti nelle discipline richieste. I libri contengono infatti sia un apparato teorico arricchito con immagini per aiutare la memorizzazione, sia una ricca componente di quiz per fare pratica e arrivare preparati ad affrontare l'esame. " ),
 (9798780216834, 'Suture Chirurgiche', 3049, 203, 9.99, 10, '2021-12-06', 'images/books/suturechirurgiche.jpg', "Sei appassionato di medicina e chirurgia e vorresti conoscere qualcosa di più su come fare una vera sutura? Sei uno studente di medicina o un professionista nel settore medico e hai bisogno di un manuale pratico e semplice per ripassare i punti fondamentali dei nodi di sutura al momento giusto? Suture Chirurgiche è il manuale semplice e pratico, da sfogliare quando ne hai più bisogno, per tenere sempre a mente i principi di sutura e i principali nodi e tecniche che ti troverai ad affrontare sul campo." );
 
-INSERT INTO Offerte(Libro_ISBN,Data_Inizio,Data_Fine,Sconto) VALUES
+INSERT INTO offerte(libro_isbn,data_inizio,data_fine,sconto) VALUES
 (9788830901988, '2022-01-01', '2022-03-30', 20),
 (9788893291019, '2022-01-01', '2022-03-30', 20),
 (9798489916943, '2022-01-01', '2022-03-30', 20),
@@ -358,7 +468,7 @@ INSERT INTO Offerte(Libro_ISBN,Data_Inizio,Data_Fine,Sconto) VALUES
 (9791220500548, '2022-01-01', '2022-03-30', 40);
 
 
-INSERT INTO Categoria(ID_Categoria,Nome) VALUES
+INSERT INTO categoria(id_categoria,nome) VALUES
 (10,'Storia e Biografie'),
 (11,'Fumetti e Manga'),
 (12,'Classici e Romanzi'),
@@ -372,7 +482,7 @@ INSERT INTO Categoria(ID_Categoria,Nome) VALUES
 (20,'Medicina e Salute'),
 (21,'Bambini e Ragazzi');
 
-INSERT INTO Autore(ID,Nome,Cognome) VALUES
+INSERT INTO autore(id,nome,cognome) VALUES
 (50000,'Elena',' Bonelli'),
 (50001,'Nino',"D'Angelo"),
 (50002,'Vauro',' Senesi'),
@@ -487,7 +597,7 @@ INSERT INTO Autore(ID,Nome,Cognome) VALUES
 (50112, 'Alessandro', 'Iannucci');
 
 
-INSERT INTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
+INSERT INTO pubblicazione(libro_isbn,autore_id) VALUES
 (9788822760265,50000),
 (9788893884167,50001),
 (9791280229366,50002),
@@ -607,7 +717,7 @@ INSERT INTO Pubblicazione(Libro_ISBN,Autore_ID) VALUES
 (9798780216834,50110);
 
 
-INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
+INSERT INTO appartenenza(libro_isbn,codice_categoria) VALUES
 (9788822760265,10),
 (9788893884167,10),
 (9791280229366,10),
@@ -748,7 +858,7 @@ INSERT INTO Appartenenza(Libro_ISBN,Codice_Categoria) VALUES
 (9788804604044,17),
 (9788804604044,21);
 
-INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Email,Password,Telefono) VALUES
+INSERT INTO utente(codice_identificativo,nome,cognome,data_nascita,username,email,password,telefono) VALUES
 (1000000000,'Annalisa','Bianchi','2000-05-10','anna5','anabianchi42@gmail.com','cbd2dafa01e61db179075c568e9291ff58cf575b55df75c671c67f4629698778','1597863412'),
 (1000000001,'Fiona','Rossi','1997-03-12','fior7','fiona12r@gmail.com','a9359ac376014796b24e769a768cf051588f63977d9ebb1d1a10df1d1d030215','2548213745'),
 (1000000002,'Andrea','Pavin','1989-08-15','pavn5','andapav89@gmail.com','b63d62a03ee2141a8158652173db58b09c0744ff0a6191a43b18b9a16895b1c4','5878134625'),
@@ -761,7 +871,7 @@ INSERT INTO Utente(Codice_identificativo,Nome,Cognome,Data_nascita,Username,Emai
 (1000000009, 'Michele', 'Vigigi', '2000-01-01', 'costalover', 'pepe4738@gmail.com', 'ee1217f35a45634fb9d0ad92d7bda098f778ac467b5d774da0df4a1087692dd3', '9783465555'),
 (1000000010, 'Angelo', 'Angelini', '1997-09-07', 'angelolini', 'angelolini123@gmail.com', '296d6431677f3cd659af9936fb3b61744927eeea5b6d4c33b6d720ec7d9d4932', '2222222222');
 
-INSERT INTO WishList(Libro_ISBN, Cliente_Codice) VALUES
+INSERT INTO wishlist(libro_isbn, cliente_codice) VALUES
 (9788822760265,1000000000),
 (9788830901988,1000000000),
 (9791280022486,1000000001),
@@ -777,7 +887,7 @@ INSERT INTO WishList(Libro_ISBN, Cliente_Codice) VALUES
 (9788817144988,1000000006),
 (9798650853428,1000000006);
 
-INSERT INTO Indirizzo(Codice,Via,Città,Cap,Num_civico,Utente) VALUES
+INSERT INTO indirizzo(codice,via,città,cap,num_civico,utente) VALUES
 (100000, 'Via Giambattista Belzoni', 'Padova', 35121 , 12, 1000000000),
 (100001, 'Via Vittorio Veneto', 'Firenze', 50050, 8, 1000000001),
 (100002, 'Via Chavanne', 'Aosta' , 11100, 23, 1000000002),
@@ -791,7 +901,7 @@ INSERT INTO Indirizzo(Codice,Via,Città,Cap,Num_civico,Utente) VALUES
 (100010, 'Via Cortelonga' , 'Torino', 10020, 10, 1000000010);
 
 
- INSERT INTO Ordine(Codice_univoco,Cliente_Codice,Data,Data_partenza,Data_consegna,Indirizzo,Totale) VALUES 
+INSERT INTO ordine(codice_univoco,cliente_codice,data,data_partenza,data_consegna,indirizzo,totale) VALUES 
  (50000000, 1000000000,'2019-07-22','2019-07-23','2019-07-25', 100000,65.25),
  (50000001, 1000000000,'2019-05-10','2019-05-11','2019-05-28', 100000,45.80),
  (50000002, 1000000002,'2018-11-11','2018-11-13','2018-11-24', 100002,84.50),
@@ -848,7 +958,7 @@ INSERT INTO Indirizzo(Codice,Via,Città,Cap,Num_civico,Utente) VALUES
  (50000053, 1000000010,'2021-07-27','2021-07-28','2021-07-29',100010,71.25),
  (50000054, 1000000010,'2021-07-28','2021-07-29','2021-07-30',100010,18.90);
 
-INSERT INTO Composizione(Elemento,Codice_ordine,Quantita) VALUES
+INSERT INTO composizione(elemento,codice_ordine,quantita) VALUES
 (9788893884167,50000000,1),
 (9788868685768,50000000,3),
 (9788861026223,50000001,1),
@@ -910,8 +1020,7 @@ INSERT INTO Composizione(Elemento,Codice_ordine,Quantita) VALUES
 (9788868957636,50000054,1);
 
 
-INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES 
-
+INSERT INTO recensione(idutente,libro_isbn,datainserimento,valutazione,commento) VALUES 
 (1000000004,9788893884167, '2020-02-20', 1, "Orribile, il mio falegname con 5 lire lo faceva meglio!!"),
 (1000000004,9788879554596, '2020-02-26', 5, "Stupendo!!"),
 (1000000004,9788830901988, '2020-02-26', 4, "Bello...Mi sono piaciute le descrizioni."),
@@ -1438,10 +1547,10 @@ L''informazione utilissima è l''indicazione del luogo in cui si trovano i dipin
 (1000000002,9788858018460,'2021-09-13',2,' Arrivato perfettamente nei tempi e con una rilegatura forte e robusta. All''interno immagini vivide e colorate che invogliano a leggere. L''ho acquistato per mia figlia che sta studiando il corpo umano a scuola. Ha voluto subito portarlo a scuola per farlo vedere ai compagni. Acquisto azzeccato.');
 
 
-ALTER TABLE Editore AUTO_INCREMENT=3041;
-ALTER TABLE Categoria AUTO_INCREMENT=22;
-ALTER TABLE Autore AUTO_INCREMENT=50067;
-ALTER TABLE Utente AUTO_INCREMENT=1000000007;
-ALTER TABLE Indirizzo AUTO_INCREMENT=100007;
-ALTER TABLE Ordine AUTO_INCREMENT=50000006;
-ALTER TABLE Recensione AUTO_INCREMENT=306;
+ALTER TABLE editore AUTO_INCREMENT=3041;
+ALTER TABLE categoria AUTO_INCREMENT=22;
+ALTER TABLE autore AUTO_INCREMENT=50067;
+ALTER TABLE utente AUTO_INCREMENT=1000000007;
+ALTER TABLE indirizzo AUTO_INCREMENT=100007;
+ALTER TABLE ordine AUTO_INCREMENT=50000006;
+ALTER TABLE recensione AUTO_INCREMENT=306;
