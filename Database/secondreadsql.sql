@@ -1,19 +1,5 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS Recensione ;
-DROP TABLE IF EXISTS Composizione ;
-DROP Table IF EXISTS Appartenenza ;
-DROP Table IF EXISTS Pubblicazione ;
-DROP TABLE IF EXISTS WishList;
-DROP TABLE IF EXISTS Offerte;
-DROP TABLE IF EXISTS Libro;
-DROP TABLE IF EXISTS Editore;
-DROP TABLE IF EXISTS Categoria;
-DROP TABLE IF EXISTS Autore;
-DROP TABLE IF EXISTS Ordine;
-DROP TABLE IF EXISTS Indirizzo;
-DROP TABLE IF EXISTS Recupero;
-DROP TABLE IF EXISTS Utente;
 DROP TABLE IF EXISTS recensione ;
 DROP TABLE IF EXISTS composizione ;
 DROP Table IF EXISTS appartenenza ;
@@ -29,27 +15,12 @@ DROP TABLE IF EXISTS indirizzo;
 DROP TABLE IF EXISTS recupero;
 DROP TABLE IF EXISTS utente;
 
-CREATE TABLE Editore (
-  ID INT(4) UNSIGNED AUTO_INCREMENT,
-  Nome VARCHAR(50) NOT NULL,
-  PRIMARY KEY(ID)
 CREATE TABLE editore (
   id INT(4) UNSIGNED AUTO_INCREMENT,
   nome VARCHAR(50) NOT NULL,
   PRIMARY KEY(id)
 );
 
-CREATE TABLE Libro (
-  ISBN BIGINT(13) UNSIGNED,
-  Titolo VARCHAR(200) NOT NULL,
-  Editore INT(4) UNSIGNED NOT NULL,
-  Pagine INT(5) UNSIGNED NOT NULL,
-  Prezzo DECIMAL(5,2) NOT NULL,
-  Quantita INT(3) NOT NULL,
-  Data_Pubblicazione DATE NOT NULL,
-  Percorso VARCHAR(250) NOT NULL,
-  Trama VARCHAR(2500) NOT NULL,
-  PRIMARY KEY(ISBN),
 CREATE TABLE libro (
   isbn BIGINT(13) UNSIGNED,
   titolo VARCHAR(200) NOT NULL,
@@ -62,27 +33,17 @@ CREATE TABLE libro (
   trama VARCHAR(2500) NOT NULL,
   PRIMARY KEY(isbn),
   CONSTRAINT FK_LibroEditore
-  FOREIGN KEY (Editore) REFERENCES Editore(ID)
   FOREIGN KEY (editore) REFERENCES editore(id)
   ON DELETE CASCADE
 );
 
 
-CREATE TABLE Categoria (
-  ID_Categoria INT(2) UNSIGNED AUTO_INCREMENT,
-  Nome VARCHAR(45) NOT NULL,
-  PRIMARY KEY(ID_Categoria)
 CREATE TABLE categoria (
   id_categoria INT(2) UNSIGNED AUTO_INCREMENT,
   nome VARCHAR(45) NOT NULL,
   PRIMARY KEY(id_categoria)
 );
 
-CREATE TABLE Autore(
-  ID INT(5) UNSIGNED AUTO_INCREMENT,
-  Nome VARCHAR(45) NOT NULL,
-  Cognome VARCHAR(70) NOT NULL,
-  PRIMARY KEY(ID)
 CREATE TABLE autore(
   id INT(5) UNSIGNED AUTO_INCREMENT,
   nome VARCHAR(45) NOT NULL,
@@ -90,52 +51,30 @@ CREATE TABLE autore(
   PRIMARY KEY(id)
 );
 
-CREATE TABLE Pubblicazione (
-  Libro_ISBN BIGINT(13) UNSIGNED,
-  Autore_ID INT(5) UNSIGNED,
-  PRIMARY KEY (Libro_ISBN, Autore_ID),
 CREATE TABLE pubblicazione (
   libro_isbn BIGINT(13) UNSIGNED,
   autore_id INT(5) UNSIGNED,
   PRIMARY KEY (libro_isbn, autore_id),
   CONSTRAINT FK_LibroPubblicazione
-    FOREIGN KEY (Libro_ISBN) REFERENCES Libro(ISBN)
     FOREIGN KEY (libro_isbn) REFERENCES libro(isbn)
     ON DELETE CASCADE,
   CONSTRAINT FK_AutorePubblicazione
-    FOREIGN KEY (Autore_ID) REFERENCES Autore(ID)
     FOREIGN KEY (autore_id) REFERENCES autore(id)
     ON DELETE CASCADE
   );
 
-CREATE TABLE Appartenenza (
-  Libro_ISBN BIGINT(13) UNSIGNED,
-  Codice_Categoria INT(2) UNSIGNED,
-  PRIMARY KEY (Libro_ISBN,Codice_Categoria),
 CREATE TABLE appartenenza (
   libro_isbn BIGINT(13) UNSIGNED,
   codice_categoria INT(2) UNSIGNED,
   PRIMARY KEY (libro_isbn,codice_categoria),
   CONSTRAINT FK_LibroAppartenenza
-    FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
     FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
     ON DELETE CASCADE,
   CONSTRAINT FK_CategoriaAppartenenza
-    FOREIGN KEY(Codice_Categoria) REFERENCES Categoria(ID_Categoria)
     FOREIGN KEY(codice_categoria) REFERENCES categoria(id_categoria)
     ON DELETE CASCADE
   );
 
-CREATE TABLE Utente (
-  Codice_identificativo INT(10) UNSIGNED AUTO_INCREMENT,
-  Nome VARCHAR(45) NOT NULL,
-  Cognome VARCHAR(45) NOT NULL,
-  Data_nascita DATE NOT NULL,
-  Username VARCHAR(10) NOT NULL UNIQUE,
-  Email VARCHAR(60) NOT NULL UNIQUE ,
-  Password VARCHAR(64) NOT NULL,
-  Telefono VARCHAR(15) NOT NULL UNIQUE,
-  PRIMARY KEY(Codice_identificativo)
 CREATE TABLE utente (
   codice_identificativo INT(10) UNSIGNED AUTO_INCREMENT,
   nome VARCHAR(45) NOT NULL,
@@ -148,45 +87,29 @@ CREATE TABLE utente (
   PRIMARY KEY(codice_identificativo)
   );
 
-  CREATE TABLE Recupero (
   CREATE TABLE recupero (
   id VARCHAR(32),
   utente INT(10) UNSIGNED,
   PRIMARY KEY (utente),
   CONSTRAINT FK_Utente
-  FOREIGN KEY (utente) REFERENCES Utente(Codice_identificativo)
   FOREIGN KEY (utente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
 );
 
 
 
-CREATE TABLE WishList(
-  Cliente_Codice INT(10) UNSIGNED,
-  Libro_ISBN BIGINT(13) UNSIGNED,
-  PRIMARY KEY(Libro_ISBN, Cliente_Codice),
 CREATE TABLE wishlist(
   cliente_codice INT(10) UNSIGNED,
   libro_isbn BIGINT(13) UNSIGNED,
   PRIMARY KEY(libro_isbn, cliente_codice),
   CONSTRAINT FK_UtenteWishlist
-    FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
     FOREIGN KEY(cliente_codice) REFERENCES utente(codice_identificativo)
     ON DELETE CASCADE,
   CONSTRAINT FK_LibroWishlist
-  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
   FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE
 );
 
-CREATE TABLE Indirizzo (
-  Codice INT(6) UNSIGNED AUTO_INCREMENT,
-  Via VARCHAR(50) NOT NULL,
-  Città VARCHAR(20) NOT NULL,
-  Cap INT(5) UNSIGNED NOT NULL,
-  Num_civico INT(3) UNSIGNED NOT NULL,
-  Utente INT(10) UNSIGNED NOT NULL,
-  PRIMARY KEY(Codice),
 CREATE TABLE indirizzo (
   codice INT(6) UNSIGNED AUTO_INCREMENT,
   via VARCHAR(50) NOT NULL,
@@ -196,21 +119,12 @@ CREATE TABLE indirizzo (
   utente INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY(codice),
   CONSTRAINT FK_UtenteIndirizzo
-  FOREIGN KEY(Utente) REFERENCES Utente(Codice_identificativo)
   FOREIGN KEY(utente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
   );
 
-CREATE TABLE Ordine (
 CREATE TABLE ordine (
   Codice_univoco INT(8) UNSIGNED AUTO_INCREMENT,
-  Cliente_Codice INT(10) UNSIGNED,
-  Data DATE NOT NULL,
-  Data_partenza DATE NOT NULL,
-  Data_consegna DATE NOT NULL,
-  Indirizzo INT(4) UNSIGNED NOT NULL,
-  Totale DECIMAL(9,2) UNSIGNED NOT NULL,
-  PRIMARY KEY(Codice_univoco),
   cliente_codice INT(10) UNSIGNED,
   data DATE NOT NULL,
   data_partenza DATE NOT NULL,
@@ -219,63 +133,40 @@ CREATE TABLE ordine (
   totale DECIMAL(9,2) UNSIGNED NOT NULL,
   PRIMARY KEY(codice_univoco),
   CONSTRAINT FK_UtenteOrdine
-  FOREIGN KEY(Cliente_Codice) REFERENCES Utente(Codice_identificativo)
   FOREIGN KEY(cliente_codice) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE,
   CONSTRAINT FK_IndirizzoOrdine
-  FOREIGN KEY (Indirizzo) REFERENCES Indirizzo(Codice)
   FOREIGN KEY (indirizzo) REFERENCES indirizzo(codice)
   ON DELETE CASCADE
 );
 
-CREATE TABLE Composizione (
-  Elemento BIGINT(13) UNSIGNED,
-  Codice_ordine INT(8) UNSIGNED NOT NULL,
-  Quantita INT(3) UNSIGNED,
-  PRIMARY KEY (Elemento,Codice_ordine),
 CREATE TABLE composizione (
   elemento BIGINT(13) UNSIGNED,
   codice_ordine INT(8) UNSIGNED NOT NULL,
   quantita INT(3) UNSIGNED,
   PRIMARY KEY (elemento,codice_ordine),
   CONSTRAINT FK_LibroComposizione
-  FOREIGN KEY(Elemento) REFERENCES Libro(ISBN)
   FOREIGN KEY(elemento) REFERENCES libro(isbn)
   ON DELETE CASCADE,
   CONSTRAINT FK_OrdineComposizione
-  FOREIGN KEY(Codice_ordine) REFERENCES Ordine(Codice_univoco)
   FOREIGN KEY(codice_ordine) REFERENCES ordine(codice_univoco)
   ON DELETE CASCADE
   );
 
-CREATE TABLE Recensione (
 CREATE TABLE recensione (
   idUtente INT(10) UNSIGNED,
-  Libro_ISBN BIGINT(13) UNSIGNED,
-  DataInserimento DATE NOT NULL,
-  Valutazione INT(1) NOT NULL,
-  Commento VARCHAR(500) NOT NULL,
-  PRIMARY KEY(idUtente,Libro_ISBN),
   libro_isbn BIGINT(13) UNSIGNED,
   datainserimento DATE NOT NULL,
   valutazione INT(1) NOT NULL,
   commento VARCHAR(500) NOT NULL,
   PRIMARY KEY(idutente,libro_isbn),
   CONSTRAINT FK_RecensioneLibro
-  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
   FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE,
-  FOREIGN KEY(idUtente) REFERENCES Utente(Codice_identificativo)
   FOREIGN KEY(idutente) REFERENCES utente(codice_identificativo)
   ON DELETE CASCADE
   );
 
-CREATE TABLE Offerte (
-  Libro_ISBN BIGINT(13) UNSIGNED,
-  Data_Inizio DATE,
-  Data_Fine DATE NOT NULL,
-  Sconto INT(2) NOT NULL,
-  PRIMARY KEY(Libro_ISBN,Data_Inizio),
 CREATE TABLE offerte (
   libro_isbn BIGINT(13) UNSIGNED,
   data_inizio DATE,
@@ -283,7 +174,6 @@ CREATE TABLE offerte (
   sconto INT(2) NOT NULL,
   PRIMARY KEY(libro_isbn,data_inizio),
   CONSTRAINT FK_OfferteISBN
-  FOREIGN KEY(Libro_ISBN) REFERENCES Libro(ISBN)
   FOREIGN KEY(libro_isbn) REFERENCES libro(isbn)
   ON DELETE CASCADE
 );
