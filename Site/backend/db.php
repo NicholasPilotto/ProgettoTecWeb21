@@ -652,6 +652,40 @@ class Service extends Constant {
     return $res;
   }
 
+  public function get_order_books($order): response_manager {
+    $query = "SELECT *
+              FROM ordine
+              INNER JOIN composizione 
+              ON ordine.Codice_univoco = composizione.Codice_ordine
+              INNER JOIN libro
+              ON composizione.Elemento = libro.ISBN
+              WHERE ordine.Cliente_Codice = ?
+              GROUP BY ordine.Codice_univoco";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false || $stmt->bind_param('s', $order) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro per questo ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
   public function insert_review($utenteid, $isbn, $valore, $commento): response_manager {
     $query = "INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
 
