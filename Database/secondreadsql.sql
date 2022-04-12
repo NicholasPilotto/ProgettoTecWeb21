@@ -124,7 +124,7 @@ CREATE TABLE indirizzo (
   );
 
 CREATE TABLE ordine (
-  Codice_univoco INT(8) UNSIGNED AUTO_INCREMENT,
+  codice_univoco INT(8) UNSIGNED AUTO_INCREMENT,
   cliente_codice INT(10) UNSIGNED,
   data DATE NOT NULL,
   data_partenza DATE NOT NULL,
