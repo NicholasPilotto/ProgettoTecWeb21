@@ -16,8 +16,8 @@ let dettagli_form = {
   ],
   "username": [
     "Username",
-    /^[A-Za-z\s]\w{2,20}$$/,
-    "Inserire un username corretto"
+    /^[A-Za-z\s]\w{2,10}$$/,
+    "Inserire un username di lunghezza tra i 2 e 10 caratteri"
   ],
   "email": [
     "Indirizzo mail",
