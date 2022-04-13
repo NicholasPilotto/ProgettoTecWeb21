@@ -42,7 +42,7 @@ if (isset($_GET['isbn'])) {
         // Ce un libro con quell'isbn, posso andare avanti
 
         // ---- IMG LIBRO ----
-        $imgLibro = "<img id='imgLibro' src=" . $tmp[0]['percorso'] . ">";
+        $imgLibro = "<img id='imgLibro' alt='' src='" . $tmp[0]['percorso'] . "'>";
 
         // ---- INFO GENERALI ----
 
@@ -114,8 +114,8 @@ if (isset($_GET['isbn'])) {
         $trama .= "<p>" . $tmp[0]['trama'] . "</p>";
 
         // ---- DETTAGLI LIBRO ----
-        $dettagliLibro = "<ul>";
-        $dettagliLibro .= "<h3>Informazioni Libro</h3>";
+        $dettagliLibro = "<h3>Informazioni Libro</h3>";
+        $dettagliLibro .= "<ul>";
         $dettagliLibro .= "<li><span class='miniGrassetto'>Titolo:</span> " . $tmp[0]['titolo'] . "</li>";
 
         // autore
@@ -192,84 +192,120 @@ if (isset($_GET['isbn'])) {
         $listaRecensioni = "<ul id='listaRecensioni'>";
         $cont = 0;
         $maxRec = 10;
-        // if ok
-        foreach($queryRecensioni->get_result() as $recensione)
+        
+        if($queryRecensioni->ok())
         {
-            if($cont >= $maxRec)
+            $arrayRecensioni = $queryRecensioni->get_result();
+
+            // cerca se esiste una recensione fatta dall'utente loggato, così da poterla mettere per prima
+            if(isset($_SESSION["Codice_identificativo"]))
             {
-                break;
-            }
-            $queryUtente = $connessione->get_utente_by_id($recensione['idUtente']);
-            
-            // if ok
-            $nomeUtente = $queryUtente->get_result()[0]['username'];
-            $data = $recensione['datainserimento'];
-            $valutazione = $recensione['valutazione'];
-            $commento = $recensione['commento'];
-
-            $listaRecensioni .= "<li";
-            
-            if($cont++ == 0)
-            {
-                $listaRecensioni .= " id='primaRecensione'";
-            }
-            
-            $listaRecensioni .= " class='recensione'>";
-
-            $listaRecensioni .= "<p class='miniGrassetto'>" . $nomeUtente . "</p>";
-
-            // data
-            $arrayData = explode("-", $data);
-            $anno = $arrayData[0];
-            $mese = $arrayData[1];
-            $giorno = $arrayData[2];
-            $listaRecensioni .= "<p>" . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</p>";
-
-            // stelle
-            $scrittaStella = "stell";
-            $scrittaStella .= ($valutazione == 1) ? "a" : "e";
-            $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
-
-            for ($i = 0; $i < 5; $i++)
-            {
-                if ($i < $valutazione)
+                $idUtente = $_SESSION['Codice_identificativo'];
+                $recensioneMia = array_filter(
+                    $arrayRecensioni,
+                    function ($e) use (&$idUtente) {
+                        return $e['idUtente'] == $idUtente;
+                    }
+                );
+                if(count($recensioneMia) > 0)
                 {
-                    $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
-                }
-                else
-                {
-                    $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
+                    $key = array_keys($recensioneMia)[0];
+                    // tolgo la recensione
+                    unset($arrayRecensioni[$key]);
+                    // la rimetto all'inizio dell'array
+                    array_unshift($arrayRecensioni, $recensioneMia[$key]);
                 }
             }
+            
+            foreach($arrayRecensioni as $recensione)
+            {
+                if($cont >= $maxRec)
+                {
+                    break;
+                }
+                $queryUtente = $connessione->get_utente_by_id($recensione['idUtente']);
+                
+                // if ok
+                $nomeUtente = $queryUtente->get_result()[0]['username'];
+                $data = $recensione['datainserimento'];
+                $valutazione = $recensione['valutazione'];
+                $commento = $recensione['commento'];
 
-            $listaRecensioni .= "</abbr></p>";
+                // -- BADGE --
+                $queryBadge = $connessione->get_reward_badge($recensione['idUtente']);
+                // if ok
+                $numeroOrdini = $queryBadge->get_result()[0]['total'];
 
-            $listaRecensioni .= "<p>" . $commento . "</p>";
+                $lv = 0;
+                if($numeroOrdini >= 15)
+                {
+                    $lv = 3;
+                    $numeroOrdini = 15;
+                }
+                else if($numeroOrdini >= 10)
+                {
+                    $lv = 2;
+                    $numeroOrdini = 10;
+                }
+                else if($numeroOrdini >= 5)
+                {
+                    $lv = 1;
+                    $numeroOrdini = 5;
+                }
 
-            $listaRecensioni .= "</li>";
+                $badge = "";
+                if($lv > 0)
+                {
+                    $badge = "<abbr title='Badge livello " . $lv . ": questo utente ha effettuato più di " . $numeroOrdini . " ordini'><i class='fas fa-award badgeLv" . $lv . "'></i></abbr>";
+                }
 
-            /*
-                <ul id="listaRecensioni">
-                    <li id="primaRecensione" class="recensione">
-                        <p>Nome utente</p>
-                        <p>Data</p>
-                        <p>Valutazione</p>
-                        <p>Commento</p>
-                    </li>
-                    <li class="recensione">
-                        <p>Nome utente</p>
-                        <p>Data</p>
-                        <p>Valutazione</p>
-                        <p>Commento</p>
-                    </li>
-                    <li class="recensione">
-                        <p>Nome utente</p>
-                        <p>Data</p>
-                        <p>Valutazione</p>
-                        <p>Commento</p>
-                    </li>
-                </ul>
-            */
+                // -----------
+
+                $listaRecensioni .= "<li";
+                
+                if($cont++ == 0)
+                {
+                    $listaRecensioni .= " id='primaRecensione'";
+                }
+                
+                $listaRecensioni .= " class='recensione'>";
+
+                $listaRecensioni .= "<p class='miniGrassetto'>" . $nomeUtente . " " . $badge . "</p>";
+
+                // data
+                $arrayData = explode("-", $data);
+                $anno = $arrayData[0];
+                $mese = $arrayData[1];
+                $giorno = $arrayData[2];
+                $listaRecensioni .= "<p>" . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</p>";
+
+                // stelle
+                $scrittaStella = "stell";
+                $scrittaStella .= ($valutazione == 1) ? "a" : "e";
+                $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
+
+                for ($i = 0; $i < 5; $i++)
+                {
+                    if ($i < $valutazione)
+                    {
+                        $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
+                    }
+                    else
+                    {
+                        $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
+                    }
+                }
+
+                $listaRecensioni .= "</abbr></p>";
+
+                $listaRecensioni .= "<p>" . $commento . "</p>";
+
+                $listaRecensioni .= "</li>";
+            }
+        }
+        else
+        {
+            $trovatoErrore = true;
         }
         $listaRecensioni .= "</ul>";
 
