@@ -3,7 +3,8 @@
     margin: 0;
 }
 
-html, body {
+html,
+body {
     font-size: 100%;
     /*font-family: "Comic Sans MS", cursive, sans-serif;*/
     font-family: 'Open Sans', sans-serif;
@@ -168,7 +169,8 @@ SEZIONE CONTENT
 
     display: flex;
 
-    flex-wrap: wrap; /* Andare a capo */
+    flex-wrap: wrap;
+    /* Andare a capo */
     justify-content: center;
 }
 
@@ -188,9 +190,10 @@ SEZIONE CONTENT
     margin-left: auto;
     margin-right: auto;
     display: block;
-    
+
     border-radius: 5px;
 }
+
 /* ------------------- HOME ------------------- */
 
 
@@ -213,7 +216,7 @@ SEZIONE CONTENT
 .accediRegistrati {
     width: 25em;
 
-    margin: auto;    
+    margin: auto;
     padding-bottom: 2em;
     padding-top: 2em;
 }
@@ -360,12 +363,13 @@ SEZIONE CONTENT
     list-style-type: none;
 
     display: flex;
-    flex-wrap: wrap; /* Andare a capo */
+    flex-wrap: wrap;
+    /* Andare a capo */
 
     /*border-left: 1px solid #aaaaaa;*/
 }
 
-.advertsCards li{
+.advertsCards li {
     border-top: 1px solid #aaaaaa;
 }
 
@@ -382,7 +386,7 @@ li.imgLi {
     /*border: 1px solid rgb(240, 38, 38);*/
 
     text-align: center;
-    
+
     padding-top: 1em;
     padding-bottom: 1em;
 }
@@ -396,7 +400,7 @@ li.textLi {
     padding-bottom: 0.6em;
 }
 
-li.textLi p{
+li.textLi p {
     padding-top: 0.5em;
 }
 
@@ -546,7 +550,8 @@ a.titolo {
     border: 1px solid #aaaaaa;
     border-top: none;
 
-    padding: 0.4em 0.5em 0.4em; /* top, right e left, bottom */
+    padding: 0.4em 0.5em 0.4em;
+    /* top, right e left, bottom */
 }
 
 #primaRecensione {
@@ -575,19 +580,19 @@ a.titolo {
     flex-wrap: wrap;
 }
 
-.accountCards li {    
-    
+.accountCards li {
+
     /*
     background-color: cornsilk;
     border: 1px solid #000;
     border-radius: 5px;
     */
-    
+
     flex-basis: 20%;
     flex-grow: 0;
     flex-shrink: 0;
 
-    
+
     margin-left: 20%;
     margin-top: 0.7em;
     margin-bottom: 1em;
@@ -610,7 +615,7 @@ SEZIONE ERRORI
 */
 
 .errorSuggestion {
-    color:rgb(201, 98, 98);
+    color: rgb(201, 98, 98);
     font-size: 0.8em;
     display: block;
     /* margin-top: -1em; */
@@ -630,12 +635,35 @@ footer {
     padding: 0.5em;
 
     background-color: #146e53;
+    padding-bottom: 2em;
 }
 
 footer p {
     display: inline;
     font-style: italic;
     color: white;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:visited {
+    color: white;
+}
+
+footer a:hover {
+    color: #aaaaaa;
+}
+
+footer ul {
+    padding-bottom: 3em;
+    display: flex;
+    justify-content: center;
+}
+
+footer ul li {
+    text-align: center;
 }
 
 footer .imgValidCode {
