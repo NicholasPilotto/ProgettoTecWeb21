@@ -30,6 +30,10 @@ class graphics {
         $thisYear = date("Y");
         $footerHTML = str_replace("</currentDate>", $thisYear, $footerHTML);
 
+        $upButton = file_get_contents("upButton.html");
+
+        $paginaHTML = str_replace("</upButton>", $upButton, $paginaHTML);
+
         $paginaHTML = str_replace("</headerSito>", $headerHTML, $paginaHTML);
         $paginaHTML = str_replace("</linkSito>", $linkHTML, $paginaHTML);
         return str_replace("</footerSito>", $footerHTML, $paginaHTML);
