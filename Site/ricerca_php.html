@@ -19,38 +19,8 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <script>
-        function resetFilters() {
-            var checkElement = document.querySelectorAll('input[type=checkbox]');
-            checkElement.forEach(check => {
-                check.checked = false;
-            });
 
-            document.getElementById("prezzoMin").value = 1;
-            document.getElementById("prezzoMax").value = 20;
-
-            return false;
-        }
-
-        function controlNumberMin() {
-            var min = document.getElementById("prezzoMin");
-            var max = document.getElementById("prezzoMax");
-
-            if (min.value == max.value - 1) {
-                min.max = min.value;
-            }
-        }
-
-        function controlNumberMax() {
-            var min = document.getElementById("prezzoMin");
-            var max = document.getElementById("prezzoMax");
-            min.max = max.value - 1;
-
-            if (min.value == max.value) {
-                min.value = max.value - 1;
-            }
-        }
-    </script>
+    <script src="./js/researchFilters.js"></script>
 
     <!-- Segnaposto -->
     </linkSito>
@@ -60,6 +30,7 @@
 <body>
     <!-- Segnaposto -->
     </headerSito>
+    </upButton>
 
     <nav id="breadcrumb">
         <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; Ricerca</p>
@@ -94,7 +65,7 @@
                     </listaFiltriPrezzo>
                 </fieldset>
 
-                <input class="btnFiltri button" type="submit" value="Reset" onclick="return resetFilters();" />
+                <input class="btnFiltri button" type="submit" value="Reset" onclick="resetFilters();" />
                 <input class="btnFiltri button" type="submit" value="Applica" />
 
             </form>
