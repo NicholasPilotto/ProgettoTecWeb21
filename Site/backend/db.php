@@ -409,7 +409,7 @@ class Service extends Constant {
   }
 
   public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): response_manager {
-    $query = "INSERT INTO utente (Nome,Cognome,Data_nascita,Username,Email,password,Telefono) VALUES (?,?,?,?,?,?,?)";
+    $query = "INSERT INTO utente (nome,cognome,data_nascita,username,email,password,telefono) VALUES (?,?,?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
     $psw = hash('sha256', $pass);
 
@@ -422,7 +422,7 @@ class Service extends Constant {
     $stmt->close();
 
     if (!$response) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      return new response_manager(array(), $this->connection, "Impossibile registrare questo utente");
     }
     return $this->login($email, $pass);
   }

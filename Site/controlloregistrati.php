@@ -1,50 +1,45 @@
 <?php
 
-    session_start();
+session_start();
 
-    use DB\Service;
-    require_once('backend/db.php');
+use DB\Service;
 
-    $nome = $_POST["nome"];
-    $cognome = $_POST["cognome"];
-    $telefono = $_POST["telefono"];
-    $nascita = $_POST["nascita"];
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    
-    $connessione = new Service();
+require_once('backend/db.php');
 
-    $a = $connessione->openConnection();
+$nome = $_POST["nome"];
+$cognome = $_POST["cognome"];
+$telefono = $_POST["telefono"];
+$nascita = $_POST["nascita"];
+$username = $_POST["username"];
+$email = $_POST["email"];
+$password = $_POST["password"];
 
-    $utente = $connessione->signin($nome, $cognome, $nascita, $username, $email,$password, $telefono);
+$connessione = new Service();
 
-    if($utente->ok())
-    {
-        if(!$utente->is_empty())
-        {
-            $connessione->closeConnection();
+$a = $connessione->openConnection();
 
-            $_SESSION["Codice_identificativo"] = $utente->get_result()[0]['codice_identificativo'];
-            $_SESSION["Nome"] = $utente->get_result()[0]['nome'];
-            $_SESSION["Cognome"] = $utente->get_result()[0]['cognome'];
-            $_SESSION["Data_nascita"] = $utente->get_result()[0]['data_nascita'];
-            $_SESSION["Username"] = $utente->get_result()[0]['username'];
-            $_SESSION["Email"] = $utente->get_result()[0]['email'];
-            $_SESSION["Telefono"] = $utente->get_result()[0]['telefono'];
+$utente = $connessione->signin($nome, $cognome, $nascita, $username, $email, $password, $telefono);
 
-            header("Location: index.php");
-            die();
-        }
-        else
-        {
-            echo "test";
-        }
-    }
-    else
-    {
-        $_SESSION["error"] = $utente->get_error_message();
+if ($utente->ok()) {
+    if (!$utente->is_empty()) {
         $connessione->closeConnection();
-        header("Location: registrati.php");
+
+        $_SESSION["Codice_identificativo"] = $utente->get_result()[0]['codice_identificativo'];
+        $_SESSION["Nome"] = $utente->get_result()[0]['nome'];
+        $_SESSION["Cognome"] = $utente->get_result()[0]['cognome'];
+        $_SESSION["Data_nascita"] = $utente->get_result()[0]['data_nascita'];
+        $_SESSION["Username"] = $utente->get_result()[0]['username'];
+        $_SESSION["Email"] = $utente->get_result()[0]['email'];
+        $_SESSION["Telefono"] = $utente->get_result()[0]['telefono'];
+
+        header("Location: index.php");
         die();
+    } else {
+        echo "test";
     }
+} else {
+    $_SESSION["error"] = $utente->get_error_message();
+    $connessione->closeConnection();
+    header("Location: registrati.php");
+    die();
+}
