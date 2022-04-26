@@ -8,8 +8,8 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "root";
+  protected const DATABASE_NAME = "";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
@@ -661,7 +661,7 @@ class Service extends Constant {
               ON composizione.Elemento = libro.ISBN
               WHERE ordine.Cliente_Codice = ?
               ORDER BY ordine.codice_univoco";
-    
+
     /*
     $query = "SELECT *
               FROM ordine
