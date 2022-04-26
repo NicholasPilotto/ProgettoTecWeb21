@@ -8,8 +8,8 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "";
-  protected const USERNAME = "";
+  protected const DATABASE_NAME = "secondread";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -422,7 +422,7 @@ class Service extends Constant {
     $stmt->close();
 
     if (!$response) {
-      return new response_manager(array(), $this->connection, "Impossibile registrare questo utente");
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
     return $this->login($email, $pass);
   }
@@ -653,14 +653,23 @@ class Service extends Constant {
   }
 
   public function get_order_books($order): response_manager {
-    $query = "SELECT *
+    $query = "SELECT ordine.codice_univoco, libro.titolo, libro.isbn, ordine.data, ordine.data_consegna, ordine.totale, composizione.quantita
               FROM ordine
               INNER JOIN composizione 
               ON ordine.Codice_univoco = composizione.Codice_ordine
               INNER JOIN libro
               ON composizione.Elemento = libro.ISBN
               WHERE ordine.Cliente_Codice = ?
-              GROUP BY ordine.Codice_univoco";
+              ORDER BY ordine.codice_univoco";
+    
+    /*
+    $query = "SELECT *
+              FROM ordine
+              INNER JOIN composizione 
+              ON ordine.Codice_univoco = composizione.Codice_ordine
+              INNER JOIN libro
+              ON composizione.Elemento = libro.ISBN
+              WHERE ordine.Cliente_Codice = ?";*/
 
     $stmt = $this->connection->prepare($query);
     $result = array();
