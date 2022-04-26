@@ -15,11 +15,18 @@ $a = $connessione->openConnection();
 
 $queryLibri = $connessione->get_all_books();
 
-if ($queryLibri->ok()) {
+if ($queryLibri->ok())
+{
     $listaLibri = "<ul class='bookCards'>";
     $cont = 0;
-    foreach ($queryLibri->get_result() as $libro) {
-        $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='homeCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] . "</a></li>";
+    $libri = array();
+    foreach ($queryLibri->get_result() as $libro)
+    {
+        if(!in_array($libro['isbn'], $libri))
+        {
+            array_push($libri, $libro['isbn']);
+            $listaLibri .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='homeCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] . "</a></li>";
+        }
     }
     $listaLibri .= "</ul>";
 
