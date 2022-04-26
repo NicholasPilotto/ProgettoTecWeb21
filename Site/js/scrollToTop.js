@@ -1,21 +1,19 @@
-var mybutton;
+window.onload = function ()
+{
+  var divTornaSu = document.getElementById("divTornaSu");
 
-window.onload = function () {
-  mybutton = document.getElementById("scrollTopBtn");
-}
-
-window.onscroll = function () { scrollFunction() };
-
-function scrollFunction() {
-  if (mybutton) {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      mybutton.style.display = "block";
-    } else {
-      mybutton.style.display = "none";
-    }
+  let hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+  if(hasScrollbar)
+  {
+    divTornaSu.style.display = "block";
+  }
+  else
+  {
+    divTornaSu.style.display = "none";
   }
 }
 
-function topFunction() {
+function topFunction()
+{
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }

@@ -68,6 +68,27 @@ ul {
     color: white;
 }
 
+#divTornaSu {
+    width: 100%;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: none;
+}
+
+#scrollTopBtn {
+    width: 6.5em;
+    height: 2.5em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    /*
+    box-sizing: border-box;
+    width: 6em;
+    height: 2em;
+    padding-bottom: 3em;
+    */
+}
+
 /*
 ==================
 SEZIONE HEADER
@@ -278,6 +299,7 @@ SEZIONE CONTENT
 
 .contentRicerca {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #filtri {
@@ -287,7 +309,8 @@ SEZIONE CONTENT
 }
 
 #contentDx {
-    flex-basis: 65%;
+    flex-basis: 60%;
+    flex-grow: 1;
 }
 
 #filtriForm fieldset {
