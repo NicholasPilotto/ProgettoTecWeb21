@@ -6,7 +6,7 @@ var dettagli_form = {
   ],
   "password": [
     "Password",
-    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/,
+    /([^\s]*)/,
     "I valori inseriti non sembrano corrretti"
   ]
 };
