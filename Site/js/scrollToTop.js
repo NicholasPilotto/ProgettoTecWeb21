@@ -1,19 +1,21 @@
-window.onload = function ()
-{
+function insertButton() {
   var divTornaSu = document.getElementById("divTornaSu");
 
-  let hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
-  if(hasScrollbar)
-  {
-    divTornaSu.style.display = "block";
+  if (divTornaSu) {
+    let hasScrollbar = window.innerHeight < document.body.clientHeight;
+    if (hasScrollbar) {
+      divTornaSu.style.display = "block";
+    }
+    else {
+      divTornaSu.style.display = "none";
+    }
   }
-  else
-  {
-    divTornaSu.style.display = "none";
-  }
+
 }
 
-function topFunction()
-{
+window.onload = function () { insertButton() };
+window.onresize = function () { insertButton() };
+
+function topFunction() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
