@@ -1,0 +1,79 @@
+<!-- 
+    keywords
+    author
+
+    files menu
+
+    footer ??
+
+    search bar, login, ecc ??
+-->
+
+<!DOCTYPE html>
+
+<html lang="it">
+
+<head>
+  <meta charset="utf-8" />
+
+  <title>Lascia Recensione - Second Read</title>
+
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <!-- Segnaposto -->
+  </linkSito>
+
+</head>
+
+<body>
+  <!-- Segnaposto -->
+  </headerSito>
+
+  <nav id="breadcrumb">
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; </linkDettaglioLibro>  &gt;&gt; Lascia Recensione</p>
+  </nav>
+
+  <nav id="menu">
+    <ul>
+      <li><a href="ricerca.php">Ricerca</a></li>
+      <li><a href="generi.php">Generi</a></li>
+      <li><a href="bestseller.php">Bestseller</a></li>
+      <li><a href="offerte.php">Offerte</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <form class="formInput" id="formRecensione" action='' method="post">
+      <fieldset>
+        <h2>Lascia Recensione</h2>
+
+        </infoLibro>
+
+        <label for="valutazione">Valutazione in <abbr title="stelle"><i class='fas fa-star starChecked'></i></abbr></label>
+        <select class="styleInput" id="valutazione" name="valutazione" required>
+          <option value="5">5</option>
+          <option value="4">4</option>
+          <option value="3">3</option>
+          <option value="2">2</option>
+          <option value="1">1</option>
+        </select>
+
+        <!--
+          <abbr title="5 stelle">&#xf005;</abbr>
+        -->
+
+        <label for="commento">Commento</label>
+        <input class="styleInput ultimoInput" id="commento" name="commento" type="text" required>
+      
+        <input type="submit" class="button" value="Conferma">
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- Segnaposto -->
+  </footerSito>
+</body>
+
+</html>

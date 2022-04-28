@@ -189,7 +189,7 @@ if (isset($_GET['isbn'])) {
 
         // ---- RECENSIONI ----
         $queryRecensioni = $connessione->get_reviews_by_isbn($isbn);
-        $listaRecensioni = "<ul id='listaRecensioni'>";
+        $listaRecensioni = "<ul id='listaRecensioni' title='Lista recensioni'>";
         $cont = 0;
         $maxRec = 10;
         
@@ -309,6 +309,15 @@ if (isset($_GET['isbn'])) {
         }
         $listaRecensioni .= "</ul>";
 
+        // Link lascia recensione
+        // se l'utente è loggato, può recensire, altrimenti viene mandato al login
+        $l = "accedi.php";
+        if(isset($_SESSION["Nome"]))
+        {
+            $l = "lasciaRecensione.php?isbn=" . $isbn;
+        }
+        $linkLasciaRecensione = "<a id='linkLasciaRecensione' href='" . $l . "'>Lascia una recensione</a>";
+
         // Replace
         $paginaHTML = str_replace("</imgLibro>", $imgLibro, $paginaHTML);
         $paginaHTML = str_replace("</infoGenerali>", $infoGenerali, $paginaHTML);
@@ -317,6 +326,7 @@ if (isset($_GET['isbn'])) {
         $paginaHTML = str_replace("</generi>", $generi, $paginaHTML);
         $paginaHTML = str_replace("</inputQuantita>", $inputQuantita, $paginaHTML);
         $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
+        $paginaHTML = str_replace("</linkLasciaRecensione>", $linkLasciaRecensione, $paginaHTML);
     } 
     else 
     {

@@ -1,0 +1,73 @@
+<!-- 
+    keywords
+    author
+
+    files menu
+
+    footer ??
+
+    search bar, login, ecc ??
+-->
+
+<!DOCTYPE html>
+
+<html lang="it">
+
+<head>
+  <meta charset="utf-8" />
+
+  <title>Aggiungi Indirizzo - Second Read</title>
+
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <!-- Segnaposto -->
+  </linkSito>
+
+</head>
+
+<body>
+  <!-- Segnaposto -->
+  </headerSito>
+
+  <nav id="breadcrumb">
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a>  &gt;&gt; <a href="indirizzi.php">Indirizzi</a>  &gt;&gt; Aggiungi Indirizzo</p>
+  </nav>
+
+  <nav id="menu">
+    <ul>
+      <li><a href="ricerca.php">Ricerca</a></li>
+      <li><a href="generi.php">Generi</a></li>
+      <li><a href="bestseller.php">Bestseller</a></li>
+      <li><a href="offerte.php">Offerte</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <form class="formInput" id="formAggiungiIndirizzo" action='aggiungiIndirizzo.php' method="post">
+      <fieldset>
+        <h2>Aggiungi Indirizzo</h2>
+
+        <label for="citta">Citt&agrave;</label>
+        <span><input class="styleInput" id="citta" name="citta" type="text"></span>
+
+        <label for="cap">Cap</label>
+        <span><input class="styleInput" id="cap" name="cap" type="number" min="1"></span>
+
+        <label for="via">Via</label>
+        <span><input class="styleInput" id="via" name="via" type="text"></span>
+
+        <label for="num_civico">Numero Civico</label>
+        <span><input class="styleInput ultimoInput" id="num_civico" name="num_civico" type="text"></span>
+      
+        <input type="submit" class="button" value="Conferma">
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- Segnaposto -->
+  </footerSito>
+</body>
+
+</html>

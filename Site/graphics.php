@@ -17,13 +17,6 @@ class graphics {
         }
         $headerHTML = str_replace("</linkUtente>", $linkUtente, $headerHTML);
 
-        /*
-            <a id="accedi" href="accedi.php">Accedi</a>
-            <a id="registrati" href="registrati.php">Registrati</a>
-            <a id="carrello" href="">Carrello</a>
-            */
-
-
         $linkHTML = file_get_contents("link.html");
         $paginaHTML = file_get_contents($nome);
         $footerHTML = file_get_contents("footer.html");

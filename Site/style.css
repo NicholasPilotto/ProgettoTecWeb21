@@ -1,3 +1,9 @@
+/*
+==================
+SEZIONE GLOBALE
+==================
+*/
+
 * {
     padding: 0;
     margin: 0;
@@ -30,6 +36,8 @@ ul {
     list-style-type: none;
 }
 
+/* ----- STELLE ----- */
+
 .starChecked {
     color: orange;
 }
@@ -37,6 +45,8 @@ ul {
 .starNotChecked {
     color: #aaaaaa;
 }
+
+/* ----- BADGE ----- */
 
 .badgeLv3 {
     color: orange;
@@ -53,6 +63,8 @@ ul {
     font-size: 1.5em;
 }
 
+/* ----- BOTTONI VERDI ----- */
+
 .button {
     background-color: #146e53;
     color: white;
@@ -68,9 +80,11 @@ ul {
     color: white;
 }
 
+/* ----- BOTTONE TORNA SU ----- */
+
 #divTornaSu {
     width: 100%;
-    padding-top: 1em;
+    /*padding-top: 1em;*/
     padding-bottom: 1em;
     display: none;
 }
@@ -81,12 +95,82 @@ ul {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    /*
-    box-sizing: border-box;
-    width: 6em;
+
+    margin-top: 1em;
+}
+
+/* ----- TABELLA ----- */
+
+table {
+    padding-bottom: 1.5em;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-spacing: 0;
+    border-top: 1px solid black;
+}
+
+td, th {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    
+    text-align: center;
+    padding: 0.5em;
+}
+
+.tdthDestra {
+    border-right: 1px solid black;
+}
+
+thead {
+    background-color: #DDF2B8;
+}
+
+/* ----- FORM INPUT ----- */
+.formInput {
+    width: 25em;
+
+    margin: auto;    
+    padding-bottom: 1em;
+    padding-top: 2em;
+}
+
+.formInput fieldset {
+    padding: 0em 3em 1em 3em;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+}
+
+.formInput .styleInput {
+    width: 100%;
+    height: 1.5em;
+    font-size: larger;
+    text-indent: 0.3em;
+}
+
+.formInput input[type=date] {
     height: 2em;
-    padding-bottom: 3em;
-    */
+}
+
+.formInput *:not(.ultimoInput) {
+    margin-bottom: 1em;
+}
+
+.formInput input[type=submit] {
+    display: block;
+
+    /*width: 32%;*/
+    width: fit-content;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    height: 2em;
+
+    /*font-size: larger;*/
+
+    margin: auto;
+    margin-top: 1.2em;
 }
 
 /*
@@ -245,55 +329,7 @@ SEZIONE CONTENT
 }
 
 /* ------------------- ACCEDI ------------------- */
-
-.accediRegistrati {
-    width: 25em;
-
-    margin: auto;    
-    padding-bottom: 2em;
-    padding-top: 2em;
-}
-
-.accediRegistrati fieldset {
-    padding: 0em 3em 3em 3em;
-    border: 1px solid #aaaaaa;
-    border-radius: 10px;
-}
-
-.accediRegistrati .styleInput {
-    width: 100%;
-    height: 1.5em;
-    font-size: larger;
-    text-indent: 0.3em;
-}
-
-.accediRegistrati input[type=date] {
-    height: 2em;
-}
-
-.accediRegistrati *:not(.ultimoInput) {
-    margin-bottom: 1em;
-}
-
-.accediRegistrati input[type=submit] {
-    display: block;
-
-    width: 32%;
-    height: 2em;
-
-    /*font-size: larger;*/
-
-    margin: auto;
-    margin-top: 1.2em;
-    margin-bottom: -1.2em;
-    /*
-    color: white;
-    background-color: #146e53;
-    border-width: 1px;
-    border-radius: 3px;
-
-    cursor: pointer;*/
-}
+/* form */
 
 /* ------------------- RICERCA ------------------- */
 
@@ -305,12 +341,15 @@ SEZIONE CONTENT
 #filtri {
     flex-basis: 35%;
     border-right: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
     padding-bottom: 1em;
 }
 
 #contentDx {
     flex-basis: 60%;
     flex-grow: 1;
+
+    border-bottom: 1px solid #aaaaaa;
 }
 
 #filtriForm fieldset {
@@ -358,15 +397,6 @@ SEZIONE CONTENT
     margin-top: 2em;
 
     height: 2em;
-    /*font-size: medium;
-
-    color: white;
-    background-color: #146e53;
-
-    border-radius: 3px;
-    border-width: 1px;
-
-    cursor: pointer;*/
 }
 
 #searchBar {
@@ -572,6 +602,12 @@ a.titolo {
     padding-top: 1em;
 }
 
+#linkLasciaRecensione {
+    display: inline-block;
+    margin-left: 3%;
+    margin-top: 0.5em;
+}
+
 #listaRecensioni {
     margin-left: 3%;
     margin-right: 3%;
@@ -590,19 +626,6 @@ a.titolo {
 #primaRecensione {
     border-top: 1px solid #aaaaaa;
 }
-
-/*
-.recensione {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    border-top: 1px dashed rgb(255, 0, 191);
-}
-
-#primaRecensione {
-    border-top: none;
-    padding-top: 0.2em;
-}
-*/
 
 /* ------------------- ACCOUNT ------------------- */
 
@@ -633,34 +656,23 @@ a.titolo {
     text-align: left;
 }
 
-/* ------------------- ORDINI ------------------- */
+/* ------------------- INDIRIZZI ------------------- */
+/* tabella */
 
-.tabellaOrdini {
-    padding-bottom: 1.5em;
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-
-    border-spacing: 0;
-    border-top: 1px solid black;
+#aggiungiIndirizzoLink {
+    display: inline-block;
+    margin-left: 2.5%;
+    margin-bottom: 1em;
 }
 
-.tabellaOrdini td, .tabellaOrdini th {
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
-    
-    text-align: center;
-    padding: 0.5em;
+#formAggiungiIndirizzo {
+    width: 30%;
 }
-
-.tdthDestra {
-    border-right: 1px solid black;
-}
-
-.tabellaOrdini thead {
-    background-color: #DDF2B8;
-}
-
+/*
+#formAggiungiIndirizzo input[type=submit]
+{
+    width: fit-content;
+}*/
 
 /* ------------------- ERRORE ------------------- */
 

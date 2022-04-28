@@ -2,15 +2,13 @@ function insertButton() {
   var divTornaSu = document.getElementById("divTornaSu");
 
   if (divTornaSu) {
+    divTornaSu.style.display = "none";
+
     let hasScrollbar = window.innerHeight < document.body.clientHeight;
     if (hasScrollbar) {
       divTornaSu.style.display = "block";
     }
-    else {
-      divTornaSu.style.display = "none";
-    }
   }
-
 }
 
 window.onload = function () { insertButton() };

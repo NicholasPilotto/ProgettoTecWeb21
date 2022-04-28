@@ -44,6 +44,9 @@ if (!$errore) {
     } else {
         $_SESSION["error"] = $utente->get_error_message();
         $connessione->closeConnection();
+
+        echo($utente->get_errno());
+
         header("Location: registrati.php");
         die();
     }

@@ -8,8 +8,8 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "";
-  protected const USERNAME = "";
+  protected const DATABASE_NAME = "SecondRead";
+  protected const USERNAME = "root";
   protected const PASSWORD = "";
 }
 
@@ -570,7 +570,8 @@ class Service extends Constant {
 
   public function get_reviews_by_user($utente): response_manager {
     $query = "SELECT *
-              FROM recensione 
+              FROM recensione
+              INNER JOIN libro ON libro.isbn = recensione.libro_isbn
               WHERE idutente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();

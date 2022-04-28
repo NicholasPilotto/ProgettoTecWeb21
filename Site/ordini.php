@@ -23,7 +23,7 @@
         
         if ($queryOrdini->ok() && !$queryOrdini->is_empty())
         {
-            $tabellaOrdini = "<table class='tabellaOrdini' title='Ordini Effettuati'>";
+            $tabellaOrdini = "<table title='Ordini Effettuati'>";
             $tabellaOrdini .=   "<thead>";
             $tabellaOrdini .=       "<tr>";
             $tabellaOrdini .=           "<th scope='col'>Codice Ordine</th>";
