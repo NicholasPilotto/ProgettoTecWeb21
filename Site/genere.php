@@ -5,7 +5,7 @@ use DB\Service;
 
 require_once('backend/db.php');
 
-require_once "graphics.php";
+require_once("graphics.php");
 
 $paginaHTML = graphics::getPage("genere_php.html");
 
@@ -26,8 +26,7 @@ if (isset($_GET['genere'])) {
     $a = $connessione->openConnection();
 
     $queryNomeGenere = $connessione->get_genre_by_id($idGenere);
-    if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty())
-    {
+    if ($queryNomeGenere->ok() && !$queryNomeGenere->is_empty()) {
         // Ce un genere con quell'id, posso andare avanti
         $nomeGenere = $queryNomeGenere->get_result()[0]['nome'];
         $libri = $connessione->get_books_by_genre($idGenere);

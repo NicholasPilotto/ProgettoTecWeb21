@@ -16,7 +16,7 @@ let dettagli_form = {
   ],
   "username": [
     "Username",
-    /^[A-Za-z\s]\w{2,10}$$/,
+    /^[A-Za-z\s]\w{2,10}$/,
     "Inserire un username di lunghezza tra i 2 e 10 caratteri"
   ],
   "email": [
@@ -26,12 +26,12 @@ let dettagli_form = {
   ],
   "password": [
     "Password",
-    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/,
+    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*--+={}\[\]|\\:;<>,.?/_₹]).{10,16}$/,
     "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
   ],
   "conferma": [
     "Password",
-    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/,
+    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*--+={}\[\]|\\:;<>,.?/_₹]).{10,16}$/,
     "Le due password non coincidono"
   ]
 };

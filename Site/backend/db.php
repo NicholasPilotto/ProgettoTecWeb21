@@ -8,8 +8,8 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "SecondRead";
-  protected const USERNAME = "root";
+  protected const DATABASE_NAME = "";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
