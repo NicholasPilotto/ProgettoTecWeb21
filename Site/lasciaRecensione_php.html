@@ -21,18 +21,19 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <script src="./js/insertReview.js"></script>
 
   <!-- Segnaposto -->
   </linkSito>
 
 </head>
 
-<body>
+<body onload="caricamento();">
   <!-- Segnaposto -->
   </headerSito>
 
   <nav id="breadcrumb">
-    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; </linkDettaglioLibro>  &gt;&gt; Lascia Recensione</p>
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; </linkDettaglioLibro> &gt;&gt; Lascia Recensione</p>
   </nav>
 
   <nav id="menu">
@@ -51,7 +52,8 @@
 
         </infoLibro>
 
-        <label for="valutazione">Valutazione in <abbr title="stelle"><i class='fas fa-star starChecked'></i></abbr></label>
+        <label for="valutazione">Valutazione in <abbr title="stelle"><i
+              class='fas fa-star starChecked'></i></abbr></label>
         <select class="styleInput" id="valutazione" name="valutazione" required>
           <option value="5">5</option>
           <option value="4">4</option>
@@ -65,8 +67,9 @@
         -->
 
         <label for="commento">Commento</label>
-        <input class="styleInput ultimoInput" id="commento" name="commento" type="text" required>
-      
+        <span><input class="styleInput ultimoInput" id="commento" name="commento" type="text" required></span>
+        <span id="remaining"></span>
+
         <input type="submit" class="button" value="Conferma">
       </fieldset>
     </form>
