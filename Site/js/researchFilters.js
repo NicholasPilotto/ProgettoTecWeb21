@@ -1,3 +1,12 @@
+function caricamento() {
+  document.getElementById("prezzoMin").onchange = function () {
+    controlNumberMin();
+  }
+  document.getElementById("prezzoMax").onchange = function () {
+    controlNumberMax();
+  }
+}
+
 function resetFilters() {
   var checkElement = document.querySelectorAll('input[type=checkbox]');
   checkElement.forEach(check => {
