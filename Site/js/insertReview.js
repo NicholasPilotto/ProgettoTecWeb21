@@ -1,7 +1,7 @@
 var dettagli_form = {
   "commento": [
     "Comento",
-    /^[A-Za-z\s]\w{10,500}$/,
+    /^^[a-zA-Z0-9 ()'?.,!-]{10,500}$/,
     "Lascia un commento tra i 10 e 500 caratteri"
   ]
 };

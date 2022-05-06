@@ -9,8 +9,7 @@ require_once "graphics.php";
 
 // Breadcrumb
 $paginaPrecedente = " &gt;&gt; Dettaglio Libro"; // caso dalla home
-if(isset($_SESSION["paginaPrecedente"]))
-{
+if (isset($_SESSION["paginaPrecedente"])) {
     $paginaPrecedente = $_SESSION["paginaPrecedente"];
     $paginaPrecedente .= " &gt;&gt; Dettaglio Libro";
 
@@ -58,12 +57,9 @@ if (isset($_GET['isbn'])) {
 
         $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
 
-        if ($offertaQuery->ok())
-        {
+        if ($offertaQuery->ok()) {
             $prezzo = number_format((float)$tmp[0]['prezzo'] * (100 - $offertaQuery->get_result()[0]['sconto']) / 100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
-        }
-        else
-        {
+        } else {
             $prezzo = $tmp[0]['prezzo'];
         }
 
@@ -72,11 +68,9 @@ if (isset($_GET['isbn'])) {
         // stelle
         $queryStelle = $connessione->get_avg_review($isbn);
 
-        if ($queryStelle->ok())
-        {
+        if ($queryStelle->ok()) {
 
-            if ($queryStelle->get_element_count() > 0)
-            {
+            if ($queryStelle->get_element_count() > 0) {
                 $aux = $queryStelle->get_result();
                 $mediaStelle = $aux[0]['media'];
                 $roundStelle = ($mediaStelle - floor($mediaStelle) > 0.5) ? ceil($mediaStelle) : floor($mediaStelle);
@@ -86,22 +80,16 @@ if (isset($_GET['isbn'])) {
 
                 $infoGenerali .= "<p><abbr title='" . round($mediaStelle, 1) . " " . $scrittaStella . " su 5'>";
 
-                for ($i = 0; $i < 5; $i++)
-                {
-                    if ($i < $roundStelle)
-                    {
+                for ($i = 0; $i < 5; $i++) {
+                    if ($i < $roundStelle) {
                         $infoGenerali .= "<i class='fas fa-star starChecked'></i>";
-                    }
-                    else
-                    {
+                    } else {
                         $infoGenerali .= "<i class='fas fa-star starNotChecked'></i>";
                     }
                 }
 
                 $infoGenerali .= "</abbr></p>";
-            }
-            else
-            {
+            } else {
                 $infoGenerali .= "<p>Non ci sono recensioni</p>";
             }
         }
@@ -192,14 +180,12 @@ if (isset($_GET['isbn'])) {
         $listaRecensioni = "<ul id='listaRecensioni' title='Lista recensioni'>";
         $cont = 0;
         $maxRec = 10;
-        
-        if($queryRecensioni->ok())
-        {
+
+        if ($queryRecensioni->ok()) {
             $arrayRecensioni = $queryRecensioni->get_result();
 
             // cerca se esiste una recensione fatta dall'utente loggato, così da poterla mettere per prima
-            if(isset($_SESSION["Codice_identificativo"]))
-            {
+            if (isset($_SESSION["Codice_identificativo"])) {
                 $idUtente = $_SESSION['Codice_identificativo'];
                 $recensioneMia = array_filter(
                     $arrayRecensioni,
@@ -207,8 +193,7 @@ if (isset($_GET['isbn'])) {
                         return $e['idUtente'] == $idUtente;
                     }
                 );
-                if(count($recensioneMia) > 0)
-                {
+                if (count($recensioneMia) > 0) {
                     $key = array_keys($recensioneMia)[0];
                     // tolgo la recensione
                     unset($arrayRecensioni[$key]);
@@ -216,15 +201,13 @@ if (isset($_GET['isbn'])) {
                     array_unshift($arrayRecensioni, $recensioneMia[$key]);
                 }
             }
-            
-            foreach($arrayRecensioni as $recensione)
-            {
-                if($cont >= $maxRec)
-                {
+
+            foreach ($arrayRecensioni as $recensione) {
+                if ($cont >= $maxRec) {
                     break;
                 }
                 $queryUtente = $connessione->get_utente_by_id($recensione['idUtente']);
-                
+
                 // if ok
                 $nomeUtente = $queryUtente->get_result()[0]['username'];
                 $data = $recensione['datainserimento'];
@@ -237,37 +220,30 @@ if (isset($_GET['isbn'])) {
                 $numeroOrdini = $queryBadge->get_result()[0]['total'];
 
                 $lv = 0;
-                if($numeroOrdini >= 15)
-                {
+                if ($numeroOrdini >= 15) {
                     $lv = 3;
                     $numeroOrdini = 15;
-                }
-                else if($numeroOrdini >= 10)
-                {
+                } else if ($numeroOrdini >= 10) {
                     $lv = 2;
                     $numeroOrdini = 10;
-                }
-                else if($numeroOrdini >= 5)
-                {
+                } else if ($numeroOrdini >= 5) {
                     $lv = 1;
                     $numeroOrdini = 5;
                 }
 
                 $badge = "";
-                if($lv > 0)
-                {
+                if ($lv > 0) {
                     $badge = "<abbr title='Badge livello " . $lv . ": questo utente ha effettuato più di " . $numeroOrdini . " ordini'><i class='fas fa-award badgeLv" . $lv . "'></i></abbr>";
                 }
 
                 // -----------
 
                 $listaRecensioni .= "<li";
-                
-                if($cont++ == 0)
-                {
+
+                if ($cont++ == 0) {
                     $listaRecensioni .= " id='primaRecensione'";
                 }
-                
+
                 $listaRecensioni .= " class='recensione'>";
 
                 $listaRecensioni .= "<p class='miniGrassetto'>" . $nomeUtente . " " . $badge . "</p>";
@@ -284,14 +260,10 @@ if (isset($_GET['isbn'])) {
                 $scrittaStella .= ($valutazione == 1) ? "a" : "e";
                 $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
 
-                for ($i = 0; $i < 5; $i++)
-                {
-                    if ($i < $valutazione)
-                    {
+                for ($i = 0; $i < 5; $i++) {
+                    if ($i < $valutazione) {
                         $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
-                    }
-                    else
-                    {
+                    } else {
                         $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
                     }
                 }
@@ -302,9 +274,7 @@ if (isset($_GET['isbn'])) {
 
                 $listaRecensioni .= "</li>";
             }
-        }
-        else
-        {
+        } else {
             $trovatoErrore = true;
         }
         $listaRecensioni .= "</ul>";
@@ -312,11 +282,15 @@ if (isset($_GET['isbn'])) {
         // Link lascia recensione
         // se l'utente è loggato, può recensire, altrimenti viene mandato al login
         $l = "accedi.php";
-        if(isset($_SESSION["Nome"]))
-        {
-            $l = "lasciaRecensione.php?isbn=" . $isbn;
+        $linkLasciaRecensione = "";
+        if (isset($_SESSION["Nome"])) {
+            $rev = $connessione->get_review_by_user_book($_SESSION["Codice_identificativo"], $isbn);
+            if ($rev->is_empty()) {
+                $l = "lasciaRecensione.php?isbn=" . $isbn;
+                $linkLasciaRecensione = "<a id='linkLasciaRecensione' href='" . $l . "'>Lascia una recensione</a>";
+            }
         }
-        $linkLasciaRecensione = "<a id='linkLasciaRecensione' href='" . $l . "'>Lascia una recensione</a>";
+
 
         // Replace
         $paginaHTML = str_replace("</imgLibro>", $imgLibro, $paginaHTML);
@@ -327,14 +301,10 @@ if (isset($_GET['isbn'])) {
         $paginaHTML = str_replace("</inputQuantita>", $inputQuantita, $paginaHTML);
         $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
         $paginaHTML = str_replace("</linkLasciaRecensione>", $linkLasciaRecensione, $paginaHTML);
-    } 
-    else 
-    {
+    } else {
         $trovatoErrore = true;
     }
-} 
-else 
-{
+} else {
     $trovatoErrore = true;
 }
 $connessione->closeConnection();
