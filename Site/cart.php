@@ -42,6 +42,16 @@ class cart {
     return $tot;
   }
 
+  public function get_quantity(): int {
+    $tot = 0;
+
+    foreach ($this->items as $item) {
+      $tot += $item->quant;
+    }
+
+    return $tot;
+  }
+
   public function get_cart(): array {
     return $this->items;
   }
