@@ -2,10 +2,6 @@
 
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 class cart_item {
   public $total = 0.0;
   public $quant = 0;
@@ -50,20 +46,3 @@ class cart {
     return $this->items;
   }
 }
-
-// $isbn = isset($_GET["isbn"]) ? $_GET["isbn"] : NULL;
-// $quant = isset($_GET["quantita"]) ? $_GET["quantita"] : NULL;
-// $prezzo = isset($_GET["prezzo"]) ? $_GET["prezzo"] : NULL;
-
-// if (isset($isbn) && isset($quant) && isset($prezzo)) {
-//   if ($_GET["action"] == "add") {
-//     if (!isset($_SESSION["cart"])) {
-//       $_SESSION["cart"] = new carrello();
-//     }
-//     $_SESSION["cart"]->add($isbn, $quant, $prezzo);
-//   } else if ($_GET["action"] == "remove") {
-//     $_SESSION["cart"]->remove($isbn, $quant, $prezzo);
-//   }
-// } else {
-//   header("Location: error.php");
-// }
