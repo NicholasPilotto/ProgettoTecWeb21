@@ -6,7 +6,7 @@ var dettagli_form = {
   ],
   "password": [
     "Password",
-    /^[A-Za-zàèùìòé\s]\w{2,20}$/,
+    /^[\w~!@#$%^&*--+={}\[\]|\\:;<>,.?_]+.{2,20}$/,
     "I valori inseriti non sembrano corrretti"
   ]
 };
@@ -59,11 +59,11 @@ function validazioneCampo(input) {
   return true;
 }
 
-function mostraErrore(input, increment = 0) {
+function mostraErrore(input) {
   var padre = input.parentNode;
   var errore = document.createElement("strong");
   errore.className = "errorSuggestion";
-  errore.appendChild(document.createTextNode(dettagli_form[input.id][2 + increment]));
+  errore.appendChild(document.createTextNode(dettagli_form[input.id][2]));
   padre.appendChild(errore);
 }
 
@@ -71,6 +71,7 @@ function validazioneForm() {
   for (var key in dettagli_form) {
     var input = document.getElementById(key);
     if (!validazioneCampo(input)) {
+      console.log(input);
       return false;
     }
   }
