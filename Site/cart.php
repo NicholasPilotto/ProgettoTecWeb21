@@ -55,4 +55,12 @@ class cart {
   public function get_cart(): array {
     return $this->items;
   }
+
+  public static function build_cart_from_session(): cart {
+    return unserialize($_SESSION["cart"]);
+  }
+
+  public function save(): void {
+    $_SESSION["cart"] = serialize($this);
+  }
 }

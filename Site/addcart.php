@@ -21,12 +21,10 @@ if (isset($_SESSION["Nome"])) {
   if (!isset($_SESSION["cart"])) {
     $c = new cart();
   } else {
-    $c = unserialize($_SESSION["cart"]);
+    $c = cart::build_cart_from_session();
   }
-
   $c->add($isbn, $quant, $prezzo);
-
-  $_SESSION["cart"] = serialize($c);
+  $c->save();
 } else {
   header("Location: accedi.php");
 }
