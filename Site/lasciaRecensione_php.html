@@ -1,11 +1,8 @@
 <!-- 
     keywords
     author
-
     files menu
-
     footer ??
-
     search bar, login, ecc ??
 -->
 
@@ -46,15 +43,14 @@
   </nav>
 
   <div id="content">
+    <h2>Lascia Recensione</h2>
     <form class="formInput" id="formRecensione" action='inserisciRecensione.php' method="post">
       <fieldset>
-        <h2>Lascia Recensione</h2>
-
         </infoLibro>
 
         <label for="valutazione">Valutazione in <abbr title="stelle"><i
               class='fas fa-star starChecked'></i></abbr></label>
-        <select class="styleInput" id="valutazione" name="valutazione" required>
+        <select class="styleSelectStelle" id="valutazione" name="valutazione" required>
           <option value="5">5</option>
           <option value="4">4</option>
           <option value="3">3</option>
@@ -62,12 +58,8 @@
           <option value="1">1</option>
         </select>
 
-        <!--
-          <abbr title="5 stelle">&#xf005;</abbr>
-        -->
-
         <label for="commento">Commento</label>
-        <span><input class="styleInput ultimoInput" id="commento" name="commento" type="text" required></span>
+        <span><textarea class="styleTextArea ultimoInput" id="commento" name="commento" required></textarea></span>
         <span id="remaining"></span>
 
 
