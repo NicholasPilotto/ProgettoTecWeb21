@@ -29,6 +29,8 @@ $trovatoErrore = false;
 if (isset($_GET['isbn'])) {
     $isbn = $_GET['isbn'];
 
+
+
     $connessione = new Service();
     $a = $connessione->openConnection();
 
@@ -38,6 +40,9 @@ if (isset($_GET['isbn'])) {
 
     if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
         $tmp = $queryIsbn->get_result();
+        //! isbn cart and price
+        $_SESSION["isbncart"] = $isbn;
+        $_SESSION["pricecart"] = $tmp[0]["prezzo"];
         // Ce un libro con quell'isbn, posso andare avanti
 
         // ---- IMG LIBRO ----
