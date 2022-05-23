@@ -457,6 +457,61 @@ class Service extends Constant {
     return $res;
   }
 
+  public function update_user_data($utente_id, $old_data, $new_data): response_manager {
+    $query = "UPDATE utente SET ";
+
+    $components = array();
+    $aux = "";
+    $type = "";
+
+    $result = array();
+
+    $result = array_diff($new_data, $old_data);
+
+
+    if (isset($result["username"])) {
+      array_push($components, $result["username"]);
+      $type .= "s";
+      $aux .= " username = ?,";
+    }
+
+    if (isset($$result["email"])) {
+      array_push($components, $$result["email"]);
+      $type .= "s";
+      $aux .= " email = ?,";
+    }
+
+    if (isset($$result["password"])) {
+      array_push($components, $$result["password"]);
+      $type .= "s";
+      $aux .= " password = ?,";
+    }
+
+    $aux = substr($aux, 0, -1);
+    array_push($components, $utente_id);
+
+    $aux .= " ";
+
+    $query .= $aux . "WHERE codice_identificativo = ?";
+
+    $type .= "s";
+
+
+    $stmt = $this->connection->prepare($query);
+
+
+    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $res = $stmt->execute();
+
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile aggiornare i dati");
+    }
+    return new response_manager(array(true), $this->connection, "");
+  }
+
   public function get_addresses($utente_id): response_manager {
     $query = "SELECT *
               FROM indirizzo 
