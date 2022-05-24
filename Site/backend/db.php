@@ -2,6 +2,7 @@
 
 namespace DB;
 
+use cart;
 use mysqli;
 
 require_once('response_manager.php');
@@ -1143,7 +1144,7 @@ class Service extends Constant {
     return new response_manager($result, $this->connection, "Il codice inserito non è stato trovato");
   }
 
-  public function insert_order($cliente, $indirizzo, $totale, $carrello): response_manager {
+  public function insert_order($cliente, $indirizzo, cart $carrello): response_manager {
     $this->connection->autocommit(false);
     $this->connection->begin_transaction();
     try {
@@ -1156,7 +1157,7 @@ class Service extends Constant {
       $today = date('Y-m-d');
       $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
       $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
-
+      $totale = $carrello->get_total();
       if ($stmt === false || $stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
         return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
       }
@@ -1165,10 +1166,12 @@ class Service extends Constant {
 
       $orderID = $stmt->insert_id;
 
-      foreach ($carrello as $libro => $quant) {
-        $query2 = "INSERT INTO composizione(elemento, codice_ordine, Quantita) VALUES (?,?,?)";
+      $books_array = $carrello->get_cart();
+
+      foreach ($books_array as $isbn => $data) {
+        $query2 = "INSERT INTO composizione(elemento, codice_ordine, quantita) VALUES (?,?,?)";
         $stmt = $this->connection->prepare($query2);
-        if ($stmt === false || $stmt->bind_param('ssi', $libro, $orderID, $quant) === false) {
+        if ($stmt === false || $stmt->bind_param('ssi', $isbn, $orderID, $data->quant) === false) {
           return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
         }
         $tmp = $stmt->execute();
