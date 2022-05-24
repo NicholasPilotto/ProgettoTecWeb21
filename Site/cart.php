@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 class cart_item {
   public $total = 0.0;
   public $quant = 0;
