@@ -49,7 +49,10 @@ class Service extends Constant {
 
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -87,7 +90,10 @@ class Service extends Constant {
 
     $title = '%' . $title . '%';
 
-    if ($stmt === false || $stmt->bind_param('s', $title) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $title) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -123,7 +129,10 @@ class Service extends Constant {
     $first = '%' . $author_firstname . '%';
     $last = '%' . $author_lastname . '%';
 
-    if ($stmt === false || $stmt->bind_param('ss', $first, $last) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $first, $last) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -154,7 +163,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('i', $id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -185,7 +197,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('i', $id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -214,7 +229,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('i', $id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -242,7 +260,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $email) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $email) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -270,7 +291,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('i', $id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('i', $id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -319,6 +343,8 @@ class Service extends Constant {
       $res->set_error_message("Nessun besteller trovato");
     }
 
+    $stmt->close();
+
     return $res;
   }
 
@@ -326,7 +352,10 @@ class Service extends Constant {
     $query = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES (?,?,?,?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
 
-    if ($stmt === false || $stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
+      $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -337,6 +366,7 @@ class Service extends Constant {
     if (!$response) {
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
+
     return new response_manager(array(true), $this->connection, "");
   }
 
@@ -396,7 +426,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
 
 
-    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param($type, ...$components) === false) {
+      $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -415,7 +448,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $psw = hash('sha256', $pass);
 
-    if ($stmt === false || $stmt->bind_param('sssssss', $nome, $cognome, $nascita, $username, $email, $psw, $tel) === false) {
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('sssssss', $nome, $cognome, $nascita, $username, $email, $psw, $tel) === false) {
+      $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -438,7 +474,10 @@ class Service extends Constant {
 
     $psw = hash('sha256', $pass);
 
-    if ($stmt === false || $stmt->bind_param('ss', $mail, $psw) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $mail, $psw) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -502,11 +541,15 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
 
 
-    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param($type, ...$components) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $res = $stmt->execute();
+    $stmt->close();
 
     if (!$res) {
       return new response_manager($result, $this->connection, "Non è stato possibile aggiornare i dati");
@@ -521,7 +564,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $utente_id) === false) {
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $utente_id) === false) {
+      $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -548,7 +594,10 @@ class Service extends Constant {
 
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -576,7 +625,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -604,7 +656,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -633,7 +688,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $utente) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $utente) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -661,7 +719,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('ss', $utente, $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $utente, $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -720,19 +781,13 @@ class Service extends Constant {
               WHERE ordine.Cliente_Codice = ?
               ORDER BY ordine.codice_univoco";
 
-    /*
-    $query = "SELECT *
-              FROM ordine
-              INNER JOIN composizione 
-              ON ordine.Codice_univoco = composizione.Codice_ordine
-              INNER JOIN libro
-              ON composizione.Elemento = libro.ISBN
-              WHERE ordine.Cliente_Codice = ?";*/
-
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $order) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $order) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -761,11 +816,15 @@ class Service extends Constant {
     $result = array();
 
 
-    if ($stmt === false || $stmt->bind_param('sssis', $utenteid, $isbn, $today, $valore, $commento) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('sssis', $utenteid, $isbn, $today, $valore, $commento) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $res = $stmt->execute();
+    $stmt->close();
 
     if (!$res) {
       return new response_manager($result, $this->connection, "Non è stato possibile inserire una recensione");
@@ -808,11 +867,15 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
 
 
-    if ($stmt === false || $stmt->bind_param($type, ...$components) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param($type, ...$components) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $res = $stmt->execute();
+    $stmt->close();
 
     if (!$res) {
       return new response_manager($result, $this->connection, "Non è stato possibile inserire una recensione");
@@ -820,26 +883,26 @@ class Service extends Constant {
     return new response_manager(array(true), $this->connection, "");
   }
 
-  public function delete_review($utenteid, $isbn): bool {
+  public function delete_review($utenteid, $isbn): response_manager {
     $query = "DELETE FROM recensione 
               WHERE idUtente = ? AND libro_isbn = ?";
 
     $stmt = $this->connection->prepare($query);
 
     if ($stmt === false) {
-      return "a";
-    }
-
-    if ($stmt->bind_param('ss', $utenteid, $isbn) === false) {
-      return "b";
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $utenteid, $isbn) === false) {
+      $stmt->close();
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
 
     $res = $stmt->execute();
-
     $stmt->close();
 
-
-    return $res;
+    if (!$res) {
+      return new response_manager(array(), $this->connection, "Non è stato possibile inserire una recensione");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
   public function get_new_books(): response_manager {
@@ -868,6 +931,7 @@ class Service extends Constant {
       $res->set_error_message("Nessun besteller trovato");
     }
 
+    $stmt->close();
     return $res;
   }
 
@@ -896,7 +960,7 @@ class Service extends Constant {
     if (!$res->ok()) {
       $res->set_error_message("Nessun besteller trovato");
     }
-
+    $stmt->close();
     return $res;
   }
 
@@ -944,7 +1008,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -974,6 +1041,10 @@ class Service extends Constant {
 
     $result = array();
 
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
     while ($row = $stmt->fetch_assoc()) {
       array_push($result, $row);
     }
@@ -984,7 +1055,7 @@ class Service extends Constant {
       $res->set_error_message("Nessun libro trovato");
     }
 
-    $stmt->free();
+    $stmt->close();
     return $res;
   }
 
@@ -996,7 +1067,10 @@ class Service extends Constant {
 
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $isbn) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $isbn) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1027,7 +1101,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('sss', $id, $utente, $id) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('sss', $id, $utente, $id) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1053,7 +1130,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('ss', $id, $utente) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $id, $utente) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1086,7 +1166,10 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-    if ($stmt === false || $stmt->bind_param('s', $utente) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $utente) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1113,7 +1196,10 @@ class Service extends Constant {
     $query2 = "DELETE FROM recupero WHERE id = ? AND utente = ?";
     $stmt = $this->connection->prepare($query2);
 
-    if ($stmt === false || $stmt->bind_param('ss', $code, $utente) === false) {
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $code, $utente) === false) {
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1124,7 +1210,10 @@ class Service extends Constant {
       $stmt = $this->connection->prepare($query1);
       $psw = hash('sha256', $pass);
 
-      if ($stmt === false || $stmt->bind_param('ss', $psw, $utente) === false) {
+      if ($stmt === false) {
+        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param('ss', $psw, $utente) === false) {
+        $stmt->close();
         return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
       }
 
@@ -1159,8 +1248,11 @@ class Service extends Constant {
       $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
       $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
       $totale = $carrello->get_total();
-      if ($stmt === false || $stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
-        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      if ($stmt === false) {
+        throw new Exception("Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
       }
 
       $tmp = $stmt->execute();
@@ -1175,7 +1267,10 @@ class Service extends Constant {
         $query2 = "INSERT INTO composizione(elemento, codice_ordine, quantita) VALUES (?,?,?)";
         $stmt = $this->connection->prepare($query2);
         $q = $data->quant;
-        if ($stmt === false || $stmt->bind_param('ssi', $isbn, $orderID, $q) === false) {
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
+        } elseif ($stmt->bind_param('ssi', $isbn, $orderID, $q) === false) {
+          $stmt->close();
           throw new Exception("Qualcosa sembra essere andato storto");
         }
         $stmt->execute();
@@ -1183,6 +1278,7 @@ class Service extends Constant {
       $this->connection->commit();
     } catch (\Throwable $exception) {
       $this->connection->rollback();
+      $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
 
@@ -1199,6 +1295,84 @@ class Service extends Constant {
     }
 
     $stmt->close();
+    return $res;
+  }
+
+  public function insert_into_wishlist($utente, $isbn): response_manager {
+    $query = "INSERT INTO wishlist(cliente_codice, libro_isbn) VALUES (?,?)";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $utente, $isbn) === false) {
+      $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $res = $stmt->execute();
+    $stmt->close();
+
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile inserire il libro nella wishlist");
+    }
+    return new response_manager(array(true), $this->connection, "");
+  }
+
+  public function remove_from_wishlist($utente, $isbn): response_manager {
+    $query = "DELETE FROM wishlist 
+              WHERE cliente_codice = ? AND libro_isbn = ?";
+
+    $stmt = $this->connection->prepare($query);
+
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $utente, $isbn) === false) {
+      $stmt->close();
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $res = $stmt->execute();
+
+    if (!$res) {
+      $stmt->close();
+      return new response_manager(array(), $this->connection, "Non è stato possibile inserire il libro nella wishlist");
+    }
+    $stmt->close();
+    return new response_manager(array(true), $this->connection, "");
+  }
+
+  public function get_wishlist($utente): response_manager {
+    $query = "SELECT *
+              FROM wishlist
+              WHERE cliente_codice = ?";
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $utente) === false) {
+      $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile reperire la wishlist");
+    }
+
+    $stmt->close();
+
     return $res;
   }
 }
