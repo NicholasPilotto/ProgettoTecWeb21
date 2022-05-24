@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(!isset($_SESSION))
+{
+  session_start();
+}
 
 use DB\Service;
 
@@ -25,6 +28,7 @@ if (isset($_SESSION["Nome"])) {
   }
   $c->add($isbn, $quant, $prezzo);
   $c->save();
+  header("Location:index.php");
 } else {
   header("Location: accedi.php");
 }

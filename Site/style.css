@@ -743,6 +743,106 @@ a.titolo {
     width: fit-content;
 }*/
 
+/* ------------------- CARRELLO ------------------- */
+
+.cartItem {
+    display: flex;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+}
+
+.carrelloImg {
+    display: block;
+
+    object-fit: cover;
+    width: 8em;
+    height: 13em;
+    border-radius: 5px;
+}
+
+.libroCarrello {
+    padding-left: 3%;
+    padding-right: 3%;
+
+    border: 1px solid rgb(240, 38, 38);
+}
+
+.libroTitolo {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.liInfo {
+    border: 1px solid rgb(55, 0, 255);
+    font-size: large;
+
+    flex-basis: 30%;
+    flex-grow: 1;
+}
+
+.liInfo p {
+    margin-bottom: 0.2em;
+}
+
+.cartButton {
+    background-color: #146e53;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    font-size: large;
+    cursor: pointer;
+}
+
+.cartButton:hover {
+    background-color: #1a9c75;
+    border: 2px solid #146e53;
+    color: white;
+}
+
+.carrelloStatus{
+    font-weight: bold;
+    font-size: larger;
+    text-align:center;
+    margin-bottom:1em;
+    margin-top:1em;
+}
+
+.formPurchase {
+    width: 25em;
+    margin: auto;    
+    padding-bottom: 1em;
+}
+
+.formPurchase fieldset {
+    padding: 2em 3em 1em 3em;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+}
+
+.formPurchase input[type=date] {
+    height: 2em;
+}
+
+.formPurchase *:not(.ultimoInput):not(option) {
+    margin-bottom: 1em;
+}
+
+.formPurchase input[type=submit] {
+    display: block;
+
+    /*width: 32%;*/
+    width: fit-content;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    height: 2em;
+
+    /*font-size: larger;*/
+
+    margin: auto;
+    margin-top: 1.2em;
+}
+
 /* ------------------- ERRORE ------------------- */
 
 #erroreImg {
