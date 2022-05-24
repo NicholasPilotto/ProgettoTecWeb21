@@ -3,6 +3,7 @@
 namespace DB;
 
 use cart;
+use Exception;
 use mysqli;
 
 require_once('response_manager.php');
@@ -1168,15 +1169,17 @@ class Service extends Constant {
 
       $books_array = $carrello->get_cart();
 
+
       foreach ($books_array as $isbn => $data) {
+        echo $orderID . " " . $isbn . " " . $data->quant . "<br>";
         $query2 = "INSERT INTO composizione(elemento, codice_ordine, quantita) VALUES (?,?,?)";
         $stmt = $this->connection->prepare($query2);
-        if ($stmt === false || $stmt->bind_param('ssi', $isbn, $orderID, $data->quant) === false) {
-          return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+        $q = $data->quant;
+        if ($stmt === false || $stmt->bind_param('ssi', $isbn, $orderID, $q) === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
         }
-        $tmp = $stmt->execute();
+        $stmt->execute();
       }
-
       $this->connection->commit();
     } catch (\Throwable $exception) {
       $this->connection->rollback();
