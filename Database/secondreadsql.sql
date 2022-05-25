@@ -27,7 +27,7 @@ CREATE TABLE libro (
   editore INT(4) UNSIGNED NOT NULL,
   pagine INT(5) UNSIGNED NOT NULL,
   prezzo DECIMAL(5,2) NOT NULL,
-  quantita INT(3) NOT NULL,
+  quantita INT(3) UNSIGNED NOT NULL,
   data_pubblicazione DATE NOT NULL,
   percorso VARCHAR(250) NOT NULL,
   trama VARCHAR(2500) NOT NULL,
