@@ -737,11 +737,19 @@ a.titolo {
 #formAggiungiIndirizzo {
     width: 30%;
 }
-/*
-#formAggiungiIndirizzo input[type=submit]
-{
-    width: fit-content;
-}*/
+
+/* ------------------- AGGIUNGI LIBRO ------------------- */
+
+#img-preview {
+    display: none; 
+    width: 8.5em;   
+    border: 2px dashed #333;  
+}
+#img-preview img {  
+    width: 100%;
+    height: auto; 
+    display: block;
+}
 
 /* ------------------- CARRELLO ------------------- */
 
@@ -807,6 +815,8 @@ a.titolo {
     margin-top:1em;
 }
 
+/* ------------------- CARRELLO ------------------- */
+
 .formPurchase {
     width: 25em;
     margin: auto;    
@@ -830,18 +840,17 @@ a.titolo {
 .formPurchase input[type=submit] {
     display: block;
 
-    /*width: 32%;*/
     width: fit-content;
     padding-left: 0.5em;
     padding-right: 0.5em;
 
     height: 2em;
 
-    /*font-size: larger;*/
 
     margin: auto;
     margin-top: 1.2em;
 }
+
 
 /* ------------------- ERRORE ------------------- */
 

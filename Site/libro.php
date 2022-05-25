@@ -29,8 +29,6 @@ $trovatoErrore = false;
 if (isset($_GET['isbn'])) {
     $isbn = $_GET['isbn'];
 
-
-
     $connessione = new Service();
     $a = $connessione->openConnection();
 
@@ -40,17 +38,18 @@ if (isset($_GET['isbn'])) {
 
     if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
         $tmp = $queryIsbn->get_result();
+        // Ce un libro con quell'isbn, posso andare avanti
+        
         //! isbn cart and price
         $_SESSION["isbncart"] = $isbn;
         $_SESSION["pricecart"] = $tmp[0]["prezzo"];
-        // Ce un libro con quell'isbn, posso andare avanti
 
         // ---- IMG LIBRO ----
         $imgLibro = "<img id='imgLibro' alt='' src='" . $tmp[0]['percorso'] . "'>";
 
         // ---- INFO GENERALI ----
 
-        $infoGenerali = "<p id='titolo'>" . $tmp[0]['titolo'] . "</p>";
+        $infoGenerali = "<p id='titoloLibro'>" . $tmp[0]['titolo'] . "</p>";
 
         ///
         $infoGenerali .= "<p>";
@@ -61,10 +60,15 @@ if (isset($_GET['isbn'])) {
         $infoGenerali .= "</p>";
 
         $offertaQuery = $connessione->get_active_offer_by_isbn($isbn);
+        $sconto = false;
 
-        if ($offertaQuery->ok()) {
+        if ($offertaQuery->ok())
+        {
+            $sconto = true;
             $prezzo = number_format((float)$tmp[0]['prezzo'] * (100 - $offertaQuery->get_result()[0]['sconto']) / 100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
-        } else {
+        }
+        else
+        {
             $prezzo = $tmp[0]['prezzo'];
         }
 
@@ -100,7 +104,18 @@ if (isset($_GET['isbn'])) {
         }
 
         //
-        $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
+        //$infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
+        if($sconto)
+        {
+            $prezzoVecchio = $tmp[0]['prezzo'];
+
+            $infoGenerali .= "<p class='miniGrassetto'>Sconto da <del>&euro;" . $prezzoVecchio . "</del> a &euro;" . $prezzo . "</p>";
+            //$infoGenerali .= "<p class='miniGrassetto'><abbr title='Sconto da &euro;" . $prezzoVecchio . " a'><del>&euro;" . $prezzoVecchio . "</del></abbr> &euro;" . $prezzo . "</p>";
+        }
+        else
+        {
+            $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
+        }
 
         // ---- TRAMA ----
         $trama = "<h3>Descrizione</h3>";
@@ -296,8 +311,40 @@ if (isset($_GET['isbn'])) {
             }
         }
 
+        // FORM UTENTE O ADMIN
+        $codiceIdentificativo = $_SESSION["Codice_identificativo"];
+        $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
+        $formBottoni = "";
+
+        if($codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957")
+        {
+            // utente
+            $formBottoni = "
+            <form action='addcart.php' method='post'>
+                <input type='submit' class='button' value='Aggiungi al carrello' />
+                <input type='button' class='button' value='Aggiungi alla wishlist' />
+
+                <!-- Segnaposto -->
+                <label for='quantita'>Quantit&agrave;</label>
+                </inputQuantita>
+            </form>";
+        }
+        else
+        {
+            // admin
+            $formBottoni = "
+            <form action='aggiungiLibro.php?isbn=" . $isbn . "' method='post'>
+                <input type='submit' class='button' value='Modifica libro' />
+            </form>";
+        }
+
 
         // Replace
+
+        // il replace </formBottoni> DEVE essere prima di quello </inputQuantita>
+        $paginaHTML = str_replace("</formBottoni>", $formBottoni, $paginaHTML);
+
+        // ----
         $paginaHTML = str_replace("</imgLibro>", $imgLibro, $paginaHTML);
         $paginaHTML = str_replace("</infoGenerali>", $infoGenerali, $paginaHTML);
         $paginaHTML = str_replace("</trama>", $trama, $paginaHTML);

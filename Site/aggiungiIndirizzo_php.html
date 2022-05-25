@@ -21,7 +21,6 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-
   <script src="./js/addAddress.js"></script>
 
   <!-- Segnaposto -->
@@ -34,8 +33,7 @@
   </headerSito>
 
   <nav id="breadcrumb">
-    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a> &gt;&gt;
-      <a href="indirizzi.php">Indirizzi</a> &gt;&gt; Aggiungi Indirizzo</p>
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a>  &gt;&gt; <a href="indirizzi.php">Indirizzi</a>  &gt;&gt; Aggiungi Indirizzo</p>
   </nav>
 
   <nav id="menu">
@@ -48,10 +46,9 @@
   </nav>
 
   <div id="content">
-    <form class="formInput" id="formAggiungiIndirizzo" action='aggiungiIndirizzo.php' method="post">
+    <h2>Aggiungi Indirizzo</h2>
+    <form class="formInput" id="formAggiungiIndirizzo" action='' method="post">
       <fieldset>
-        <h2>Aggiungi Indirizzo</h2>
-
         <label for="citta">Citt&agrave;</label>
         <span><input class="styleInput" id="citta" name="citta" type="text"></span>
 
@@ -63,7 +60,7 @@
 
         <label for="num_civico">Numero Civico</label>
         <span><input class="styleInput ultimoInput" id="num_civico" name="num_civico" type="text"></span>
-
+      
         <input type="submit" class="button" value="Conferma">
       </fieldset>
     </form>
