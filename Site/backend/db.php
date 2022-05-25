@@ -1375,4 +1375,58 @@ class Service extends Constant {
 
     return $res;
   }
+
+  public function get_all_authors(): response_manager {
+    $query = "SELECT * FROM autore";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun autore trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function get_all_editors(): response_manager {
+    $query = "SELECT * FROM editore";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun editore trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
 }
