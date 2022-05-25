@@ -1257,29 +1257,56 @@ class Service extends Constant {
 
       $tmp = $stmt->execute();
 
-      $orderID = $stmt->insert_id;
+      if (!$tmp) {
+        $stmt->close();
+        throw new Exception("Non è stato possibile inserire l'ordine");
+      }
 
+      $orderID = $stmt->insert_id;
       $books_array = $carrello->get_cart();
 
-
       foreach ($books_array as $isbn => $data) {
-        echo $orderID . " " . $isbn . " " . $data->quant . "<br>";
         $query2 = "INSERT INTO composizione(elemento, codice_ordine, quantita) VALUES (?,?,?)";
         $stmt = $this->connection->prepare($query2);
         $q = $data->quant;
         if ($stmt === false) {
           throw new Exception("Qualcosa sembra essere andato storto");
-        } elseif ($stmt->bind_param('ssi', $isbn, $orderID, $q) === false) {
+        } else if ($stmt->bind_param('ssi', $isbn, $orderID, $q) === false) {
           $stmt->close();
           throw new Exception("Qualcosa sembra essere andato storto");
         }
-        $stmt->execute();
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("Controllare i dati dell'ordine");
+        }
+
+        $query3 = "UPDATE libro SET quantita = quantita - ? WHERE isbn = ?";
+        $stmt = $this->connection->prepare($query3);
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
+        } else if ($stmt->bind_param('is', $q, $isbn) === false) {
+          $stmt->close();
+          throw new Exception("Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("La quantità dell'ordine supera quella disponibile");
+        }
       }
-      $this->connection->commit();
+
+      if ($tmp) {
+        $this->connection->commit();
+      } else {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
+      }
     } catch (\Throwable $exception) {
       $this->connection->rollback();
-      $stmt->close();
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+      return new response_manager($result, $this->connection, $exception->getMessage());
     }
 
     $this->connection->autocommit(true);
