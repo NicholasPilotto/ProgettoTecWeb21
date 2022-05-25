@@ -1036,7 +1036,7 @@ class Service extends Constant {
     $query = "SELECT * FROM libro
               INNER JOIN offerte
               ON offerte.libro_ISBN = libro.ISBN
-              WHERE offerte.data_fine < DATE(NOW())";
+              WHERE offerte.data_fine >= DATE(NOW())";
     $stmt = $this->connection->query($query);
 
     $result = array();
