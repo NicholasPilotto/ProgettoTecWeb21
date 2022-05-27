@@ -180,7 +180,7 @@ CREATE TABLE offerte (
 
 INSERT INTO editore(id,nome) VALUES
 (3000,'Newton Compton Editori'),
-(3001,'Baldini & Castoldi'),
+(3001,'Baldini &amp; Castoldi'),
 (3002,'Libreria Pienogiorno'),
 (3003,'Meravigli'),
 (3004,'Cairo'),
@@ -198,7 +198,7 @@ INSERT INTO editore(id,nome) VALUES
 (3016,'Goen'),
 (3017,'Giunti Editore'),
 (3018,'Longanesi'),
-(3019,'Grimaldi & C'),
+(3019,'Grimaldi &amp; C'),
 (3020,'Time Crime'),
 (3021,'Feltrinelli'),
 (3022,'Loescher'),
