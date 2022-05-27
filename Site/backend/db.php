@@ -34,7 +34,7 @@ class Service extends Constant {
   }
 
   public function get_book_by_isbn($isbn): response_manager {
-    $query = "SELECT libro.*, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome, offerte.sconto, offerte.data_fine 
+    $query = "SELECT libro.*, autore.id AS autore_id, autore.nome AS autore_nome, autore.cognome AS autore_cognome, editore.nome AS editore_nome, offerte.sconto, offerte.data_fine 
               FROM libro 
               INNER JOIN pubblicazione 
               ON pubblicazione.libro_isbn = libro.isbn 
