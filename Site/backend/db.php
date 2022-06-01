@@ -11,7 +11,7 @@ require_once('response_manager.php');
 class Constant {
   protected const HOST_DB = "127.0.0.1";
   protected const DATABASE_NAME = "secondread";
-  protected const USERNAME = "root";
+  protected const USERNAME = "";
   protected const PASSWORD = "";
 }
 
@@ -462,13 +462,13 @@ class Service extends Constant {
     if (!$response) {
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
-    return $this->login($email, $pass);
+    return $this->login($username, $pass);
   }
 
-  public function login($mail, $pass): response_manager {
+  public function login($username, $pass): response_manager {
     $query = "SELECT codice_identificativo, nome, cognome, data_nascita, username, email, telefono
               FROM utente
-              WHERE email = ? AND password = ?";
+              WHERE username = ? AND password = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
 
@@ -476,7 +476,7 @@ class Service extends Constant {
 
     if ($stmt === false) {
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ss', $mail, $psw) === false) {
+    } else if ($stmt->bind_param('ss', $username, $psw) === false) {
       $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
