@@ -23,17 +23,10 @@ if(isset($_SESSION["cart"]))
 {
     $cart = new cart();
     $cart = cart::build_cart_from_session();
-    print_r($cart);
-    echo "<br>";
     $indirizzo = $_POST["indirizzo"];
-    echo $indirizzo;
-    echo "<br>";
-    echo $queryUtente->get_result()[0]["codice_identificativo"];
-    echo "<br>";
     $queryInsert = $connessione->insert_order($queryUtente->get_result()[0]["codice_identificativo"],$indirizzo,$cart);
-    print_r($queryInsert);
-    //unset($_SESSION["cart"]);
+    unset($_SESSION["cart"]);
 }
 $connessione->closeConnection();
-//header("Location:index.php");
+header("Location:index.php");
 ?>

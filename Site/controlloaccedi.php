@@ -5,14 +5,14 @@ use DB\Service;
 
 require_once('backend/db.php');
 
-$email = $_POST["email"];
+$username = $_POST["username"];
 $password = $_POST["password"];
 
 $connessione = new Service();
 
 $connessione->openConnection();
 
-$log = $connessione->login($email, $password);
+$log = $connessione->login($username, $password);
 
 if ($log->ok()) {
   if (!$log->is_empty()) {
