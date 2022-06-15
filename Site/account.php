@@ -41,7 +41,7 @@
                 </li>
                 <li>
                     <i class='fa-li far fa-user fa-3x'></i>
-                    <h3><a href=''>Dati Login</a></h3>
+                    <h3><a href='datilogin.php'>Dati Login</a></h3>
                     <p>Visualizza o modifica dati personali</p>
                 </li>
                 
@@ -52,7 +52,7 @@
                 </li>
                 <li>
                     <i class='fa-li far far fa-heart fa-3x'></i>
-                    <h3 lang='en'><a href=''>Wishlist</a></h3>
+                    <h3 lang='en'><a href='wishlist.php'>Wishlist</a></h3>
                     <p>Visualizza gli articoli nella tua wishlist</p>
                 </li>
                 <li>
