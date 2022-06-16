@@ -33,10 +33,13 @@ if ($queryBestseller->ok()) {
     $listaBestseller .= "</ul>";
 
     $paginaHTML = str_replace("</listaBestseller>", $listaBestseller, $paginaHTML);
+    $aux = "<a class='nav-link' href='bestseller.php'>Bestseller</a>";
+    $paginaHTML = str_replace($aux, "Bestseller", $paginaHTML);
 }
 
 
 $connessione->closeConnection();
+$paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="bestseller.php">Bestseller</a></li>', '<li class="nav-item">Bestseller</li>', $paginaHTML);
 // -------------------
 
 echo $paginaHTML;

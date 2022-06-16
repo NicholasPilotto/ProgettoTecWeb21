@@ -9,7 +9,8 @@ SEZIONE GLOBALE
     margin: 0;
 }
 
-html, body {
+html,
+body {
     font-size: 100%;
     /*font-family: "Comic Sans MS", cursive, sans-serif;*/
     font-family: 'Open Sans', sans-serif;
@@ -19,7 +20,6 @@ html, body {
 
 body {
     /*border: 1px solid #000;*/
-
     background-color: rgb(237, 239, 240);
     box-shadow: 0px 0px 10px 0px #aaaaaa;
 }
@@ -34,6 +34,129 @@ a:visited {
 
 ul {
     list-style-type: none;
+}
+
+/*
+==================
+SEZIONE MENU'
+==================
+*/
+
+#menu {
+    /*padding-left: 0.6em;*/
+    /*padding-left: 1.5em;
+    padding-right: 1.5em;*/
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: white;
+    align-items: center;
+    padding: 1rem 1.5rem;
+}
+
+/*
+#menu ul {
+    commento column-count: 4;
+}
+
+#menu ul li {
+    commento margin-left: 5%;
+    commento margin-right: 5%;
+
+    text-align: center;
+} 
+*/
+
+#menu h1 {
+    background-image: url("images/SecondReadLogo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-indent: -999em;
+    font-size: 3em;
+    display: inline-block;
+
+    /*
+    width: 28%;
+    min-width: 280px;
+    */
+    flex-basis: 280px;
+    flex-grow: 1;
+}
+
+.nav-menu {
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    gap: 1em;
+}
+
+/* ----- HAMBURGER MENU ----- */
+.hamburger {
+    display: none;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: black;
+    border-radius: 5px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-item {
+    margin-left: 0em;
+}
+
+@media only screen and (max-width: 768px) {
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+
+    .nav-menu {
+        display: none;
+        margin-top: 1em;
+        background-color: white;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu.active {
+        width: 100%;
+        display: block;
+    }
+
+    .nav-item {
+        margin: 2.5rem;
+    }
+
+    #menu h1 {
+        font-size: 1.8em;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
 }
 
 /* ----- STELLE ----- */
@@ -54,7 +177,8 @@ ul {
 }
 
 .badgeLv2 {
-    color: #8a9597; /*8a9597*/
+    color: #8a9597;
+    /*8a9597*/
     font-size: 1.5em;
 }
 
@@ -111,10 +235,11 @@ table {
     border-top: 1px solid black;
 }
 
-td, th {
+td,
+th {
     border-left: 1px solid black;
     border-bottom: 1px solid black;
-    
+
     text-align: center;
     padding: 0.5em;
 }
@@ -138,7 +263,7 @@ thead {
 */
 .divPreForm {
     width: 25em;
-    margin: auto;    
+    margin: auto;
 
     border: 1px solid #aaaaaa;
     border-radius: 10px;
@@ -171,7 +296,7 @@ thead {
 .formInput {
     width: 25em;
 
-    margin: auto;    
+    margin: auto;
     padding-bottom: 1em;
 }
 
@@ -205,7 +330,7 @@ thead {
     font-size: large;
 }
 
-.styleSelectStelle + label {
+.styleSelectStelle+label {
     display: block;
 }
 
@@ -301,40 +426,11 @@ SEZIONE BREADCRUMB
 
     /*background-color: #e5fdf6;*/
     background-color: white;
+    padding-top: 0.3em;
+    /* border-top: solid 2px #EDEFF0; */
+    border-bottom: solid 2px #EDEFF0;
 
     padding-bottom: 0.5em;
-}
-
-/*
-==================
-SEZIONE MENU'
-==================
-*/
-
-#menu {
-    /*padding-left: 0.6em;*/
-    /*padding-left: 1.5em;
-    padding-right: 1.5em;*/
-    border-bottom: 1px solid #aaaaaa;
-
-    /*background-color: #e5fdf6;*/
-    background-color: white;
-
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
-
-#menu ul {
-    /*column-count: 4;*/
-    display: flex;
-    justify-content: space-around;
-}
-
-#menu ul li {
-    /*margin-left: 5%;
-    margin-right: 5%;*/
-
-    text-align: center;
 }
 
 /*
@@ -362,7 +458,8 @@ SEZIONE CONTENT
 
     display: flex;
 
-    flex-wrap: wrap; /* Andare a capo */
+    flex-wrap: wrap;
+    /* Andare a capo */
     justify-content: center;
 }
 
@@ -382,9 +479,10 @@ SEZIONE CONTENT
     margin-left: auto;
     margin-right: auto;
     display: block;
-    
+
     border-radius: 5px;
 }
+
 /* ------------------- HOME ------------------- */
 
 
@@ -453,7 +551,12 @@ SEZIONE CONTENT
 
 #filtri ul li input[type=checkbox] {
     transform: scale(1.5);
+    color: #146e53;
     margin-left: 0.2em;
+}
+
+input:checked {
+    background-color: green;
 }
 
 #filtri ul li input[type=number] {
@@ -502,12 +605,13 @@ SEZIONE CONTENT
     list-style-type: none;
 
     display: flex;
-    flex-wrap: wrap; /* Andare a capo */
+    flex-wrap: wrap;
+    /* Andare a capo */
 
     /*border-left: 1px solid #aaaaaa;*/
 }
 
-.advertsCards li{
+.advertsCards li {
     border-top: 1px solid #aaaaaa;
 }
 
@@ -524,7 +628,7 @@ li.imgLi {
     /*border: 1px solid rgb(240, 38, 38);*/
 
     text-align: center;
-    
+
     padding-top: 1em;
     padding-bottom: 1em;
 }
@@ -538,7 +642,7 @@ li.textLi {
     padding-bottom: 0.6em;
 }
 
-li.textLi p{
+li.textLi p {
     padding-top: 0.5em;
 }
 
@@ -615,7 +719,8 @@ a.titolo {
     margin-right: 1%;
 }
 
-#liButtonLibro input[type=button], #liButtonLibro input[type=submit] {
+#liButtonLibro input[type=button],
+#liButtonLibro input[type=submit] {
     display: block;
 
     width: 100%;
@@ -689,7 +794,8 @@ a.titolo {
     border: 1px solid #aaaaaa;
     border-top: none;
 
-    padding: 0.4em 0.5em 0.4em; /* top, right e left, bottom */
+    padding: 0.4em 0.5em 0.4em;
+    /* top, right e left, bottom */
 }
 
 #primaRecensione {
@@ -706,18 +812,18 @@ a.titolo {
 }
 
 .accountCards li {
-    
+
     /*
     background-color: cornsilk;
     border: 1px solid #000;
     border-radius: 5px;
     */
-    
+
     flex-basis: 20%;
     flex-grow: 0;
     flex-shrink: 0;
 
-    
+
     margin-left: 20%;
     margin-top: 0.7em;
     margin-bottom: 1em;
@@ -738,18 +844,11 @@ a.titolo {
     width: 30%;
 }
 
-/* ------------------- AGGIUNGI LIBRO ------------------- */
-
-#img-preview {
-    display: none; 
-    width: 8.5em;   
-    border: 2px dashed #333;  
-}
-#img-preview img {  
-    width: 100%;
-    height: auto; 
-    display: block;
-}
+/*
+#formAggiungiIndirizzo input[type=submit]
+{
+    width: fit-content;
+}*/
 
 /* ------------------- CARRELLO ------------------- */
 
@@ -807,19 +906,17 @@ a.titolo {
     color: white;
 }
 
-.carrelloStatus{
+.carrelloStatus {
     font-weight: bold;
     font-size: larger;
-    text-align:center;
-    margin-bottom:1em;
-    margin-top:1em;
+    text-align: center;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
-
-/* ------------------- CARRELLO ------------------- */
 
 .formPurchase {
     width: 25em;
-    margin: auto;    
+    margin: auto;
     padding-bottom: 1em;
 }
 
@@ -840,17 +937,18 @@ a.titolo {
 .formPurchase input[type=submit] {
     display: block;
 
+    /*width: 32%;*/
     width: fit-content;
     padding-left: 0.5em;
     padding-right: 0.5em;
 
     height: 2em;
 
+    /*font-size: larger;*/
 
     margin: auto;
     margin-top: 1.2em;
 }
-
 
 /* ------------------- ERRORE ------------------- */
 
@@ -866,7 +964,7 @@ SEZIONE ERRORI
 */
 
 .errorSuggestion {
-    color:rgb(201, 98, 98);
+    color: rgb(201, 98, 98);
     font-size: 0.8em;
     display: block;
     /* margin-top: -1em; */

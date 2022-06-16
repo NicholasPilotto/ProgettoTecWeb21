@@ -1,23 +1,19 @@
 <?php
-    session_start();
-    if(!isset($_SESSION["Nome"]))
-    {
-        header("Location: index.php");
-    }
-    else
-    {
-        require_once "graphics.php";
-        
-        $paginaHTML = graphics::getPage("account_php.html");
+session_start();
+if (!isset($_SESSION["Nome"])) {
+    header("Location: index.php");
+} else {
+    require_once "graphics.php";
 
-        $codiceIdentificativo = $_SESSION["Codice_identificativo"];
-        $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
-        $liAccount = "";
+    $paginaHTML = graphics::getPage("account_php.html");
 
-        if($codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957")
-        {
-            // admin
-            $liAccount = "
+    $codiceIdentificativo = $_SESSION["Codice_identificativo"];
+    $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
+    $liAccount = "";
+
+    if ($codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
+        // admin
+        $liAccount = "
                 <li>
                     <i class='fa-li fa fa-plus-circle fa-3x'></i>
                     <h3><a href='aggiungiLibro.php'>Aggiungi libro</a></h3>
@@ -29,11 +25,9 @@
                     <p>Visualizza le <span lang='en'>analytics</span> di SecondRead</p>
                 </li>
             ";
-        }
-        else
-        {
-            // user normale
-            $liAccount = "
+    } else {
+        // user normale
+        $liAccount = "
                 <li>
                     <i class='fa-li far fa-list-alt fa-3x'></i>
                     <h3><a href='ordini.php'>Ordini</a></h3>
@@ -66,14 +60,13 @@
                     <p>Stai avendo problemi? Scopri chi contattare</p>
                 </li>
             ";
-        }
-
-        // Accesso al database
-
-        // -------------------
-
-        $paginaHTML = str_replace("</liAccount>", $liAccount, $paginaHTML);
-
-        echo $paginaHTML;
     }
-?>
+
+    // Accesso al database
+
+    // -------------------
+
+    $paginaHTML = str_replace("</liAccount>", $liAccount, $paginaHTML);
+    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>', '<li class="nav-item">Area riservata</li>', $paginaHTML);
+    echo $paginaHTML;
+}

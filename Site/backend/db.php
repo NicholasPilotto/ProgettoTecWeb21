@@ -10,7 +10,7 @@ require_once('response_manager.php');
 
 class Constant {
   protected const HOST_DB = "127.0.0.1";
-  protected const DATABASE_NAME = "secondread";
+  protected const DATABASE_NAME = "";
   protected const USERNAME = "";
   protected const PASSWORD = "";
 }
@@ -472,7 +472,9 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
+
     $psw = hash('sha256', $pass);
+
 
     if ($stmt === false) {
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
@@ -483,6 +485,7 @@ class Service extends Constant {
 
     $stmt->execute();
     $tmp = $stmt->get_result();
+
 
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);

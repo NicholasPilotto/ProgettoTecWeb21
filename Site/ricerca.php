@@ -40,13 +40,13 @@ if (isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "") {
 $listaFiltriPrezzo = "<ul>";
 
 $listaFiltriPrezzo .= "<li>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any' value='" . $prezzoMin . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any'  value='" . $prezzoMin . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
 $listaFiltriPrezzo .= "</li>";
 
 $listaFiltriPrezzo .= "<li>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='1' max='100' step='any' value='" . $prezzoMax . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any'  value='" . $prezzoMax . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
 $listaFiltriPrezzo .= "</li>";
@@ -270,6 +270,10 @@ if ($queryLibri->ok()) {
     }
 
     $libriTrovati .= "</ul>";
+
+    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="ricerca.php">Ricerca</a></li>', '<li class="nav-item">Ricerca</li>', $paginaHTML);
+    // echo var_dump(str_contains($paginaHTML, "<li class='nav-item'><a class='nav-link' href='ricerca.php'>Ricerca</a></li>"));
+    // die();
 
     $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
 }

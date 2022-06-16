@@ -27,7 +27,7 @@ if ($queryOfferte->ok()) {
     $cont = 0;
     foreach ($queryOfferte->get_result() as $libro) {
         if ($cont++ < $limit) {
-            $listaOfferte .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='generiCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] .  "</a></br>" . number_format((float)$libro['prezzo'] * (100-$libro['sconto'])/100, 2, '.', '') . "&euro; (" . $libro['sconto'] . "% sconto)" .  "</li>";
+            $listaOfferte .= "<li><a href='libro.php?isbn=" . $libro['isbn'] . "'><img class='generiCardsImg' src='" . $libro['percorso'] . "' alt=''>" . $libro['titolo'] .  "</a></br>" . number_format((float)$libro['prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '') . "&euro; (" . $libro['sconto'] . "% sconto)" .  "</li>";
         }
     }
     $listaOfferte .= "</ul>";
@@ -38,5 +38,6 @@ if ($queryOfferte->ok()) {
 
 $connessione->closeConnection();
 // -------------------
+$paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="offerte.php">Offerte</a></li>', '<li class="nav-item">Offerte</li>', $paginaHTML);
 
 echo $paginaHTML;

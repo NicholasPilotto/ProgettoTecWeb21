@@ -24,20 +24,13 @@
 
 <body>
     <!-- Segnaposto -->
-    </headerSito>
+    <!-- </headerSito> -->
+
+    </navBarSito>
 
     <nav id="breadcrumb">
         <p>Ti trovi in: <a lang="en" href="index.php">Home</a></paginaPrecedente>
         </p>
-    </nav>
-
-    <nav id="menu">
-        <ul>
-            <li><a href="ricerca.php">Ricerca</a></li>
-            <li><a href="generi.php">Generi</a></li>
-            <li><a href="bestseller.php">Bestseller</a></li>
-            <li><a href="offerte.php">Offerte</a></li>
-        </ul>
     </nav>
 
     <div id="content">
@@ -53,11 +46,18 @@
                 <!-- Segnaposto -->
                 </infoGenerali>
             </li>
-            <li id="liButtonLibro">
+            <form action="addcart.php" method="post">
 
-                <!-- Segnaposto -->
-                </formBottoni>
-            </li>
+                <li id="liButtonLibro">
+                    <input type="submit" class="btnFiltri button" value="Aggiungi al carrello" />
+                    <input type="button" class="button" value="Acquista subito" />
+
+                    <!-- Segnaposto -->
+                    <label for="quantita">Quantit&agrave;</label>
+                    </inputQuantita>
+
+                </li>
+            </form>
 
             <li id="liTrama">
                 </trama>

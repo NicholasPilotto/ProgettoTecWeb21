@@ -20,6 +20,8 @@
         {
             $isbn = $_GET['isbn'];
 
+            $_SESSION["isbnReview"] = $isbn;
+
             // replace della breadcrumb
             $linkDettaglioLibro = "<a href='libro.php?isbn=" . $isbn . "'>Dettagli Libro</a>";
             $paginaHTML = str_replace("</linkDettaglioLibro>", $linkDettaglioLibro, $paginaHTML);
@@ -58,4 +60,3 @@
 
         echo $paginaHTML;
     }
-?>

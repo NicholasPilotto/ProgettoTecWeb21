@@ -11,7 +11,7 @@ require_once "cart.php";
 
 $paginaHTML = graphics::getPage("carrello_php.html");
 
-if(!isset($_SESSION["Nome"])){
+if (!isset($_SESSION["Nome"])) {
     header("Location:accedi.php");
 }
 
@@ -20,15 +20,13 @@ $connessione = new Service();
 $a = $connessione->openConnection();
 $carrelloDiv = "";
 
-if(isset($_SESSION["cart"]))
-{
+if (isset($_SESSION["cart"])) {
     $c = new cart();
     $c = cart::build_cart_from_session();
     $cart = $c->get_cart();
     $tot = 0;
 
-    foreach($cart as $isbn => $data)
-    {
+    foreach ($cart as $isbn => $data) {
         $queryIsbn = $connessione->get_book_by_isbn($isbn);
         if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
             $res = $queryIsbn->get_result();
@@ -45,9 +43,7 @@ if(isset($_SESSION["cart"]))
     $purchase = "<button type='button' class='cartButton' onclick='window.location.href=\"acquista.php\"'>Procedi con l'acquisto</button>";
     $totString = "<div class='carrelloStatus'>" . $purchase . "<p>" . "Prezzo totale:" . $tot . "</p></div>";
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
-}
-else
-{
+} else {
     $carrelloDiv .= "<div class='carrelloStatus'><p>Il carrello è vuoto</p></div>";
     $paginaHTML = str_replace("</totale>", "", $paginaHTML);
 }
@@ -55,6 +51,5 @@ else
 $connessione->closeConnection();
 // -------------------
 $paginaHTML = str_replace("</carrello>", $carrelloDiv, $paginaHTML);
+$paginaHTML = str_replace('<li class="nav-item"><a class="linkUtente" href="carrello.php">Carrello</a></li>', '<li class="nav-item">Carrello</li>', $paginaHTML);
 echo $paginaHTML;
-
-?>
