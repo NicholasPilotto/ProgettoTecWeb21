@@ -1,8 +1,8 @@
 var dettagli_form = {
-  "email": [
-    "Indirizzo mail",
-    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-    "Inserire un indirizzo mail corretto"
+  "username": [
+    "Username",
+    /^[A-Za-z\s]\w{2,10}$/,
+    "Inserire un indirizzo username corretto"
   ],
   "password": [
     "Password",
@@ -77,3 +77,7 @@ function validazioneForm() {
   }
   return true;
 }
+
+window.addEventListener('load', function () {
+  caricamento();
+});

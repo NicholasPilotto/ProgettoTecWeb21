@@ -92,3 +92,7 @@ function validazioneForm() {
   }
   return true;
 }
+
+window.addEventListener('load', function () {
+  caricamento();
+});

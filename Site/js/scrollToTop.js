@@ -11,9 +11,14 @@ function insertButton() {
   }
 }
 
-window.onload = function () { insertButton() };
-window.onresize = function () { insertButton() };
-
 function topFunction() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+window.addEventListener('load', function () {
+  insertButton();
+});
+
+window.addEventListener('onresize', function () {
+  insertButton();
+});

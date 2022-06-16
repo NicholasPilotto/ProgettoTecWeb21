@@ -1,4 +1,7 @@
 function caricamento() {
+  document.getElementById("resetFilters").onclick = function () {
+    resetFilters();
+  }
   document.getElementById("prezzoMin").onchange = function () {
     controlNumberMin();
   }
@@ -20,6 +23,7 @@ function resetFilters() {
 }
 
 function controlNumberMin() {
+  console.log("aaa");
   var min = document.getElementById("prezzoMin");
   var max = document.getElementById("prezzoMax");
 
@@ -37,3 +41,7 @@ function controlNumberMax() {
     min.value = max.value - 1;
   }
 }
+
+window.addEventListener('load', function () {
+  caricamento();
+});
