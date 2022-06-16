@@ -271,7 +271,7 @@ if ($queryLibri->ok()) {
 
     $libriTrovati .= "</ul>";
 
-    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="ricerca.php">Ricerca</a></li>', '<li class="nav-item">Ricerca</li>', $paginaHTML);
+    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="ricerca.php">Ricerca</a></li>', '<li class="nav-item selectedNavItem">Ricerca</li>', $paginaHTML);
     // echo var_dump(str_contains($paginaHTML, "<li class='nav-item'><a class='nav-link' href='ricerca.php'>Ricerca</a></li>"));
     // die();
 

@@ -51,5 +51,6 @@ if (isset($_SESSION["cart"])) {
 $connessione->closeConnection();
 // -------------------
 $paginaHTML = str_replace("</carrello>", $carrelloDiv, $paginaHTML);
-$paginaHTML = str_replace('<li class="nav-item"><a class="linkUtente" href="carrello.php">Carrello</a></li>', '<li class="nav-item">Carrello</li>', $paginaHTML);
+$paginaHTML = str_replace('<a class="linkUtente" href="carrello.php">Carrello', '<p class="nonLink selectedNavItem">Carrello', $paginaHTML);
+$paginaHTML = str_replace('</abbr></a>', '</abbr></p>', $paginaHTML);
 echo $paginaHTML;

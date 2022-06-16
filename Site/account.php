@@ -67,6 +67,6 @@ if (!isset($_SESSION["Nome"])) {
     // -------------------
 
     $paginaHTML = str_replace("</liAccount>", $liAccount, $paginaHTML);
-    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>', '<li class="nav-item">Area riservata</li>', $paginaHTML);
+    $paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>', '<li class="nav-item selectedNavItem">Area riservata</li>', $paginaHTML);
     echo $paginaHTML;
 }
