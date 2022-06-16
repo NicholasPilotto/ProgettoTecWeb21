@@ -7,18 +7,20 @@ class graphics {
         $helloUser = "";
 
         require_once "cart.php";
+        $c;
 
         if (isset($_SESSION["Nome"])) {
             $helloUser = "<p id='benvenuto'>Benvenuto, " . $_SESSION["Nome"] . "</p>";
             //     $linkUtente .= "<a class='linkUtente' href='account.php'>Account</a>";
             $linkUtente .= '<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>
             ';
-            $linkUtente .= '<li class="nav-item"><a class="linkUtente" href="carrello.php">Carrello';
+            $linkUtente .= '<li class="nav-item"><abbr class="notification" title="Carrello *q* elementi"><a class="linkUtente" href="carrello.php">Carrello';
             if (isset($_SESSION["cart"])) {
                 $c = cart::build_cart_from_session();
-                $linkUtente .= "(" . $c->get_quantity() . " oggetti)";
+                $linkUtente .= '<abbr aria-hidden="true" class="badge">' . $c->get_quantity() . '</abbr>';
             }
-            $linkUtente .= '</a></li>
+            $linkUtente = str_replace("*q*", isset($c) ? $c->get_quantity() : "", $linkUtente);
+            $linkUtente .= '</a></abbr></li>
             ';
             $linkUtente .= '<li class="nav-item"><a class="linkUtente" href="esci.php">Esci</a></li>';
         } else {
