@@ -472,9 +472,7 @@ class Service extends Constant {
     $stmt = $this->connection->prepare($query);
     $result = array();
 
-
     $psw = hash('sha256', $pass);
-
 
     if ($stmt === false) {
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
@@ -485,7 +483,6 @@ class Service extends Constant {
 
     $stmt->execute();
     $tmp = $stmt->get_result();
-
 
     while ($row = $tmp->fetch_assoc()) {
       array_push($result, $row);
@@ -512,6 +509,7 @@ class Service extends Constant {
 
     $result = array_diff($new_data, $old_data);
 
+    print_r($result);
 
     if (isset($result["username"])) {
       array_push($components, $result["username"]);
@@ -519,16 +517,10 @@ class Service extends Constant {
       $aux .= " username = ?,";
     }
 
-    if (isset($$result["email"])) {
-      array_push($components, $$result["email"]);
+    if (isset($result["email"])) {
+      array_push($components, $result["email"]);
       $type .= "s";
       $aux .= " email = ?,";
-    }
-
-    if (isset($$result["password"])) {
-      array_push($components, $$result["password"]);
-      $type .= "s";
-      $aux .= " password = ?,";
     }
 
     $aux = substr($aux, 0, -1);
@@ -1194,24 +1186,12 @@ class Service extends Constant {
     return $res;
   }
 
-  public function restore_psw($utente, $pass, $code): response_manager {
+  public function change_psw($utente, $newpass): response_manager {
     $result = array();
-    $query2 = "DELETE FROM recupero WHERE id = ? AND utente = ?";
-    $stmt = $this->connection->prepare($query2);
 
-    if ($stmt === false) {
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ss', $code, $utente) === false) {
-      $stmt->close();
-      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $stmt->execute();
-
-    if ($stmt->affected_rows != 0) {
       $query1 = "UPDATE utente SET password = ? WHERE codice_identificativo = ?";
       $stmt = $this->connection->prepare($query1);
-      $psw = hash('sha256', $pass);
+      $psw = hash('sha256', $newpass);
 
       if ($stmt === false) {
         return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
@@ -1227,14 +1207,12 @@ class Service extends Constant {
       $res = new response_manager($result, $this->connection, "");
 
       if (!$res->ok()) {
-        $res->set_error_message("Non è stato possibile generare il codice");
+        $res->set_error_message("Non è stato possibile modificare la password");
       }
 
       $stmt->close();
 
       return $res;
-    }
-    return new response_manager($result, $this->connection, "Il codice inserito non è stato trovato");
   }
 
   public function insert_order($cliente, $indirizzo, cart $carrello): response_manager {
