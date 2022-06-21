@@ -40,6 +40,9 @@
         print_r($newArray);
 
         $connessione->update_user_data($_SESSION['Codice_identificativo'],$oldArray,$newArray);
+
+        $_SESSION["Username"] = $newUsername;
+        $_SESSION["Email"] = $newMail;
     
         $connessione->closeConnection();
 
