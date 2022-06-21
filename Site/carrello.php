@@ -11,7 +11,7 @@ require_once "cart.php";
 
 $paginaHTML = graphics::getPage("carrello_php.html");
 
-if (!isset($_SESSION["Nome"])) {
+if (!isset($_SESSION["Nome"]) || $codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
     header("Location:accedi.php");
 }
 
