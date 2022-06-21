@@ -11,7 +11,7 @@ require_once "cart.php";
 
 $paginaHTML = graphics::getPage("carrello_php.html");
 
-if (!isset($_SESSION["Nome"]) || $codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
+if (!isset($_SESSION["Nome"]) || $codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
     header("Location:accedi.php");
 }
 
@@ -51,7 +51,7 @@ if (isset($_SESSION["cart"])) {
 $connessione->closeConnection();
 // -------------------
 $paginaHTML = str_replace("</carrello>", $carrelloDiv, $paginaHTML);
-$paginaHTML = str_replace('<abbr class="notification" title="Carrello 1 elementi">', '<abbr class="notification selectedNavItem" title="Carrello 1 elementi">', $paginaHTML);
+$paginaHTML = str_replace('<abbr class="notification"', '<abbr class="notification selectedNavItem"', $paginaHTML);
 $paginaHTML = str_replace('<a class="linkUtente" href="carrello.php">', '', $paginaHTML);
 $paginaHTML = str_replace('</a">', '', $paginaHTML);
 echo $paginaHTML;

@@ -1,4 +1,5 @@
 function caricamento() {
+  resetFilters();
   document.getElementById("resetFilters").onclick = function () {
     resetFilters();
   }
@@ -17,7 +18,7 @@ function resetFilters() {
   });
 
   document.getElementById("prezzoMin").value = 1;
-  document.getElementById("prezzoMax").value = 20;
+  document.getElementById("prezzoMax").value = 100;
 
   return false;
 }

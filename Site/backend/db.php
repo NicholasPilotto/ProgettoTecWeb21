@@ -1466,4 +1466,33 @@ class Service extends Constant {
     $stmt->close();
     return $res;
   }
+
+  public function get_total_orders_last_month(): response_manager {
+    $query = "SELECT MONTH(ordine.data) AS mese, YEAR(ordine.data) AS anno, count(*) AS totale
+              FROM ordine
+              WHERE MONTH(ordine.data) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AND YEAR(ordine.data) = YEAR(CURRENT_DATE - INTERVAL 12 MONTH)";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun guadagno trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
 }

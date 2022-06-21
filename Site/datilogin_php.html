@@ -13,64 +13,38 @@
 
   <!-- Segnaposto -->
   </linkSito>
-
-  <script>
-    function test()
-    {
-      document.getElementById("inputNameShow").value=document.getElementById("inputNameHide").textContent;
-      document.getElementById("inputNameShow").style.display="block";
-      document.getElementById("inputNameHide").style.display="none";
-      document.getElementById("inputNameButton").style.display="none";
-      document.getElementById("outputNameButton").style.display="block";
-    }
-
-    function reverse()
-    {
-      document.getElementById("inputNameHide").textContent=document.getElementById("inputNameShow").value;
-      document.getElementById("inputNameShow").style.display="none";
-      document.getElementById("inputNameHide").style.display="block";
-      document.getElementById("inputNameButton").style.display="block";
-      document.getElementById("outputNameButton").style.display="none";
-    }
-  </script>
+  <script src="./js/datiLogin.js"></script>
 
 </head>
 
-<body onload="">
+<body>
   <!-- Segnaposto -->
-  </headerSito>
+  </navBarSito>
 
   <nav id="breadcrumb">
-    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a>  &gt;&gt; Modifica dati <span lang="en">Login</span></p>
-  </nav>
-
-  <nav id="menu">
-    <ul>
-      <li><a href="ricerca.php">Ricerca</a></li>
-      <li><a href="generi.php">Generi</a></li>
-      <li><a href="bestseller.php">Bestseller</a></li>
-      <li><a href="">Offerte</a></li>
-    </ul>
+    <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a> &gt;&gt;
+      Modifica dati <span lang="en">Login</span></p>
   </nav>
 
   <div id="content">
-    <form class="formInput" action='modificaDati.php' method="post">
+    <form class="formInput" id="form" action='modificaDati.php' method="post">
       <fieldset>
         <h2>Dati login</h2>
-        <label for="inputName">Nome Corrente</label><br/>
+        <label for="inputName">Nome Corrente</label>
         <span><input class="styleInput" id="inputName" name="name" type="text" value="</nameCurrent>" disabled></span>
 
-        <label for="inputSurname">Cognome Corrente</label><br/>
-        <span><input class="styleInput" id="inputSurname" name="surname" type="text" value="</surnameCurrent>" disabled></span>
+        <label for="inputSurname">Cognome Corrente</label>
+        <span><input class="styleInput" id="inputSurname" name="surname" type="text" value="</surnameCurrent>"
+            disabled></span>
 
-        <label for="inputUsername">Username Corrente</label><br/>
-        <span><input class="styleInput" id="inputUsername" name="username" type="text" value="</usernameCurrent>"></span>
+        <label for="inputUsername">Username Corrente</label>
+        <span><input class="styleInput" id="username" name="username" type="text" value="</usernameCurrent>"></span>
 
-        <label for="inputEmail">Email Corrente</label><br/>
-        <span><input class="styleInput" id="inputEmail" name="email" type="email" value="</emailCurrent>"></span>
+        <label for="inputEmail">Email Corrente</label>
+        <span><input class="styleInput" id="email" name="email" type="email" value="</emailCurrent>"></span>
 
         <a href="modificapassword.php">Modifica password</a>
-        
+
         <input type="submit" class="button" value="Salva modifiche">
       </fieldset>
     </form>
