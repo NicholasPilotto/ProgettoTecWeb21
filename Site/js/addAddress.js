@@ -22,7 +22,7 @@ function caricamento() {
 let dettagli_form = {
   "citta": [
     "Città",
-    /^[A-Za-zàèùìòé\s]\w{2,20}$/,
+    /^[A-Za-zàèùìòé\s ]{2,20}$/,
     "Inserire un nome di città di lunghezza compreso tra i 2 e 20 caratteri"
   ],
   "cap": [
@@ -32,12 +32,12 @@ let dettagli_form = {
   ],
   "via": [
     "Via",
-    /^[A-Za-zàèùìòé\s]\w{2,20}$/,
+    /^[A-Za-zàèùìòé\s]{2,20}$/,
     "Inserire una via corretto"
   ],
   "num_civico": [
     "Numero civico",
-    /((?:[a-zA-Z]+\s)*)([\d]+)(?:(?:\/)(\d+))?/,
+    /^([1-9][0-9]*)(\/[a-zA-Z])*?/,
     "Inserire un numero civico tra 1 e 4 caratteri"
   ]
 };
