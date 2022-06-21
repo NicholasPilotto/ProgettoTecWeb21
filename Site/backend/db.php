@@ -1189,30 +1189,30 @@ class Service extends Constant {
   public function change_psw($utente, $newpass): response_manager {
     $result = array();
 
-      $query1 = "UPDATE utente SET password = ? WHERE codice_identificativo = ?";
-      $stmt = $this->connection->prepare($query1);
-      $psw = hash('sha256', $newpass);
+    $query1 = "UPDATE utente SET password = ? WHERE codice_identificativo = ?";
+    $stmt = $this->connection->prepare($query1);
+    $psw = hash('sha256', $newpass);
 
-      if ($stmt === false) {
-        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-      } else if ($stmt->bind_param('ss', $psw, $utente) === false) {
-        $stmt->close();
-        return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-      }
-
-      $tmp = $stmt->execute();
-
-      array_push($result, $tmp);
-
-      $res = new response_manager($result, $this->connection, "");
-
-      if (!$res->ok()) {
-        $res->set_error_message("Non è stato possibile modificare la password");
-      }
-
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $psw, $utente) === false) {
       $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
 
-      return $res;
+    $tmp = $stmt->execute();
+
+    array_push($result, $tmp);
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile modificare la password");
+    }
+
+    $stmt->close();
+
+    return $res;
   }
 
   public function insert_order($cliente, $indirizzo, cart $carrello): response_manager {
@@ -1432,6 +1432,35 @@ class Service extends Constant {
 
     if (!$res->ok()) {
       $res->set_error_message("Nessun editore trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function get_months_earnigns(): response_manager {
+    $query = "SELECT MONTH(ordine.data) AS mese, YEAR(ordine.data) AS anno, SUM(totale) AS totale
+              FROM ordine
+              GROUP BY mese, anno";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun guadagno trovato");
     }
 
     $stmt->close();

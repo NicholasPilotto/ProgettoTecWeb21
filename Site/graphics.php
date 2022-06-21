@@ -12,6 +12,7 @@ class graphics {
         if (isset($_SESSION["Nome"])) {
             $helloUser = "<p id='benvenuto'>Benvenuto, " . $_SESSION["Nome"] . "</p>";
             //     $linkUtente .= "<a class='linkUtente' href='account.php'>Account</a>";
+
             $linkUtente .= '<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>
             ';
             $linkUtente .= '<li class="nav-item"><abbr class="notification" title="Carrello *q* elementi"><a class="linkUtente" href="carrello.php">Carrello';

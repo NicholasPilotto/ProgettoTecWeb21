@@ -215,7 +215,6 @@ p.nonLink {
 }
 
 /* ----- BOTTONI VERDI ----- */
-
 .button {
     background-color: #146e53;
     color: white;
@@ -223,6 +222,8 @@ p.nonLink {
     border: none;
     font-size: large;
     cursor: pointer;
+
+    width: fit-content;
 }
 
 .button:hover {
@@ -695,7 +696,6 @@ a.titolo {
 }
 
 /* ------------------- LIBRO ------------------- */
-
 .cardDettagli {
     display: flex;
     flex-wrap: wrap;
@@ -704,8 +704,6 @@ a.titolo {
 #liImg {
     padding-left: 3%;
     padding-right: 3%;
-
-    border: 1px solid rgb(240, 38, 38);
 }
 
 #imgLibro {
@@ -722,7 +720,6 @@ a.titolo {
 }
 
 #liInfoGenerali {
-    border: 1px solid rgb(55, 0, 255);
     font-size: large;
 
     flex-basis: 30%;
@@ -739,8 +736,6 @@ a.titolo {
 }
 
 #liButtonLibro {
-    border: 1px solid rgb(240, 38, 38);
-
     flex-basis: 180px;
 
     margin-right: 1%;
@@ -765,7 +760,6 @@ a.titolo {
 }
 
 #liTrama {
-    border: 1px solid rgb(0, 17, 255);
     /*padding-left: 3%;
     padding-right: 3%;*/
     padding-top: 0.7em;
@@ -782,7 +776,6 @@ a.titolo {
 }
 
 #liDettagliLibro {
-    border: 1px solid rgb(0, 195, 255);
     padding-top: 1em;
 
     flex-basis: 32%;
@@ -860,7 +853,6 @@ a.titolo {
 
 /* ------------------- INDIRIZZI ------------------- */
 /* tabella */
-
 #aggiungiIndirizzoLink {
     display: inline-block;
     margin-left: 2.5%;
@@ -871,11 +863,24 @@ a.titolo {
     width: 30%;
 }
 
-/*
-#formAggiungiIndirizzo input[type=submit]
-{
-    width: fit-content;
-}*/
+
+/* ------------------- AGGIUNGI LIBRO ------------------- */
+
+#img-preview {
+    display: none;
+    width: 8.5em;
+    border: 2px dashed #333;
+}
+
+#img-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#formAggiungiLibro {
+    width: 30em;
+}
 
 /* ------------------- CARRELLO ------------------- */
 
@@ -898,7 +903,6 @@ a.titolo {
     padding-left: 3%;
     padding-right: 3%;
 
-    border: 1px solid rgb(240, 38, 38);
 }
 
 .libroTitolo {
@@ -907,7 +911,6 @@ a.titolo {
 }
 
 .liInfo {
-    border: 1px solid rgb(55, 0, 255);
     font-size: large;
 
     flex-basis: 30%;
@@ -919,27 +922,25 @@ a.titolo {
 }
 
 .cartButton {
-    background-color: #146e53;
-    color: white;
-    border-radius: 3px;
-    border: none;
-    font-size: large;
-    cursor: pointer;
+    width: 5em;
+    height: 2em;
 }
 
-.cartButton:hover {
-    background-color: #1a9c75;
-    border: 2px solid #146e53;
-    color: white;
+.procediAcquistoButton {
+    width: 11em;
+    height: 2em;
+    margin-top: 0.5em;
 }
 
 .carrelloStatus {
     font-weight: bold;
     font-size: larger;
     text-align: center;
-    margin-bottom: 1em;
-    margin-top: 1em;
+    padding-top: 1em;
+    padding-bottom: 0.8em;
 }
+
+/* ------------------- PROCEDI CON L'ACQUISTO ------------------- */
 
 .formPurchase {
     width: 25em;
@@ -964,14 +965,12 @@ a.titolo {
 .formPurchase input[type=submit] {
     display: block;
 
-    /*width: 32%;*/
     width: fit-content;
     padding-left: 0.5em;
     padding-right: 0.5em;
 
     height: 2em;
 
-    /*font-size: larger;*/
 
     margin: auto;
     margin-top: 1.2em;
@@ -982,6 +981,15 @@ a.titolo {
 #erroreImg {
     width: 80%;
     margin-left: 10%;
+}
+
+/* ------------------- ANALYTICS ------------------- */
+#myChart {
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+
+    background: white;
 }
 
 /*

@@ -32,16 +32,16 @@ if (isset($_SESSION["cart"])) {
             $res = $queryIsbn->get_result();
             $imgLibro = "<li class='libroCarrello'><img class='carrelloImg' alt='' src='" . $res[0]['percorso'] . "'></li>";
             $titolo = "<li class='liInfo'><p class='libroTitolo'>" . $res[0]['titolo'] . "&nbsp;</p>";
-            $qt = "<p>Quantità:" . $data->quant . "</p>";
-            $cost = "<p>Costo totale:" . $data->total . "</p>";
-            $button = "<button type='button' class='cartButton' onclick='window.location.href=\"removecart.php?isbn=" . $isbn . "\"'>Rimuovi</button>";
+            $qt = "<p>Quantit&agrave;: " . $data->quant . "</p>";
+            $cost = "<p>Costo totale: &euro;" . $data->total . "</p>";
+            $button = "<button type='button' class='button cartButton' onclick='window.location.href=\"removecart.php?isbn=" . $isbn . "\"'>Rimuovi</button>";
             $carrelloDiv .= "<ul class='cardDettagli'>" . $imgLibro . $titolo . $qt . $cost . $button . "</ul></li>";
             $tot += $data->total;
         }
     }
 
-    $purchase = "<button type='button' class='cartButton' onclick='window.location.href=\"acquista.php\"'>Procedi con l'acquisto</button>";
-    $totString = "<div class='carrelloStatus'>" . $purchase . "<p>" . "Prezzo totale:" . $tot . "</p></div>";
+    $purchase = "<button type='button' class='button procediAcquistoButton' onclick='window.location.href=\"acquista.php\"'>Procedi con l'acquisto</button>";
+    $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . $tot . "</p>" . $purchase . "</div>";
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
 } else {
     $carrelloDiv .= "<div class='carrelloStatus'><p>Il carrello è vuoto</p></div>";
@@ -51,6 +51,7 @@ if (isset($_SESSION["cart"])) {
 $connessione->closeConnection();
 // -------------------
 $paginaHTML = str_replace("</carrello>", $carrelloDiv, $paginaHTML);
-$paginaHTML = str_replace('<a class="linkUtente" href="carrello.php">Carrello', '<p class="nonLink selectedNavItem">Carrello', $paginaHTML);
-$paginaHTML = str_replace('</abbr></a>', '</abbr></p>', $paginaHTML);
+$paginaHTML = str_replace('<abbr class="notification" title="Carrello 1 elementi">', '<abbr class="notification selectedNavItem" title="Carrello 1 elementi">', $paginaHTML);
+$paginaHTML = str_replace('<a class="linkUtente" href="carrello.php">', '', $paginaHTML);
+$paginaHTML = str_replace('</a">', '', $paginaHTML);
 echo $paginaHTML;

@@ -12,6 +12,7 @@ if (!isset($_SESSION["Nome"])) {
     $liAccount = "";
 
     if ($codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
+
         // admin
         $liAccount = "
                 <li>

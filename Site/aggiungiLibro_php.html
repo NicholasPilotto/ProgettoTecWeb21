@@ -1,0 +1,128 @@
+<!-- 
+    keywords
+    author
+-->
+
+<!DOCTYPE html>
+
+<html lang="it">
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>Aggiungi Libro - Second Read</title>
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- Segnaposto -->
+    </linkSito>
+
+</head>
+
+<body onload="checkModificaLibro()">
+    <!-- Segnaposto -->
+    </headerSito>
+
+    <nav id="breadcrumb">
+        <p>Ti trovi in: <a lang="en" href="index.php">Home</a> &gt;&gt; <a lang="en" href="account.php">Account</a>
+            &gt;&gt; Aggiungi Libro</p>
+    </nav>
+
+    <div id="content">
+        <h2>Aggiungi Libro</h2>
+        <div class="divPreForm">
+            <abbr title="Attenzione!"><i class="fas fa-exclamation-triangle"></i></abbr>
+            <p>Le eventuali parole in lingua straniera contenute nel titolo e trama vanno scritte nel seguente modo:</p>
+            <p id="pLingua" class="miniGrassetto">Testo &lt;span lang="lingua"&gt;parola/e&lt;/span&gt; Testo</p>
+        </div>
+        <form class="formInput" id="formAggiungiLibro" action='' method="post">
+            <fieldset>
+                <label for="isbn">ISBN</label>
+                <span><input class="styleInput" id="isbn" name="isbn" type="number" value="</modificaLibroISBN>"
+                        required></span>
+
+                <label for="titolo">Titolo</label>
+                <!-- <span><input class="styleInput" id="titolo" name="titolo" type="text" value="</modificaLibroTitolo>" required></span> -->
+                <span><textarea class="styleTextArea" id="titolo" name="titolo"
+                        required></modificaLibroTitolo></textarea></span>
+
+                <label for="copertina">Copertina</label>
+                <img id="img-preview" src="</modificaLibroCopertina>" />
+                <input type="file" accept="image/*" id="copertina" name="copertina" />
+
+                <!-- Autore/i -->
+                <label for="autore">Autore/i</label>
+                <span>
+                    <!-- Segnaposto -->
+                    </selectAutori>
+                </span>
+                <!-- Editore -->
+                <label for="editore">Editore</label>
+                <span>
+                    <!-- Segnaposto -->
+                    </selectEditori>
+                </span>
+
+                <label for="pagine">Pagine</label>
+                <span><input class="styleInput" id="pagine" name="pagine" type="number" min="1" step="1"
+                        value="</modificaLibroPagine>" required></span>
+
+                <label for="prezzo">Prezzo in &euro;</label>
+                <span><input class="styleInput" id="prezzo" name="prezzo" type="number" min="0.00" max="1000.00"
+                        step="0.01" value="</modificaLibroPrezzo>" required></span>
+
+                <label for="quantita">Quantit&agrave;</label>
+                <span><input class="styleInput" id="quantita" name="quantita" type="number" min="0" step="1"
+                        value="</modificaLibroQuantita>" required></span>
+
+                <label for="dataPubblicazione">Data Pubblicazione</label>
+                <span><input class="styleInput" id="dataPubblicazione" name="dataPubblicazione" type="date"
+                        value="</modificaLibroDataPubblicazione>" required></span>
+
+                <label for="trama">Trama</label>
+                <span><textarea class="styleTextArea ultimoInput" id="trama" name="trama"
+                        required></modificaLibroTrama></textarea></span>
+
+                <input type="submit" class="button" value="Conferma">
+            </fieldset>
+        </form>
+        <!-- Segnaposto -->
+        </upButton>
+    </div>
+    <!-- Segnaposto -->
+    </footerSito>
+
+    <!-- DA METTERE IN UN FILE -->
+    <script>
+        const chooseFile = document.getElementById("copertina");
+        const imgPreview = document.getElementById("img-preview");
+
+        chooseFile.addEventListener("change", function () {
+            getImgData();
+        });
+
+        function getImgData() {
+            const files = chooseFile.files[0];
+            if (files) {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(files);
+                fileReader.addEventListener("load", function () {
+                    imgPreview.style.display = "block";
+                    imgPreview.src = this.result;
+                });
+            }
+        }
+
+        function checkModificaLibro() {
+            var src = imgPreview.getAttribute('src');
+            if (src != "") {
+                imgPreview.src = src;
+                imgPreview.style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>
