@@ -346,16 +346,16 @@ INSERT INTO libro(isbn,titolo,editore,pagine,prezzo,quantita,data_pubblicazione,
 (9798780216834, 'Suture Chirurgiche', 3049, 203, 9.99, 10, '2021-12-06', 'images/books/suturechirurgiche.jpg', "Sei appassionato di medicina e chirurgia e vorresti conoscere qualcosa di più su come fare una vera sutura? Sei uno studente di medicina o un professionista nel settore medico e hai bisogno di un manuale pratico e semplice per ripassare i punti fondamentali dei nodi di sutura al momento giusto? Suture Chirurgiche è il manuale semplice e pratico, da sfogliare quando ne hai più bisogno, per tenere sempre a mente i principi di sutura e i principali nodi e tecniche che ti troverai ad affrontare sul campo." );
 
 INSERT INTO offerte(libro_isbn,data_inizio,data_fine,sconto) VALUES
-(9788830901988, '2022-01-01', '2022-03-30', 20),
-(9788893291019, '2022-01-01', '2022-03-30', 20),
-(9798489916943, '2022-01-01', '2022-03-30', 20),
-(9798780216834, '2022-01-01', '2022-03-30', 20),
-(9788830102712, '2022-01-01', '2022-03-30', 20),
-(9788830105263, '2022-01-01', '2022-03-30', 25),
-(9788811602880, '2022-01-01', '2022-03-30', 25),
-(9782496700480, '2022-01-01', '2022-03-30', 25),
-(9788863365474, '2022-01-01', '2022-03-30', 50),
-(9791220500548, '2022-01-01', '2022-03-30', 40);
+(9788830901988, '2022-01-01', '2023-03-30', 20),
+(9788893291019, '2022-01-01', '2023-03-30', 20),
+(9798489916943, '2022-01-01', '2023-03-30', 20),
+(9798780216834, '2022-01-01', '2023-03-30', 20),
+(9788830102712, '2022-01-01', '2023-03-30', 20),
+(9788830105263, '2022-01-01', '2023-03-30', 25),
+(9788811602880, '2022-01-01', '2023-03-30', 25),
+(9782496700480, '2022-01-01', '2023-03-30', 25),
+(9788863365474, '2022-01-01', '2023-03-30', 50),
+(9791220500548, '2022-01-01', '2023-03-30', 40);
 
 
 INSERT INTO categoria(id_categoria,nome) VALUES
