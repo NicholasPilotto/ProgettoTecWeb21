@@ -22,7 +22,7 @@ if (!isset($_SESSION["Nome"])) {
                 </li>
                 <li>
                     <i class='fa-li fas fa-chart-bar fa-3x'></i>
-                    <h3 lang='en'><a href=''>Analytics</a></h3>
+                    <h3 lang='en'><a href='analytics.php'>Analytics</a></h3>
                     <p>Visualizza le <span lang='en'>analytics</span> di SecondRead</p>
                 </li>
             ";
