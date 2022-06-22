@@ -6,7 +6,7 @@ var dettagli_form = {
   ],
   "indirizzo": [
     "Indirizzo",
-    /^^[A-Za-zòàùçèéì' ]+$/,
+    /^(?!\s*$).+$/,
     "Devi inserire un indirizzo, controlla di averne salvato uno nel tuo account"
   ],
   "numCarta": [

@@ -1,3 +1,11 @@
-h2 {
-    background-color: brown;
+/* ------------------- ANALYTICS ------------------- */
+#myChart {
+    max-width: 100%;
+}
+
+.formInput {
+    /*width: 30em;*/
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -133,12 +133,13 @@ SEZIONE MENU'
 .notification .badge {
     position: absolute;
     font-size: 0.7em;
-    top: -10px;
-    right: -6px;
-    padding: 3px 6px;
+    top: -8px;
+    right: -20px;
+    padding: 1px 3px;
     border-radius: 20%;
     font-weight: bold;
-    background-color: #EDEFF0;
+    background-color: rgb(225, 225, 225);
+    /*border: solid 1px #146e53;*/
     color: black;
 }
 
@@ -326,11 +327,12 @@ thead {
 
     margin: auto;
     padding-bottom: 1em;
+    padding-top: 0.7em;
 }
 
 .formInput fieldset {
     padding: 2em 3em 1em 3em;
-    border: 1px solid #aaaaaa;
+    border: 2px solid rgb(225, 225, 225);
     border-radius: 10px;
 }
 
@@ -436,11 +438,6 @@ header h1 {
     font-weight: 550;
 }
 
-
-.linkUtente {
-    margin-right: 1em;
-}
-
 /*
 ==================
 SEZIONE BREADCRUMB
@@ -450,13 +447,13 @@ SEZIONE BREADCRUMB
 #breadcrumb {
     /*padding-left: 0.6em;*/
     padding-left: 1.5em;
-    /*border-bottom: 1px solid #000;*/
+    border-top: solid 2px #eaeaea;
 
     /*background-color: #e5fdf6;*/
     background-color: white;
     padding-top: 0.3em;
     /* border-top: solid 2px #EDEFF0; */
-    border-bottom: solid 2px #EDEFF0;
+    border-bottom: solid 2px #eaeaea;
 
     padding-bottom: 0.5em;
 }
@@ -859,11 +856,6 @@ a.titolo {
     margin-bottom: 1em;
 }
 
-#formAggiungiIndirizzo {
-    width: 30%;
-}
-
-
 /* ------------------- AGGIUNGI LIBRO ------------------- */
 
 #img-preview {
@@ -884,10 +876,13 @@ a.titolo {
 
 /* ------------------- CARRELLO ------------------- */
 
-.cartItem {
+.cardDettagli {
     display: flex;
     flex-wrap: wrap;
-    word-wrap: break-word;
+
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: solid 2px #eaeaea;
 }
 
 .carrelloImg {
@@ -902,7 +897,6 @@ a.titolo {
 .libroCarrello {
     padding-left: 3%;
     padding-right: 3%;
-
 }
 
 .libroTitolo {
@@ -942,6 +936,7 @@ a.titolo {
 
 /* ------------------- PROCEDI CON L'ACQUISTO ------------------- */
 
+/*
 .formPurchase {
     width: 25em;
     margin: auto;
@@ -975,6 +970,7 @@ a.titolo {
     margin: auto;
     margin-top: 1.2em;
 }
+*/
 
 /* ------------------- ERRORE ------------------- */
 
@@ -985,11 +981,15 @@ a.titolo {
 
 /* ------------------- ANALYTICS ------------------- */
 #myChart {
-    max-width: 70%;
+    max-width: 90%;
     margin-left: auto;
     margin-right: auto;
 
     background: white;
+
+    max-height: 30em;
+    height: 30em;
+    min-height: 20em;
 }
 
 /*

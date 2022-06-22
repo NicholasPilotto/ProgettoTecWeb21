@@ -39,7 +39,7 @@ if ($queryBestseller->ok()) {
 
 
 $connessione->closeConnection();
-$paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="bestseller.php">Bestseller</a></li>', '<li class="nav-item selectedNavItem">Bestseller</li>', $paginaHTML);
+$paginaHTML = str_replace('<li class="nav-item"><a href="bestseller.php">Bestseller</a></li>', '<li class="nav-item selectedNavItem">Bestseller</li>', $paginaHTML);
 // -------------------
 
 echo $paginaHTML;

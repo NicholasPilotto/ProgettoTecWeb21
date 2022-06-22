@@ -38,6 +38,6 @@ if ($queryOfferte->ok()) {
 
 $connessione->closeConnection();
 // -------------------
-$paginaHTML = str_replace('<li class="nav-item"><a class="nav-link" href="offerte.php">Offerte</a></li>', '<li class="nav-item selectedNavItem">Offerte</li>', $paginaHTML);
+$paginaHTML = str_replace('<li class="nav-item"><a href="offerte.php">Offerte</a></li>', '<li class="nav-item selectedNavItem">Offerte</li>', $paginaHTML);
 
 echo $paginaHTML;

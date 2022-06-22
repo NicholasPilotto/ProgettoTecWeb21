@@ -19,7 +19,7 @@ class graphics {
             $codiceIdentificativo = $_SESSION["Codice_identificativo"];
             $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
             if ($codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
-                $linkUtente .= '<li class="nav-item"><abbr class="notification" title="Carrello*q*"><a class="linkUtente" href="carrello.php">Carrello';
+                $linkUtente .= '<li class="nav-item"><abbr class="notification" title="Carrello*q*"><a href="carrello.php">Carrello';
                 if (isset($_SESSION["cart"])) {
                     $c = cart::build_cart_from_session();
                     $linkUtente .= '<abbr aria-hidden="true" class="badge">' . $c->get_quantity() . '</abbr>';
@@ -28,7 +28,7 @@ class graphics {
                 $linkUtente = str_replace("*q*", isset($c) ? ": " . $c->get_quantity() . " element" . (($c->get_quantity() == 1) ? "o" : "i") : " vuoto", $linkUtente);
                 $linkUtente .= '</a></abbr></li>';
             }
-            $linkUtente .= '<li class="nav-item"><a class="linkUtente" href="esci.php">Esci</a></li>';
+            $linkUtente .= '<li class="nav-item"><a href="esci.php">Esci</a></li>';
         } else {
             $linkUtente = '<li class="nav-item"><a class="nav-link" href="accedi.php">Area riservata</a></li>';
         }

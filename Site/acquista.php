@@ -25,7 +25,7 @@ $carrelloDiv = "";
 
 if (isset($_SESSION["cart"])) {
     $c = cart::build_cart_from_session();
-    $tot = "<div class='carrelloStatus'><p>Costo totale ordine: " . $c->get_total() . "</p></div>";
+    $tot = "<p class='carrelloStatus'>Costo totale ordine: &euro;" . $c->get_total() . "</p>";
     $paginaHTML = str_replace("</totale>", $tot, $paginaHTML);
     $selectIndirizzi = "";
 
