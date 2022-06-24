@@ -37,7 +37,7 @@ if (isset($_SESSION["cart"])) {
         }
         $selectIndirizzi .= "</select>";
     } else {
-        $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' disabled></select>";
+        $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' disabled><option></option></select>";
     }
 
     $paginaHTML = str_replace("</selectIndirizzi>", $selectIndirizzi, $paginaHTML);

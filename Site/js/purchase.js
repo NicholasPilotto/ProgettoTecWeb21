@@ -28,6 +28,8 @@ function caricamento() {
 
   let form = document.getElementById("form");
 
+  console.log(document.getElementById("indirizzo").value.length);
+
   form.addEventListener("submit", function (event) {
     if (!validazioneForm()) {
       event.preventDefault();

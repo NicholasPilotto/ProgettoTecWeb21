@@ -605,7 +605,7 @@ class Service extends Constant {
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Nessuna recensione effettuata da questo utente");
+      $res->set_error_message("Non è stato possibile inserire un indirizzo");
     }
 
     $stmt->close();

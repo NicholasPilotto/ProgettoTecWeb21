@@ -1,19 +1,12 @@
 <?php
-    session_start();
-    if(!isset($_SESSION["Nome"]))
-    {
-        header("Location: index.php");
-    }
-    else
-    {
-        require_once "graphics.php";
-        
-        $paginaHTML = graphics::getPage("aggiungiIndirizzo_php.html");
+session_start();
 
-        // Accesso al database
+require_once "graphics.php";
 
-        // -------------------
-
-        echo $paginaHTML;
-    }
-?>
+if (!isset($_SESSION["Nome"])) {
+    header("Location: index.php");
+} else {
+    $paginaHTML = graphics::getPage("aggiungiIndirizzo_php.html");
+    $paginaHTML = str_replace("</error>", "", $paginaHTML);
+    echo $paginaHTML;
+}
