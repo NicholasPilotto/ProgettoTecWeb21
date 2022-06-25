@@ -11,9 +11,6 @@ function loading()
             labels: xValues,
             datasets: [{
                 fill: true,
-                //fillColor: '#000000',
-                //lineTension: 0,
-                //backgroundColor: "#146e53",
                 borderColor: "#146e53",
                 data: yValues
             }]
@@ -22,7 +19,7 @@ function loading()
             maintainAspectRatio: false,
             title: {
                 display: true,
-                text: "Guadagni ultimi 5 mesi",
+                text: "Guadagni ultimo semestre",
                 fontSize: 16
             },
             legend: {display: false},
