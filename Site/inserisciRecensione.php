@@ -23,22 +23,38 @@ if (!$errore) {
 
   if ($rev->ok()) {
     if (!$rev->is_empty()) {
+
+      if ($rev->get_errno() != 0) {
+        $_SESSION["info"] = "Hai già recensito questo libro.";
+        $connessione->closeConnection();
+
+        header("Location: lasciaRecensione.php?isbn=" . $isbn);
+      }
       $connessione->closeConnection();
       unset($_SESSION["isbnRevire"]);
 
-      header("Location: index.php");
+      $_SESSION["success"] = "Recensione inserita con successo.";
+
+      header("Location: lasciaRecensione.php?isbn=" . $isbn);
     } else {
-      $_SESSION["error"] = $utente->get_error_message();
+      $_SESSION["info"] = $utente->get_error_message();
       $connessione->closeConnection();
     }
   } else {
-    $_SESSION["error"] = $utente->get_error_message();
+    if ($rev->get_errno() != 0) {
+      $_SESSION["info"] = "Hai già recensito questo libro.";
+      $connessione->closeConnection();
+
+      header("Location: lasciaRecensione.php?isbn=" . $isbn);
+    }
+    $_SESSION["error"] = "Impossibile connettersi al sistema.";
     $connessione->closeConnection();
 
     header("Location: lasciaRecensione.php?isbn=" . $isbn);
   }
 } else {
-  $_SESSION["error"] = "I campi non sono stati inseriti correttamente";
+
+  $_SESSION["error"] = "Impossibile connettersi al sistema.";
   $connessione->closeConnection();
   header("Location: lasciaRecensione.php?isbn=" . $isbn);
 }
