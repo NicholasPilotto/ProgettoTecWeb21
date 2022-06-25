@@ -1,6 +1,5 @@
 <?php
-if(!isset($_SESSION))
-{
+if (!isset($_SESSION)) {
   session_start();
 }
 
@@ -12,23 +11,44 @@ require_once "graphics.php";
 
 require_once "cart.php";
 
-$isbn = isset($_SESSION["isbncart"]) ? $_SESSION["isbncart"] : NULL;
-$quant = isset($_POST["quantita"]) ? $_POST["quantita"] : NULL;
-$prezzo = isset($_SESSION["pricecart"]) ? $_SESSION["pricecart"] : NULL;
+if (isset($_POST["aggiungiCarrello"])) {
 
-unset($_SESSION["isbncart"]);
-unset($_SESSION["pricecart"]);
+  $isbn = isset($_SESSION["isbncart"]) ? $_SESSION["isbncart"] : NULL;
+  $quant = isset($_POST["quantita"]) ? $_POST["quantita"] : NULL;
+  $prezzo = isset($_SESSION["pricecart"]) ? $_SESSION["pricecart"] : NULL;
 
-if (isset($_SESSION["Nome"])) {
-  $c;
-  if (!isset($_SESSION["cart"])) {
-    $c = new cart();
+  unset($_SESSION["isbncart"]);
+  unset($_SESSION["pricecart"]);
+
+  if (isset($_SESSION["Nome"])) {
+    $c;
+    if (!isset($_SESSION["cart"])) {
+      $c = new cart();
+    } else {
+      $c = cart::build_cart_from_session();
+    }
+    $c->add($isbn, $quant, $prezzo);
+    $c->save();
+    header("Location:index.php");
   } else {
-    $c = cart::build_cart_from_session();
+    header("Location: accedi.php");
   }
-  $c->add($isbn, $quant, $prezzo);
-  $c->save();
-  header("Location:index.php");
-} else {
-  header("Location: accedi.php");
+} else if (isset($_POST["aggiungiWhish"])) {
+  if (isset($_SESSION["Nome"])) {
+    $isbn = isset($_SESSION["isbncart"]) ? $_SESSION["isbncart"] : NULL;
+    $user = isset($_SESSION["Codice_identificativo"]) ? $_SESSION["Codice_identificativo"] : NULL;
+
+    if (isset($user) && isset($isbn)) {
+      $c = new Service();
+      $c->openConnection();
+      $c->insert_into_wishlist($user, $isbn);
+      $c->closeConnection();
+
+      header("Location: libro.php?isbn=" . $isbn);
+    } else {
+      header("Location: index.php");
+    }
+  } else {
+    header("Location: accedi.php");
+  }
 }

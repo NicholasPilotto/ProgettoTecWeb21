@@ -32,11 +32,18 @@ $a = $connessione->openConnection();
 // $aux = $connessione->get_wishlist("1000000014");
 // $aux = $connessione->remove_from_wishlist("1000000014", "9788830901988");
 
-$c = new cart();
+// $c = new cart();
 
-$c->add("9788828763604", 10, 3.00);
+// $c->add("9788828763604", 10, 3.00);
 
-$aux = $connessione->insert_order("1000000014", "100011", $c);
+// $aux = $connessione->insert_order("1000000014", "100011", $c);
+
+$isbn = isset($_GET["isbn"]) ? $_GET["isbn"] : NULL;
+$user = isset($_GET["user"]) ? $_GET["user"] : NULL;
+
+echo $user . " " . $isbn . "</br>";
+
+$aux = $connessione->insert_into_wishlist($user, $isbn);
 
 
 print_r($aux);
