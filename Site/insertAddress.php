@@ -26,14 +26,13 @@ if (!$errore) {
 
   $data = $connessione->insert_address($user, $via, $citta, $cap, $num_civico);
   if ($data->get_errno() != 0) {
-    $paginaHTML = graphics::getPage("aggiungiIndirizzo_php.html");
-    $error_message = "<span><strong class='errorSuggestion'>" . $data->get_error_message() . "</strong></span>";
-    $paginaHTML = str_replace("</error>", $error_message, $paginaHTML);
-    echo $paginaHTML;
+    $_SESSION["error"] = $data->get_error_message();
+  } else if ($data->get_errno() == 0) {
+    $_SESSION["success"] = "Inserimento avvenuto con successo";
   }
-  header("Location: account.php");
+  header("Location: aggiungiIndirizzo.php");
 } else {
   $paginaHTML = graphics::getPage("aggiungiIndirizzo_php.html");
-  $paginaHTML = str_replace("</error>", "Qualcosa è andato storto", $paginaHTML);
+  $paginaHTML = str_replace("</alert>", "<span class='alert error'>Qualcosa è andato storto</span>", $paginaHTML);
   echo $paginaHTML;
 }

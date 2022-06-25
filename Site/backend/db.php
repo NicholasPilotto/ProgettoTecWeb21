@@ -491,7 +491,7 @@ class Service extends Constant {
     $res = new response_manager($result, $this->connection, "");
 
     if (!$res->ok()) {
-      $res->set_error_message("Questo utente non esiste");
+      $res->set_error_message("Questo utente non esiste o i dati inseriti non sono corretti.");
     }
 
     $stmt->close();

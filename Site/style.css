@@ -979,6 +979,30 @@ a.titolo {
     margin-left: 10%;
 }
 
+.alert {
+    display: block;
+    width: 25em;
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+    padding: 0.1em;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+.error {
+    background-color: rgb(201, 98, 98);
+}
+
+.info {
+    background-color: #FFBF00;
+}
+
+.success {
+    background-color: #146e53;
+}
+
 /* ------------------- ANALYTICS ------------------- */
 #myChart {
     max-width: 90%;

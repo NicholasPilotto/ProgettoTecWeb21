@@ -30,6 +30,9 @@ if ($log->ok()) {
   } else {
     // nessun utente trovato
     // header("Location: index.php");
+    $connessione->closeConnection(); // chiudo la connessione
+    $_SESSION["info"] = $log->get_error_message();
+    header("Location: accedi.php");
   }
 } else {
   $connessione->closeConnection(); // chiudo la connessione

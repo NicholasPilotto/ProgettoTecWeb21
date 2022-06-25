@@ -2,8 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION["Nome"]))
-{
+if (!isset($_SESSION["Nome"])) {
     header("Location:index.php");
 }
 
@@ -19,21 +18,29 @@ $connessione = new Service();
 $a = $connessione->openConnection();
 $queryUtente = $connessione->get_utente_by_email($_SESSION["Email"]);
 
-if(isset($_SESSION["cart"]))
-{
+if (isset($_SESSION["cart"])) {
     $cart = new cart();
     $cart = cart::build_cart_from_session();
-    print_r($cart);
-    echo "<br>";
+
     $indirizzo = $_POST["indirizzo"];
-    echo $indirizzo;
-    echo "<br>";
-    echo $queryUtente->get_result()[0]["codice_identificativo"];
-    echo "<br>";
-    $queryInsert = $connessione->insert_order($queryUtente->get_result()[0]["codice_identificativo"],$indirizzo,$cart);
-    print_r($queryInsert);
-    //unset($_SESSION["cart"]);
+
+
+    $data = $connessione->insert_order($queryUtente->get_result()[0]["codice_identificativo"], $indirizzo, $cart);
+
+    if ($data->ok()) {
+        if ($data->get_errno() == 0) {
+            $_SESSION["success"] = "Ordine completato con successo.";
+            $connessione->closeConnection();
+            unset($_SESSION["cart"]);
+            header("Location: acquista.php");
+        } else {
+            $_SESSION["info"] = $data->get_error_message();
+            $connessione->closeConnection();
+            header("Location: acquista.php");
+        }
+    } else {
+        $_SESSION["error"] = "Non è stato possibile connettersi al sistema.";
+        $connessione->closeConnection();
+        header("Location: acquista.php");
+    }
 }
-$connessione->closeConnection();
-//header("Location:index.php");
-?> 

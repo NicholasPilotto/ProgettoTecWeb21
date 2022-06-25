@@ -1,51 +1,54 @@
 <?php
 
-    session_start();
+session_start();
 
-    use DB\Service;
+use DB\Service;
 
-    if(!isset($_SESSION["Nome"]))
-    {
-        header("Location: index.php");
-    }
-    else if(!isset($_POST['username'])||!isset($_POST['email']))
-    {
+if (!isset($_SESSION["Nome"])) {
+    header("Location: index.php");
+} else if (!isset($_POST['username']) || !isset($_POST['email'])) {
+    header("Location: datilogin.php");
+} else {
+    require_once('backend/db.php');
+    $connessione = new Service();
+    $a = $connessione->openConnection();
+
+    if (!$a) {
+        $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
         header("Location: datilogin.php");
     }
-    else
-    {
-        require_once('backend/db.php');
-        $connessione = new Service();
-        $a = $connessione->openConnection();
-        
-        $oldUsername = $_SESSION['Username'];
-        $oldMail = $_SESSION['Email'];
-        $oldPassword = "";
 
-        $oldArray = array(
-            "username" => $oldUsername,
-            "email" => $oldMail,
-        );
+    $oldUsername = $_SESSION['Username'];
+    $oldMail = $_SESSION['Email'];
+    $oldPassword = "";
+
+    $oldArray = array(
+        "username" => $oldUsername,
+        "email" => $oldMail,
+    );
 
 
-        $newUsername = $_POST['username'];
-        $newMail = $_POST['email'];
+    $newUsername = $_POST['username'];
+    $newMail = $_POST['email'];
 
-        $newArray = array(
-            "username" => $newUsername,
-            "email" => $newMail,
-        );
+    $newArray = array(
+        "username" => $newUsername,
+        "email" => $newMail,
+    );
 
-        print_r($oldArray);
-        print_r($newArray);
+    $data = $connessione->update_user_data($_SESSION['Codice_identificativo'], $oldArray, $newArray);
 
-        $connessione->update_user_data($_SESSION['Codice_identificativo'],$oldArray,$newArray);
-
+    if (!$data->ok()) {
+        $_SESSION["info"] = $data->get_error_message();
+    } else if ($data->get_error_message_mysqli() != "") {
+        $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
+    } else if ($data->get_errno() == 0) {
         $_SESSION["Username"] = $newUsername;
         $_SESSION["Email"] = $newMail;
-    
-        $connessione->closeConnection();
-
-        header("Location:datilogin.php");
+        $_SESSION["success"] = "Modifica avvenuta correttamente";
     }
-?>
+
+    $connessione->closeConnection();
+
+    header("Location:datilogin.php");
+}
