@@ -12,7 +12,7 @@ require_once "cart.php";
 $paginaHTML = graphics::getPage("carrello_php.html");
 
 $codiceIdentificativo = $_SESSION["Codice_identificativo"];
-    $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
+$codiceIdentificativo = hash('sha256', $codiceIdentificativo);
 if (!isset($_SESSION["Nome"]) || $codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
     header("Location:accedi.php");
 }
@@ -48,7 +48,7 @@ if (isset($_SESSION["cart"])) {
     $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . $tot . "</p>" . $purchase . "</div>";
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
 } else {
-    $carrelloDiv .= "<div class='carrelloStatus'><p>Il carrello è vuoto</p></div>";
+    $carrelloDiv .= "<span class='alert info'><i class='fa fa-exclamation-triangle'></i> Il carrello è vuoto</span></br>";
     $paginaHTML = str_replace("</totale>", "", $paginaHTML);
 }
 

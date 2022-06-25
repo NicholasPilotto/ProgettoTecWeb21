@@ -10,7 +10,12 @@ $password = $_POST["password"];
 
 $connessione = new Service();
 
-$connessione->openConnection();
+$c = $connessione->openConnection();
+
+if (!$c) {
+  $_SESSION["error"] = "Impossibile connettersi al sistema.";
+  header("Location: accedi.php");
+}
 
 $log = $connessione->login($username, $password);
 
@@ -28,14 +33,12 @@ if ($log->ok()) {
     $_SESSION["Telefono"] = $log->get_result()[0]['telefono'];
     header("Location: index.php");
   } else {
-    // nessun utente trovato
-    // header("Location: index.php");
     $connessione->closeConnection(); // chiudo la connessione
     $_SESSION["info"] = $log->get_error_message();
     header("Location: accedi.php");
   }
 } else {
   $connessione->closeConnection(); // chiudo la connessione
-  $_SESSION["error"] = $log->get_error_message();
+  $_SESSION["info"] = $log->get_error_message();
   header("Location: accedi.php");
 }
