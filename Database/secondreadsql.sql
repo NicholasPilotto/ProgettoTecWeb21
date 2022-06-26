@@ -115,7 +115,7 @@ CREATE TABLE indirizzo (
   via VARCHAR(50) NOT NULL,
   città VARCHAR(20) NOT NULL,
   cap INT(5) UNSIGNED NOT NULL,
-  num_civico INT(3) UNSIGNED NOT NULL,
+  num_civico VARCHAR(10) NOT NULL,
   utente INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY(codice),
   CONSTRAINT FK_UtenteIndirizzo
