@@ -32,15 +32,15 @@ if (isset($_SESSION["cart"])) {
             $_SESSION["success"] = "Ordine completato con successo.";
             $connessione->closeConnection();
             unset($_SESSION["cart"]);
-            header("Location: acquista.php");
+            header("Location: carrello.php");
         } else {
             $_SESSION["info"] = $data->get_error_message();
             $connessione->closeConnection();
-            header("Location: acquista.php");
+            header("Location: carrello.php");
         }
     } else {
         $_SESSION["error"] = "Non è stato possibile connettersi al sistema.";
         $connessione->closeConnection();
-        header("Location: acquista.php");
+        header("Location: carrello.php");
     }
 }

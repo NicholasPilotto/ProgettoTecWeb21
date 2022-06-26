@@ -189,7 +189,7 @@ if (isset($_GET['isbn'])) {
         $dettagliLibro .= "</ul>";
 
         // ---- QUANTITA ----
-        $inputQuantita = "<input type='number' id='quantita' name='quantita' value='1' min='1' step='1' max='" . $tmp[0]['quantita'] . "'/>";
+        $inputQuantita = "<input type='number' id='quantita' name='quantita' value='1' min='1' step='1' max='" . ceil($tmp[0]['quantita'] * 0.25) . "'/>";
 
         // ---- RECENSIONI ----
         $queryRecensioni = $connessione->get_reviews_by_isbn($isbn);

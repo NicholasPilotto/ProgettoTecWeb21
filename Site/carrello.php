@@ -48,7 +48,19 @@ if (isset($_SESSION["cart"])) {
     $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . $tot . "</p>" . $purchase . "</div>";
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
 } else {
-    $carrelloDiv .= "<span class='alert info'><i class='fa fa-exclamation-triangle'></i> Il carrello è vuoto</span></br>";
+    if (isset($_SESSION["error"])) {
+        $paginaHTML = str_replace("</totale>", "<span class='alert error'><i class='fa fa-close'></i> " . $_SESSION["error"] . "</span></br>", $paginaHTML);
+        unset($_SESSION["error"]);
+    } else if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</totale>", "<span class='alert info'><i class='fa fa-exclamation-trinagle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span></br>", $paginaHTML);
+        unset($_SESSION["info"]);
+    } else if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</totale>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span></br>", $paginaHTML);
+        unset($_SESSION["success"]);
+    } else {
+        // $paginaHTML = str_replace("</alert>", "", $paginaHTML);
+        $carrelloDiv .= "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Il carrello è vuoto</span></br>";
+    }
     $paginaHTML = str_replace("</totale>", "", $paginaHTML);
 }
 

@@ -39,6 +39,6 @@ $connessione->closeConnection();
 if ($queryWishlist->get_element_count() != 0) {
     $paginaHTML = str_replace("</wishlist>", $wishlistDiv, $paginaHTML);
 } else {
-    $paginaHTML = str_replace("</wishlist>", "<span class='alert info'><i class='fa fa-exclamation-triangle'></i> La wishlist è vuota</span></br>", $paginaHTML);
+    $paginaHTML = str_replace("</wishlist>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> La wishlist è vuota</span></br>", $paginaHTML);
 }
 echo $paginaHTML;
