@@ -6,7 +6,7 @@ var dettagli_form = {
   ],
   "titolo": [
     "Titolo",
-    /^[a-zA-Z0-9 òàùèé()'?.,!-]{10,500}$/,
+    /^[a-zA-Z0-9 òàùèéÈÉÀÁÒÓÙÚ()'?.,!-]{10,500}$/,
     "Inserire un titolo corretto, non vuoto"
   ],
   "pagine": [
@@ -26,8 +26,8 @@ var dettagli_form = {
   ],
   "trama": [
     "Trama",
-    /^[a-zA-Z0-9 òàùèé()'?.,!-<>{}[]]{10,}$/,
-    "Inserire una trama valida, non nulla"
+    /^[a-zA-Z0-9 òàùèéÈÉÀÁÒÓÙÚ()'?.,!-<>{}[\]]{10,1000}$/,
+    "Inserire una trama valida, di almento 11 caratteri e meno di 1000."
   ],
 };
 

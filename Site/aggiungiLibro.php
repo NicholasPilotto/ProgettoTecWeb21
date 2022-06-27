@@ -69,7 +69,7 @@ if (!isset($_SESSION["Nome"])) {
         // -------------------------------------------------------------------
 
         $queryAutori = $connessione->get_all_authors();
-        $selectAutori = "<select class='styleMultipleSelect' id='autore' name='autore' multiple required>";
+        $selectAutori = "<select class='styleMultipleSelect' id='autore' name='autore[]' multiple>";
         if ($queryAutori->ok()) {
             foreach (OrderWithoutTags($queryAutori->get_result(), "nome") as $autore) {
                 // se sono nella modifica, devo cercare gli autori del libro e selezionarli
