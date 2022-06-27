@@ -348,26 +348,87 @@ class Service extends Constant {
     return $res;
   }
 
-  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
-    $query = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES (?,?,?,?,?,?,?,?)";
-    $stmt = $this->connection->prepare($query);
+  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $autori, $categoria): response_manager {
+    $this->connection->autocommit(false);
+    $this->connection->begin_transaction();
+    try {
+      $query1 = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES (?,?,?,?,?,?,?,?)";
+      $stmt = $this->connection->prepare($query1);
 
-    if ($stmt === false) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
-      $stmt->close();
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      $result = array();
+
+      if ($stmt === false) {
+        throw new Exception("Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
+      }
+
+      $tmp = $stmt->execute();
+
+      if (!$tmp) {
+        $stmt->close();
+        throw new Exception("Non è stato possibile inserire il libro");
+      }
+
+      foreach ($autori as $autore) {
+        $query2 = "INSERT INTO publicazione(libro_isbn, autore_id) VALUES (?,?)";
+        $stmt = $this->connection->prepare($query2);
+
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
+        } else if ($stmt->bind_param('si', $isbn, $autore) === false) {
+          $stmt->close();
+          throw new Exception("Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("Controllare i dati dell'ordine");
+        }
+
+        $query3 = "INSERT INTO appartenenza(libro_isbn, codice_categoria) VALUES(?,?)";
+        $stmt = $this->connection->prepare($query3);
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
+        } else if ($stmt->bind_param('si', $isbn, $categoria) === false) {
+          $stmt->close();
+          throw new Exception("Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("La quantità dell'ordine supera quella disponibile");
+        }
+      }
+
+      if ($tmp) {
+        $this->connection->commit();
+      } else {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
+      }
+    } catch (\Throwable $exception) {
+      $this->connection->rollback();
+      return new response_manager($result, $this->connection, $exception->getMessage());
     }
 
-    $response = $stmt->execute();
+    $this->connection->autocommit(true);
+
+    if ($tmp) {
+      array_push($result, $tmp);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile inserire il libro");
+    }
 
     $stmt->close();
-
-    if (!$response) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    return new response_manager(array(true), $this->connection, "");
+    return $res;
   }
 
   public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
