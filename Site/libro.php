@@ -337,6 +337,9 @@ if (isset($_GET['isbn'])) {
                 <input type='submit' class='button' value='Applica sconto' />
             </form>";
 
+            // se sono admin, vedo quante copie ci sono nel db
+            $infoGenerali .= "<p class='miniGrassetto'>Ci sono " . $tmp[0]['quantita'] . " copie in magazzino</p>";
+
             // se sono admin, non posso lasciare recensioni
             $linkLasciaRecensione = "";
         }
