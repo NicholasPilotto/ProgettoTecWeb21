@@ -1,4 +1,5 @@
 <?php
+require_once "./cart.php";
 class graphics {
     public static function getPage($nome) {
         $headerHTML = file_get_contents("header.html");
@@ -6,8 +7,7 @@ class graphics {
         $linkUtente = "";
         $helloUser = "";
 
-        require_once "cart.php";
-        $c;
+        $c = null;
 
         if (isset($_SESSION["Nome"])) {
             $helloUser = "<p id='benvenuto'>Benvenuto, " . $_SESSION["Nome"] . "</p>";

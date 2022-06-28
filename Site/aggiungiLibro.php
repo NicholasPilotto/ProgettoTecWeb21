@@ -1,4 +1,10 @@
 <?php
+
+use DB\Service;
+
+require_once('backend/db.php');
+require_once 'graphics.php';
+
 function OrderWithoutTags($array, $attr) {
     $newArray = array();
     foreach ($array as $elem) {
@@ -12,7 +18,7 @@ function OrderWithoutTags($array, $attr) {
 
 session_start();
 
-use DB\Service;
+
 
 if (!isset($_SESSION["Nome"])) {
     header("Location: index.php");

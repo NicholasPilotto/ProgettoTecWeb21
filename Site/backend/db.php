@@ -1276,7 +1276,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function insert_order($cliente, $indirizzo, cart $carrello): response_manager {
+  public function insert_order($cliente, $indirizzo, $carrello): response_manager {
     $this->connection->autocommit(false);
     $this->connection->begin_transaction();
     try {
@@ -1551,6 +1551,36 @@ class Service extends Constant {
 
     if (!$res->ok()) {
       $res->set_error_message("Nessun guadagno trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function add_book_to_offers($isbn, $start, $end, $sale): response_manager {
+    $query = "INSERT INTO offerte (libro_isbn,data_inizio,data_fine,sconto) VALUES (?,?,?,?)";
+    $stmt = $this->connection->prepare($query);
+
+    $result = array();
+
+
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('sssi', $isbn, $start, $end, $sale) === false) {
+      $stmt->close();
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $tmp = $stmt->execute();
+
+    if (!$tmp) {
+      return new response_manager($result, $this->connection, "Non è stato possibile inserire il libro nelle offerte");
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile inserire il libro nelle offerte");
     }
 
     $stmt->close();

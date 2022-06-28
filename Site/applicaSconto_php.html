@@ -22,9 +22,9 @@
   <meta name="description" content="" />
   <meta name="author" content="Nicholas Pilotto, Michele Bonavigo, Mattia Casarotto, Anita Meta" />
 
-  <!--   FAI NUOVA PAGINA JS
-  <script src="./js/addAddress.js"></script>
-  -->
+
+  <script src="./js/addSale.js"></script>
+
 
   <!-- Segnaposto -->
   </linkSito>
@@ -49,13 +49,22 @@
         </alert>
 
         <label for="isbn">ISBN</label>
-        <span><input class="styleInput" id="isbn" name="isbn" type="text" disabled value="</isbnApplicaSconto>"></span>
+        <span><input class="styleInput" id="isbn" name="isbn" type="text" value="</isbnApplicaSconto>" readonly></span>
 
         <label for="titolo">Titolo</label>
-        <span><input class="styleInput" id="titolo" name="titolo" type="text" disabled value="</titoloApplicaSconto>"></span>
+        <span><input class="styleInput" id="titolo" name="titolo" type="text" readonly
+            value="</titoloApplicaSconto>"></span>
 
         <label for="sconto">Sconto in &percnt;</label>
         <span><input class="styleInput" id="sconto" name="sconto" type="number" min="5" max="90" step="1"></span>
+
+        <label for="nascita">Data di inizio</label>
+        <span><input class="styleInput" id="inizio" name="inizio" type="date" min="1950-01-01" max="2022-12-31"
+            value="</startDate>" /></span>
+
+        <label for="nascita">Data di fine</label>
+        <span><input class="styleInput" id="fine" name="fine" type="date" min="1950-01-01" max="2022-12-31"
+            value="</endDate>" /></span>
 
         <input type="submit" class="button" value="Conferma">
       </fieldset>
