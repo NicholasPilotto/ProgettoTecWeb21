@@ -36,7 +36,7 @@ if ($codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
             $libro = $queryIsbn->get_result()[0];
             $titolo = $libro['titolo'];
 
-            $paginaHTML = str_replace("</titoloApplicaSconto>", strip_tags($titolo), $paginaHTML);
+            $paginaHTML = str_replace("</titoloApplicaSconto>", $titolo, $paginaHTML);
             $paginaHTML = str_replace("</isbnApplicaSconto>", $isbn, $paginaHTML);
 
             $today = date('Y-m-d');
