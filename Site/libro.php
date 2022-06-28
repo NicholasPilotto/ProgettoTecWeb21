@@ -313,8 +313,9 @@ if (isset($_GET['isbn'])) {
             $codiceIdentificativo = $_SESSION["Codice_identificativo"];
             $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
         } else
-
+        {
             $formBottoni = "";
+        }
 
         if ($codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
             // utente
@@ -335,6 +336,9 @@ if (isset($_GET['isbn'])) {
             <form action='applicaSconto.php?isbn=" . $isbn . "' method='post'>
                 <input type='submit' class='button' value='Applica sconto' />
             </form>";
+
+            // se sono admin, non posso lasciare recensioni
+            $linkLasciaRecensione = "";
         }
 
 
