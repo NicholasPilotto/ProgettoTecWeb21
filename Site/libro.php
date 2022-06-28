@@ -331,6 +331,9 @@ if (isset($_GET['isbn'])) {
             $formBottoni = "
             <form action='aggiungiLibro.php?isbn=" . $isbn . "' method='post'>
                 <input type='submit' class='button' value='Modifica libro' />
+            </form>
+            <form action='applicaSconto.php?isbn=" . $isbn . "' method='post'>
+                <input type='submit' class='button' value='Applica sconto' />
             </form>";
         }
 
