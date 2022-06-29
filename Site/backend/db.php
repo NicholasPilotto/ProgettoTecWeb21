@@ -348,20 +348,22 @@ class Service extends Constant {
     return $res;
   }
 
-  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $autori, $categoria): response_manager {
+  public function insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $autori, $categoria, $trama): response_manager {
     $this->connection->autocommit(false);
     $this->connection->begin_transaction();
     try {
-      $query1 = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso) VALUES (?,?,?,?,?,?,?,?)";
+      $query1 = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso, trama) VALUES (?,?,?,?,?,?,?,?,?)";
       $stmt = $this->connection->prepare($query1);
+
+      $data_reverse = date('Y-m-d', strtotime($data_pub));
 
       $result = array();
 
       if ($stmt === false) {
-        throw new Exception("Qualcosa sembra essere andato storto");
-      } else if ($stmt->bind_param('ssiidiss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso) === false) {
+        throw new Exception("Qualcosa sembra essere andato storto1");
+      } else if ($stmt->bind_param('ssiidisss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_reverse, $percorso, $trama) === false) {
         $stmt->close();
-        throw new Exception("Qualcosa sembra essere andato storto");
+        throw new Exception("Qualcosa sembra essere andato storto2");
       }
 
       $tmp = $stmt->execute();
@@ -372,35 +374,36 @@ class Service extends Constant {
       }
 
       foreach ($autori as $autore) {
-        $query2 = "INSERT INTO publicazione(libro_isbn, autore_id) VALUES (?,?)";
+        $query2 = "INSERT INTO pubblicazione(libro_isbn, autore_id) VALUES (?,?)";
         $stmt = $this->connection->prepare($query2);
 
         if ($stmt === false) {
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto3");
         } else if ($stmt->bind_param('si', $isbn, $autore) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto4");
         }
         $tmp = $stmt->execute();
 
         if (!$tmp) {
           $stmt->close();
-          throw new Exception("Controllare i dati dell'ordine");
+          throw new Exception("Controllare i dati del libro.1");
         }
-
+      }
+      foreach ($categoria as $c) {
         $query3 = "INSERT INTO appartenenza(libro_isbn, codice_categoria) VALUES(?,?)";
         $stmt = $this->connection->prepare($query3);
         if ($stmt === false) {
-          throw new Exception("Qualcosa sembra essere andato storto");
-        } else if ($stmt->bind_param('si', $isbn, $categoria) === false) {
+          throw new Exception("Qualcosa sembra essere andato storto5");
+        } else if ($stmt->bind_param('si', $isbn, $c) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto6");
         }
         $tmp = $stmt->execute();
 
         if (!$tmp) {
           $stmt->close();
-          throw new Exception("La quantità dell'ordine supera quella disponibile");
+          throw new Exception("Controllare i dati del libro.2");
         }
       }
 
@@ -408,7 +411,7 @@ class Service extends Constant {
         $this->connection->commit();
       } else {
         $stmt->close();
-        throw new Exception("Qualcosa sembra essere andato storto");
+        throw new Exception("Qualcosa sembra essere andato storto7");
       }
     } catch (\Throwable $exception) {
       $this->connection->rollback();
@@ -1466,6 +1469,33 @@ class Service extends Constant {
 
     if (!$res->ok()) {
       $res->set_error_message("Nessun autore trovato");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function get_all_genres(): response_manager {
+    $query = "SELECT * FROM categoria";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessuna categoria trovato");
     }
 
     $stmt->close();

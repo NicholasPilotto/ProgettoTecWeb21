@@ -44,9 +44,10 @@ if (!isset($_SESSION["Nome"])) {
         $modificaLibroPagine = "";
         $modificaLibroPrezzo = "";
         $modificaLibroQuantita = "";
-        $modificaLibroDataPubblicazione = "";
+        $modificaLibroDataPubblicazione = '1971-01-01';
         $modificaLibroTrama = "";
         $modificaLibroAutori = array();
+        $modificaLibroCategorie = array();
         $modificaLibroEditore = "";
         if (isset($_GET['isbn'])) {
             // modifica libro
@@ -68,6 +69,10 @@ if (!isset($_SESSION["Nome"])) {
                 foreach ($queryIsbn->get_result() as $autore) {
                     array_push($modificaLibroAutori, $autore['autore_id']);
                 }
+                // categorie
+                foreach ($queryIsbn->get_result() as $categoria) {
+                    array_push($modificaLibroCategorie, $categoria['id_categoria']);
+                }
                 // editore
                 $modificaLibroEditore = $libro['editore'];
             }
@@ -79,13 +84,25 @@ if (!isset($_SESSION["Nome"])) {
         if ($queryAutori->ok()) {
             foreach (OrderWithoutTags($queryAutori->get_result(), "nome") as $autore) {
                 // se sono nella modifica, devo cercare gli autori del libro e selezionarli
-                $selected = (in_array($autore['id'], $modificaLibroAutori)) ? "selected" : "";
+                $selected = (in_array($autore['id'], $modificaLibroCategorie)) ? "selected" : "";
 
                 $cognome = ($autore['cognome'] != "-") ? $autore['cognome'] : "";
                 $selectAutori .= "<option value='" . $autore['id'] . "' " . $selected . ">" . $autore['nome'] . " " . $cognome . "</option>";
             }
         }
         $selectAutori .= "</select>";
+
+        $queryCategorie = $connessione->get_all_genres();
+        $selectCategorie = "<select class='styleMultipleSelect' id='categoria' name='categoria[]' multiple>";
+        if ($queryAutori->ok()) {
+            foreach (OrderWithoutTags($queryCategorie->get_result(), "nome") as $categoria) {
+                // se sono nella modifica, devo cercare gli autori del libro e selezionarli
+                $selected = (in_array($autore['id'], $modificaLibroCategorie)) ? "selected" : "";
+
+                $selectCategorie .= "<option value='" . $categoria['id_categoria'] . "' " . $selected . ">" . $categoria['nome'] . "</option>";
+            }
+        }
+        $selectCategorie .= "</select>";
 
         $queryEditori = $connessione->get_all_editors();
         $selectEditori = "<select class='styleSelect' id='editore' name='editore' required>";
@@ -101,6 +118,7 @@ if (!isset($_SESSION["Nome"])) {
 
         // replace
         $paginaHTML = str_replace("</selectAutori>", $selectAutori, $paginaHTML);
+        $paginaHTML = str_replace("</selectCategorie>", $selectCategorie, $paginaHTML);
         $paginaHTML = str_replace("</selectEditori>", $selectEditori, $paginaHTML);
         // -------
         // replace dei campi input: se è in modifica le variabili hanno i valori, se è in aggiungi le variabili sono vuote
@@ -117,7 +135,7 @@ if (!isset($_SESSION["Nome"])) {
             $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-close'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
             unset($_SESSION["error"]);
         } else if (isset($_SESSION["info"])) {
-            $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-trinagle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+            $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
             unset($_SESSION["info"]);
         } else if (isset($_SESSION["success"])) {
             $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);

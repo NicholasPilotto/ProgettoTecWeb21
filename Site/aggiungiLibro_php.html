@@ -37,7 +37,7 @@
         <div class="divPreForm">
             <abbr title="Attenzione!"><i class="fas fa-exclamation-triangle"></i></abbr>
             <p>Le eventuali parole in lingua straniera contenute nel titolo e trama vanno scritte nel seguente modo:</p>
-            <p id="pLingua" class="miniGrassetto">Testo &lt;span lang="lingua"&gt;parola/e&lt;/span&gt; Testo</p>
+            <p id="pLingua" class="miniGrassetto">Testo &lt;span lang='lingua'&gt;parola/e&lt;/span&gt; Testo</p>
         </div>
         <form class="formInput" id="form" action='controlloAggiungiLibro.php' method="post"
             enctype="multipart/form-data">
@@ -61,6 +61,11 @@
                 <span>
                     <!-- Segnaposto -->
                     </selectAutori>
+                </span>
+                <label for="categoria">Categoria/e</label>
+                <span>
+                    <!-- Segnaposto -->
+                    </selectCategorie>
                 </span>
                 <!-- Editore -->
                 <label for="editore">Editore</label>
