@@ -44,9 +44,15 @@ function caricamento() {
     getImgData();
   });
 
-  document.getElementById("pagine").value = 0;
-  document.getElementById("prezzo").value = 0;
-  document.getElementById("quantita").value = 0;
+  if (document.getElementById("pagine").value === "") {
+    document.getElementById("pagine").value = 0;
+  }
+  if (document.getElementById("prezzo").value === "") {
+    document.getElementById("prezzo").value = 0;
+  }
+  if (document.getElementById("quantita").value === "") {
+    document.getElementById("quantita").value = 0;
+  }
 
   form.addEventListener("submit", function (event) {
     if (!validazioneForm()) {

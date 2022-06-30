@@ -20,35 +20,44 @@ if (!isset($_SESSION["Nome"])) {
 
     $oldUsername = $_SESSION['Username'];
     $oldMail = $_SESSION['Email'];
-    $oldPassword = "";
+    // $oldPassword = "";
 
-    $oldArray = array(
-        "username" => $oldUsername,
-        "email" => $oldMail,
-    );
+    if (isset($oldUsername) && isset($oldMail)) {
 
+        $oldArray = array(
+            "username" => $oldUsername,
+            "email" => $oldMail,
+        );
 
-    $newUsername = $_POST['username'];
-    $newMail = $_POST['email'];
+        $newUsername = $_POST['username'];
+        $newMail = $_POST['email'];
 
-    $newArray = array(
-        "username" => $newUsername,
-        "email" => $newMail,
-    );
+        if (isset($newUsername) && isset($newMail)) {
 
-    $data = $connessione->update_user_data($_SESSION['Codice_identificativo'], $oldArray, $newArray);
+            $newArray = array(
+                "username" => $newUsername,
+                "email" => $newMail,
+            );
 
-    if (!$data->ok()) {
-        $_SESSION["info"] = $data->get_error_message();
-    } else if ($data->get_error_message_mysqli() != "") {
-        $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
-    } else if ($data->get_errno() == 0) {
-        $_SESSION["Username"] = $newUsername;
-        $_SESSION["Email"] = $newMail;
-        $_SESSION["success"] = "Modifica avvenuta correttamente";
+            $data = $connessione->update_user_data($_SESSION['Codice_identificativo'], $oldArray, $newArray);
+
+            if (!$data->ok()) {
+                $_SESSION["info"] = $data->get_error_message();
+            } else if ($data->get_error_message_mysqli() != "") {
+                $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
+            } else if ($data->get_errno() == 0) {
+                $_SESSION["Username"] = $newUsername;
+                $_SESSION["Email"] = $newMail;
+                $_SESSION["success"] = "Modifica avvenuta correttamente";
+            }
+        } else {
+            $_SESSION["info"] = "Non tutti i campi sembrano essere compilati";
+        }
+
+        $connessione->closeConnection();
+    } else {
+        $_SESSION["error"] = "La sessione non sembra essere integra";
     }
-
-    $connessione->closeConnection();
 
     header("Location:datilogin.php");
 }

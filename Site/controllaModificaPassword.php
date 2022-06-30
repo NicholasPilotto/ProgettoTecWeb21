@@ -16,35 +16,39 @@ $newPassword = $_POST["nuovapassword"];
 $username = $_SESSION["Username"];
 $codice = $_SESSION["Codice_identificativo"];
 
-$connessione = new Service();
+if (isset($username) && isset($codice)) {
+  if (isset($oldPassword) && isset($newPassword)) {
+    $connessione = new Service();
+    $connessione->openConnection();
+    $log = $connessione->login($username, $oldPassword);
 
-$connessione->openConnection();
-
-$log = $connessione->login($username, $oldPassword);
-
-if ($log->ok()) {
-  if (!$log->is_empty()) {
-    $aux = $connessione->change_psw($codice, $newPassword);
-    if ($aux->ok()) {
-      if (!$aux->is_empty()) {
-        $_SESSION["success"] = "Modifiche eseguite correttamente";
-        header("Location: modificapassword.php");
+    if ($log->ok()) {
+      if (!$log->is_empty()) {
+        $aux = $connessione->change_psw($codice, $newPassword);
+        if ($aux->ok()) {
+          if (!$aux->is_empty()) {
+            $_SESSION["success"] = "Modifiche eseguite correttamente";
+          } else {
+            $_SESSION["info"] = $log->get_error_message();
+          }
+        }
         $connessione->closeConnection(); // chiudo la connessione
+        header("Location: modificapassword.php");
       } else {
         $connessione->closeConnection(); // chiudo la connessione
         $_SESSION["info"] = $log->get_error_message();
         header("Location: modificapassword.php");
       }
+    } else if ($log->get_errno() != 0 || isset($log->get_error_message_mysqli())) {
+      $connessione->closeConnection(); // chiudo la connessione
+      $_SESSION["error"] = "Non è stato possibile collegarsi al sistema.";
+      header("Location: modificapassword.php");
     }
   } else {
-    $connessione->closeConnection(); // chiudo la connessione
-    $_SESSION["info"] = $log->get_error_message();
+    $_SESSION["info"] = "Non tutti i campi sono stati completati.";
     header("Location: modificapassword.php");
   }
-} else if ($log->get_errno() != 0 || isset($log->get_error_message_mysqli())) {
-  echo $log->get_error_message();
-  die();
-  $connessione->closeConnection(); // chiudo la connessione
-  $_SESSION["error"] = "Non è stato possibile collegarsi al sistema.";
+} else {
+  $_SESSION["error"] = "La sessione non sembra essere integra.";
   header("Location: modificapassword.php");
 }

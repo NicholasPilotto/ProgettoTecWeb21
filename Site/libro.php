@@ -40,7 +40,6 @@ if (isset($_GET['isbn'])) {
         $tmp = $queryIsbn->get_result();
         // Ce un libro con quell'isbn, posso andare avanti
 
-        //! isbn cart and price
         $_SESSION["isbncart"] = $isbn;
         $_SESSION["pricecart"] = $tmp[0]["prezzo"];
 
@@ -312,8 +311,7 @@ if (isset($_GET['isbn'])) {
         if (isset($_SESSION["Codice_identificativo"])) {
             $codiceIdentificativo = $_SESSION["Codice_identificativo"];
             $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
-        } else
-        {
+        } else {
             $formBottoni = "";
         }
 
@@ -331,7 +329,7 @@ if (isset($_GET['isbn'])) {
             // admin
             $formBottoni = "
             <form action='aggiungiLibro.php?isbn=" . $isbn . "' method='post'>
-                <input type='submit' class='button' value='Modifica libro' />
+                <input type='submit' class='button' name='modificaLibroTrigger' value='Modifica libro' />
             </form>
             <form action='applicaSconto.php?isbn=" . $isbn . "' method='post'>
                 <input type='submit' class='button' value='Applica sconto' />

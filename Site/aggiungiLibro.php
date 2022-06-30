@@ -18,8 +18,6 @@ function OrderWithoutTags($array, $attr) {
 
 session_start();
 
-
-
 if (!isset($_SESSION["Nome"])) {
     header("Location: index.php");
 } else {
@@ -67,12 +65,14 @@ if (!isset($_SESSION["Nome"])) {
                 $modificaLibroTrama = $libro['trama'];
                 // autori
                 foreach ($queryIsbn->get_result() as $autore) {
-                    array_push($modificaLibroAutori, $autore['autore_id']);
+                    array_push($modificaLibroAutori, $autore["autore_id"]);
                 }
                 // categorie
-                foreach ($queryIsbn->get_result() as $categoria) {
+                $cat = $connessione->get_genres_from_isbn($isbn);
+                foreach ($cat->get_result() as $categoria) {
                     array_push($modificaLibroCategorie, $categoria['id_categoria']);
                 }
+
                 // editore
                 $modificaLibroEditore = $libro['editore'];
             }
@@ -84,7 +84,7 @@ if (!isset($_SESSION["Nome"])) {
         if ($queryAutori->ok()) {
             foreach (OrderWithoutTags($queryAutori->get_result(), "nome") as $autore) {
                 // se sono nella modifica, devo cercare gli autori del libro e selezionarli
-                $selected = (in_array($autore['id'], $modificaLibroCategorie)) ? "selected" : "";
+                $selected = (in_array($autore['id'], $modificaLibroAutori)) ? "selected" : "";
 
                 $cognome = ($autore['cognome'] != "-") ? $autore['cognome'] : "";
                 $selectAutori .= "<option value='" . $autore['id'] . "' " . $selected . ">" . $autore['nome'] . " " . $cognome . "</option>";
@@ -94,10 +94,10 @@ if (!isset($_SESSION["Nome"])) {
 
         $queryCategorie = $connessione->get_all_genres();
         $selectCategorie = "<select class='styleMultipleSelect' id='categoria' name='categoria[]' multiple>";
-        if ($queryAutori->ok()) {
-            foreach (OrderWithoutTags($queryCategorie->get_result(), "nome") as $categoria) {
+        if ($queryCategorie->ok()) {
+            foreach (OrderWithoutTags($queryCategorie->get_result(), "id_categoria") as $categoria) {
                 // se sono nella modifica, devo cercare gli autori del libro e selezionarli
-                $selected = (in_array($autore['id'], $modificaLibroCategorie)) ? "selected" : "";
+                $selected = (in_array($categoria['id_categoria'], $modificaLibroCategorie)) ? "selected" : "";
 
                 $selectCategorie .= "<option value='" . $categoria['id_categoria'] . "' " . $selected . ">" . $categoria['nome'] . "</option>";
             }
@@ -115,8 +115,15 @@ if (!isset($_SESSION["Nome"])) {
             }
         }
         $selectEditori .= "</select>";
-
+        $isbnSettings = "required";
+        $ediFlag = "";
+        if ($_POST["modificaLibroTrigger"]) {
+            $isbnSettings = "readonly";
+            $editFlag = "<input type='hidden' id='editFlag' value='1' />";
+        }
         // replace
+        $paginaHTML = str_replace("</editFlag>", $ediFlag, $paginaHTML);
+        $paginaHTML = str_replace("</isbnSettings>", $isbnSettings, $paginaHTML);
         $paginaHTML = str_replace("</selectAutori>", $selectAutori, $paginaHTML);
         $paginaHTML = str_replace("</selectCategorie>", $selectCategorie, $paginaHTML);
         $paginaHTML = str_replace("</selectEditori>", $selectEditori, $paginaHTML);
