@@ -51,17 +51,114 @@ Si è utilizzato lo schema a tre pannelli che aiuta a dare risposta alle 3 doman
 	\item \textit{Dove posso andare?}: La risposta si trova sul menu dove sono elencate tutte le altre pagine che
 		è possibile visitare.
 \end{enumerate}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+\subsection{Descrizione pagine}
+\subsubsection{Pagina Home}
+Rappresenta la prima pagina che viene visualizzata appena arrivati sul sito. È organizzata in 3 sezioni: \textit{Bestseller}, Nuove uscite e A meno di 5 euro. Il suo scopo è quello di dare un'idea generale e veloce all'utente sul sito e su quello che può trovare al suo interno. Se ci si trova in un’altra pagina la si può raggiungere cliccando direttamente sul \textit{link} presente nel \textit{breadcrumb}.
+
+\subsubsection{Pagina Bestseller}
+In questa pagina sono elencati i libri più venduti di tutte le categorie. Si trova come sezione della \textit{homepage} ma fa anche parte del \textit{menu} siccome rappresenta una pagina abbastanza importante.
+
+\subsubsection{Pagina Generi}
+La pagina è presente sul \textit{menu} e contiene la lista di tutti i generi del sito. Se si clicca uno, si apre la pagina di quel genere specifico che contiene la lista di tutti i libri appartenenti ad esso. Ognuna delle schede dei libri listati è cliccabile ed indirizza alla sua pagina contenente tutti i dettagli. 
+
+\subsubsection{Pagina Genere}
+La pagina che contiene tutti i libri che fanno parte di un genere specifico. Ci si arriva attraverso la pagina Generi presente sul \textit{menu}. Dopo aver selezionato un genere vengono listati tutti i libri che ne fanno parte. Ogni scheda di un libro è cliccabile ed indirizza alla sua pagina dove si trovano informazioni più dettagliate.
+
+\subsubsection{Pagina Libro}
+A questa pagina ci si arriva cliccando uno degli risultati della ricerca oppure cliccando uno dei libri di una categoria(genere). Per tutti i libri sono visibili le informazioni più importanti come: Titolo, Autore, Editore, Data pubblicazione, Numero pagine, Genere, ISBN, Prezzo, Foto della copertina e una piccola descrizione della trama.
+
+Se sono presenti recensioni viene visualizzata la loro media con un \textit{range} da 1-5 stelle. Scorrendo giù nella pagina è possibile leggerle tutte.
+
+Nella pagina è presente anche il \textit{link} Lascia Recensione che nel caso dell’utente loggato permette di aggiungere direttamente una recensione, altrimenti indirizza alla pagina Accedi siccome è una operazione permessa agli utenti solo dopo aver effettuato l’accesso.
+
+Dalla pagina del libro è anche possibile aggiungere il libro al carrello selezionando la quantità voluta, oppure aggiungerlo alla propria \textit{wishlist} attraverso il pulsante \textit{“Aggiungi alla wishlist”}.
+
+Quando invece l’utente è l’\textit{admin}, la pagina è leggermente diversa. Al posto dei bottoni \textit{“Aggiungi al carrello”} e \textit{“Aggiungi alla wishlist”} si trovano i bottoni \textit{“Modifica libro”} e \textit{“Applica sconto”} e non c’è il \textit{link Lascia Recensione} siccome \textit{admin} non può aggiungere recensioni.
+
+\subsubsection{Pagina Offerte}
+Questa è una delle pagine più importanti del sito dove si possono trovare facilmente i libri scontati e si trova nel \textit{menu}. La diminuzione del prezzo di un libro è competenza solo del \textit{admin} è può essere fatta attraverso la pagina \textit{Aggiungi Libro} presente nella sua sezione privata, oppure direttamente dalla pagina del libro tramite il pulsante \textit{“Applica sconto”}.
+
+Nel primo caso si modifica il campo prezzo del \textit{form} contenente tutti i dettagli di quel libro, mentre nel secondo caso viene aperto un altro \textit{form} che contiene solo l’\textit{ISBN} del libro, il titolo e il campo dove va inserito di quanto sarà la riduzione, ossia lo sconto.
+
+\subsubsection{Pagina Ricerca}
+Cliccando su \textit{“Ricerca”} sul \textit{menu} si viene indirizzati qui. La pagina si compone dalla barra di ricerca a sinistra ed i filtri. Inizialmente, quando non si è ancora effettuata una ricerca, a destra vengono visualizzati i libri del sito nell'ordine in cui vengono estratti dal \textit{database}. Si è deciso di non cambiare questa cosa con lo scopo di far mostrare ai clienti nuovi suggerimenti di libri in modo da poter catturare la loro attenzione ed aumentare il numero delle vendite.
+
+Nel caso in cui una ricerca venga effettuata attraverso il codice \textit{ISBN} inserito completamente corretto, si ottiene come risultato, se presente, il libro che corrisponde a quel \textit{ISBN}. Invece, se la ricerca viene effettuata attraverso il nome dell’autore oppure il titolo, viene mostrata a destra una lista che contiene il risultato aspettato ma anche altri libri correlati al libro cercato. Ogni risultato contiene alcune informazioni come la copertina, il titolo, l’autore, il prezzo e se cliccato porta alla pagina del libro specifico.
+
+In modo da facilitare la ricerca per l’utenza si è deciso di rendere il campo della ricerca non case sensitive.
+
+Nel caso si volesse effettuare una ricerca più dettagliata, si possono utilizzare i filtri situati a sinistra della pagina. Un filtro può riguardare uno o più generi oppure/anche il prezzo minimo o massimo.
+
+\subsubsection{Pagina Registrati}
+La pagina \textit{Registrati}, raggiungibile tramite la pagina \textit{Accedi}, è la pagina da cui un utente generico può creare il suo \textit{account} ed diventare un utente registrato del sito \textit{SecondRead}. L’utente generico (non loggato o non registrato) deve cliccare su \textit{Area Riservata} e da lì cliccare su \textit{Registrati}, presente nella pagina \textit{Accedi}.
+
+Al momento della registrazione viene chiesto di compilare un \textit{form} con i vari campi: Nome, Cognome, Username, Telefono, Data di nascita, Email e alla fine la Password che deve essere poi confermata nel campo successivo (Conferma Password). In modo da aiutare l’utente durante la compilazione vengono date varie indicazioni su come compilare i campi richiesti. Una volta premuto il tasto Registrati, l’operazione può avere due esiti:
+\begin{itemize}
+	\item L’inserimento dei dati è avvenuto in maniera corretta e quindi l’operazione è andata a buon fine e si è creato il nuovo account. Si viene rimandati alla home.
+	\item Non è stato possibile concludere la registrazione. Nel caso in cui i dati inseriti non siano corretti (e.g. le \textit{password} non coincidono) viene visualizzato un messaggio di errore che indica che c’è stato un problema. Si invita l’utente a inserire di nuovo i dati sbagliati dandogli delle indicazioni su come devono essere compilati.
+\end{itemize}
+
+\subsubsection{Pagina Accedi}
+Cliccando su \textit{Area Riservata} presente nella \textit{navbar}, l’utente registrato, ossia colui che ha già creato precedentemente il suo \textit{account}, può effettuare il \textit{login} attraverso la pagina \textit{Accedi}.
+
+I campi da compilare sono quello del \textit{username} e della \textit{password}.
+
+Nel caso di errori durante o dopo l’inserimento dei dati, vengono visualizzati appositi messaggi di errore che servono a dare una mano all’utente.
+
+Quando la compilazione è avvenuta correttamente, viene effettuato l’accesso e si viene reindirizzati alla pagina principale.
+
+\subsubsection{Pagina Account}
+Questa pagina contiene tutti i dati e le informazioni riguardanti l’\textit{account} di un utente. È visibile e raggiungibile solo dopo aver effettuato il \textit{login}. Da qui si possono effettuare tutte le funzionalità descritte prima dell'utente loggato.
+
+\subsubsection{Pagina Ordini}
+Se cliccato si viene indirizzati alla pagina \textit{Ordini} dove ogni utente può vedere i dettagli degli ordini effettuati come: Data di effettuazione, Data partenza, Data consegna, Indirizzo di consegna e Totale dell'ordine.
+
+\subsubsection{Dati login}
+Si apre la pagina \textit{Dati di login} dove sono presenti tutti i dati dell'utente. È possibile modificare alcuni di loro come: Username, E-mail e Password.
+
+\subsubsection{Indirizzi}
+Se cliccato si viene indirizzati alla pagina \textit{Indirizzi} dove si trovano gli indirizzi memorizzati. Premendo il pulsante \textit{“Aggiungi Indirizzo”} si viene indirizzati alla pagina \textit{Aggiungi Indirizzo} nella quale si possono aggiungere altri indirizzi compilando il \textit{form} con i dati giusti.
+
+Non viene data la possibilità di cancellare un’ indirizzo siccome sono collegati agli ordini. Se quell'indirizzo, ad esempio, è stato specificato come indirizzo di consegna e l’ordine è ancora in transito si creerebbe un disagio impossibile da gestire.
+
+\subsubsection{Pagina Wishlist}
+In questa pagina si trovano tutti i libri che sono stati aggiunti nella \textit{wishlist} personale. L’utente può visualizzare gli elementi inseriti ma può anche rimuoverli attraverso il bottone \textit{“Rimuovi”}.
+
+\subsubsection{Recensioni}
+Contiene tutte le recensioni inserite dall’utente per i libri che ha acquistato. Si possono aggiungere altre oppure cancellare quelle presenti.
+
+\subsubsection{Aiuto}
+Questa pagina contiene il numero del servizio clienti: \textbf{800201522} \footnote{Si è deciso di aggiungere questa informazione solo per per la completezza del sito, non è un numero effettivamente attivo ed utilizzabile e soprattutto non è legato al nostro sito.}
+
+\subsubsection{Pagina Account Admin}
+Rappresenta la pagina account dell’amministratore dove sono presenti tutte le funzionalità principali che riguardano il controllo e la manutenzione del sito.
+
+
+\subsubsection{Aggiungi libro}
+L’\textit{admin} del sito ha la possibilità di aggiungere nuovi libri o modificare vari dettagli dei libri già presenti sul sito. Premendo su \textit{“Aggiungi libro”} si apre la pagina contenente un \textit{form} con un campo per ogni dettaglio del libro. 
+
+Nel caso di aggiunta di un nuovo libro, tutti i campi sono vuoti, mentre nel caso si volesse modificare la scheda di un libro presente, si apre lo stesso \textit{form} però con alcuni campi già pre-compilati e modificabili. 
+
+\subsubsection{Analytics}
+Questa pagina contiene informazioni riguardanti l’andamento delle vendite nell'ultimo semestre. I dati vengono rappresentati attraverso un grafico dove ogni punto rappresenta il guadagno di un mese specifico. I dati vengono rappresentati anche in forma tabellare in modo da essere accessibili anche alle persone con varie disabilità.
+
+La scelta di mantenere visibili sia il grafico e sia la tabella è stata fatta in modo da fornire varie possibilità agli vari utenti e lasciare a loro la scelta di informarsi dal metodo che trovano più facilmente comprensibile.
+
+\subsubsection{Pagina Carrello}
+Presente sulla \textit{navbar}, contiene gli articoli aggiunti al carrello dall’utente. Solo gli utenti loggati possono aggiungere articoli al carrello. Nel momento in cui si vuole procedere all'acquisto, viene chiesto di compilare varie informazioni come: Nome e Cognome del cliente, Telefono, Indirizzo di consegna e il Metodo di pagamento.
+
+\subsubsection{Pagina Acquista}
+Dopo aver cliccato su \textit{“Procedi all’acquisto”} della pagina \textit{Carrello} si viene indirizzati alla pagina \textit{Acquista}. La pagina chiede l’inserzione dei dati relativi all'utente e al pagamento: Nome e Cognome, Indirizzo di consegna e le informazioni della carta. Alla fine, cliccando su \textit{“Acquista”} si effettua l’ordine che viene poi inserito anche nella sezione Ordini del account.
+
+\subsubsection{Pagina Errore}
+Si viene indirizzati a questa pagina quando dopo una ricerca effettuata non è stato possibile ottenere un risultato. Si invita l’utente ad effettuare una nuova ricerca.
+
+\subsubsection{Footer}
+Si trova sempre alla fine delle pagine del sito. Contiene una piccola descrizione del sito e di cosa si tratta e alcune informazioni di contatto che potrebbero servire agli utenti.
+
+È stato scelto di non appesantire troppo il \textit{footer} siccome tutte le pagine più importanti ed necessarie per l’utente sono già presenti nella \textit{navbar} sia nella versione desktop che in quella mobile.
+
 	
 	
 	
