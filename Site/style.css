@@ -58,11 +58,9 @@ SEZIONE MENU'
 #menu ul {
     commento column-count: 4;
 }
-
 #menu ul li {
     commento margin-left: 5%;
     commento margin-right: 5%;
-
     text-align: center;
 } 
 */
@@ -990,11 +988,16 @@ footer {
 }
 
 footer p {
-    display: inline;
     font-style: italic;
     color: white;
+    margin-bottom:1.0em;
+    margin-left:1.0em;
+    margin-right:1.0em;
 }
 
+footer .copyright {
+    display: inline;
+}
 footer .imgValidCode {
     vertical-align: middle;
     margin-left: 1.0em;
@@ -1013,12 +1016,32 @@ footer a:hover {
     color: #aaaaaa;
 }
 
+footer h1 {
+    font-style: italic;
+    color: white;
+    font-size:1.3em;
+}
+
 footer ul {
-    padding-bottom: 3em;
-    display: flex;
-    justify-content: center;
+    padding-bottom: 1em;
 }
 
 footer ul li {
     text-align: center;
+}
+
+footer .first {
+    color: white;
+    font-weight: bold;
+}
+
+footer .second {
+    color: lightgray;
+}
+
+footer .logo {
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width:5%;
 }
