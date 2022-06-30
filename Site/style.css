@@ -282,16 +282,8 @@ thead {
 }
 
 /* ----- FORM INPUT ----- */
-/*
-.testoPreForm {
-    width: 25em;
-
-    margin: auto;    
-    padding-bottom: 1em;
-}
-*/
 .divPreForm {
-    width: 25em;
+    width: 24em;
     margin: auto;
 
     border: 1px solid #aaaaaa;
@@ -535,6 +527,10 @@ SEZIONE CONTENT
     flex-wrap: wrap;
 }
 
+#filtri label:after {
+    content: "";
+}
+
 #filtri {
     flex-basis: 35%;
     border-right: 1px solid #aaaaaa;
@@ -564,11 +560,6 @@ SEZIONE CONTENT
     font-weight: bold;
 }
 
-#filtriForm input[type=number] {
-    width: 4em;
-    text-align: center;
-}
-
 #filtri ul li {
     margin-top: 0.5em;
     margin-left: 1.5em;
@@ -580,12 +571,10 @@ SEZIONE CONTENT
     margin-left: 0.2em;
 }
 
-input:checked {
-    background-color: green;
-}
-
 #filtri ul li input[type=number] {
     font-size: 1em;
+    width: 4em;
+    text-align: center;
 }
 
 #filtri ul li label {
@@ -829,13 +818,6 @@ a.titolo {
 }
 
 .accountCards li {
-
-    /*
-    background-color: cornsilk;
-    border: 1px solid #000;
-    border-radius: 5px;
-    */
-
     flex-basis: 20%;
     flex-grow: 0;
     flex-shrink: 0;
@@ -933,44 +915,6 @@ a.titolo {
     padding-top: 1em;
     padding-bottom: 0.8em;
 }
-
-/* ------------------- PROCEDI CON L'ACQUISTO ------------------- */
-
-/*
-.formPurchase {
-    width: 25em;
-    margin: auto;
-    padding-bottom: 1em;
-}
-
-.formPurchase fieldset {
-    padding: 2em 3em 1em 3em;
-    border: 1px solid #aaaaaa;
-    border-radius: 10px;
-}
-
-.formPurchase input[type=date] {
-    height: 2em;
-}
-
-.formPurchase *:not(.ultimoInput):not(option) {
-    margin-bottom: 1em;
-}
-
-.formPurchase input[type=submit] {
-    display: block;
-
-    width: fit-content;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-
-    height: 2em;
-
-
-    margin: auto;
-    margin-top: 1.2em;
-}
-*/
 
 /* ------------------- ERRORE ------------------- */
 
