@@ -1,0 +1,68 @@
+\section{Struttura del sito}\label{sec:struttura}
+
+\subsection{Header}
+Il \textit{header} è sempre lo stesso ed è presente su tutte le pagine. Contiene il logo e il nome del sito in alto a sinistra.
+
+\subsection{Breadcrumb}
+La \textit{breadcrumb} è uno strumento fondamentale per quanto riguarda l’accessibilità. La funzione principale è quella di aiutare l'utente ad orientarsi sulla propria posizione all'interno della pagina \textit{web}. Si trova immediatamente sotto il menu ed è presente su tutte le pagine, sia nella versione \textit{desktop} sia in quella \textit{mobile}.
+
+Contiene i \textit{link} relativi alle pagine che sono state visitate precedentemente dall’utente. L'ultima pagina listata è quella corrente che non contiene un \textit{link} in modo da evitare una circolazione non necessaria.
+
+\subsection{NavBar}
+La \textit{navbar} costituisce una delle parti più importanti del sito siccome contiene i vari link per la navigazione. Nella maggior parte delle pagine, \textit{header} e \textit{navbar} sono invariati ma la cosa cambia in base al tipo di utente.
+	\begin{enumerate}
+		\item Utente generico: nel caso in cui l’utente non possiede un \textit{account} oppure non ha ancora effettuato l’accesso, la \textit{navbar} è costituita dalle pagine:
+			\begin{itemize}
+				\item Ricerca
+				\item Generi
+				\item Bestseller
+				\item Offerte
+				\item Area Riservata
+			\end{itemize}
+		Area Riservata non è in sé una pagina come le altre, ma serve a creare il collegamento con la pagina Accedi. L’utente generico, dopo aver cliccato su Area Riservata, viene indirizzato alla pagina Accedi dalla quale può direttamente effettuare l'accesso all'\textit{account}.
+
+		In alternativa, se l’utente generico non possiede un’account \textit{SecondRead} (non lo ha creato precedentemente), può farlo direttamente cliccando il pulsante Registrati presente nella pagina Accedi. Verrà indirizzato alla pagina Registrati dove deve compilare il \textit{form} per la registrazione.
+
+		Si è scelto di aggiungere un ulteriore livello di profondità (per andare alla pagina Registrati si deve effettuare un “\textit{click}” in più rispetto a quello che si doveva fare se la pagina fosse stata direttamente presente sulla \textit{navbar}) con lo scopo di evitare il sovraccaricamento del \textit{menu} e soprattutto in modo da evitare il sovraccarico cognitivo dell’utente.
+
+		Allo stesso tempo, attraverso questa organizzazione l'adattamento della \textit{navbar} per i dispositivi con schermi più piccoli risulta più facile.
+
+		\item \textit{Utente loggato}: l’utente ha già effettuato l’accesso sul proprio account. La sua \textit{navbar} è composta dalle pagine:
+			\begin{itemize}
+				\item Ricerca
+				\item Generi
+				\item Bestseller
+				\item Offerte
+				\item Area Riservata
+				\item Carrello
+				\item Esci
+			\end{itemize}
+		In questo caso, l’Area Riservata esegue una funzione diversa. Quando l’utente lo clicca, viene indirizzato alla pagina \textit{Account} dove si trovano tutte le sezioni e funzionalità che possiede.
+		\item \textit{Amministratore}: in questo caso la \textit{navbar} è leggermente diversa da quella dell'utente loggato siccome non contiene la pagina Carrello. La funzione dell'Area Riservata rimane la stessa, ossia dopo il \textit{login} se cliccata indirizza alla pagina \textit{Account} dell'amministratore (admin).
+	\end{enumerate}
+	
+\subsection{Contenuto della pagina}
+Le informazioni più importanti sono direttamente presenti nella home page siccome è la parte del sito che l’utente vede appena arrivato. Abbiamo le sezioni Bestseller, Nuove uscite e A meno di 5 euro.
+Si è utilizzato lo schema a tre pannelli che aiuta a dare risposta alle 3 domande importanti:
+\begin{enumerate}
+	\item \textit{Di cosa si tratta?}: La risposta a questa domanda si trova nel contenuto della pagina home
+	\item \textit{Dove sono?}: La prima risposta a questa domanda si trova nel titolo della pagina ma si ottiene
+		una risposta anche guardando nel \textit{breadcrumb}
+	\item \textit{Dove posso andare?}: La risposta si trova sul menu dove sono elencate tutte le altre pagine che
+		è possibile visitare.
+\end{enumerate}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
