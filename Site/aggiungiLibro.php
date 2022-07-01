@@ -114,15 +114,13 @@ if (!isset($_SESSION["Nome"])) {
                 $selectEditori .= "<option value='" . $editore['id'] . "' " . $selected . ">" . $editore['nome'] . "</option>";
             }
         }
+
         $selectEditori .= "</select>";
         $isbnSettings = "required";
-        $ediFlag = "";
-        if ($_POST["modificaLibroTrigger"]) {
+        if (isset($_POST["modificaLibroTrigger"])) {
             $isbnSettings = "readonly";
-            $editFlag = "<input type='hidden' id='editFlag' value='1' />";
+            $_SESSION["editFlag"] = true;
         }
-        // replace
-        $paginaHTML = str_replace("</editFlag>", $ediFlag, $paginaHTML);
         $paginaHTML = str_replace("</isbnSettings>", $isbnSettings, $paginaHTML);
         $paginaHTML = str_replace("</selectAutori>", $selectAutori, $paginaHTML);
         $paginaHTML = str_replace("</selectCategorie>", $selectCategorie, $paginaHTML);
@@ -139,12 +137,13 @@ if (!isset($_SESSION["Nome"])) {
         $paginaHTML = str_replace("</modificaLibroTrama>", $modificaLibroTrama, $paginaHTML);
 
         if (isset($_SESSION["error"])) {
-            $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-close'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+            $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-close'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
             unset($_SESSION["error"]);
         } else if (isset($_SESSION["info"])) {
             $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
             unset($_SESSION["info"]);
         } else if (isset($_SESSION["success"])) {
+
             $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
             unset($_SESSION["success"]);
         } else {

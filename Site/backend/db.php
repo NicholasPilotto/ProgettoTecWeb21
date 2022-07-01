@@ -360,10 +360,10 @@ class Service extends Constant {
       $result = array();
 
       if ($stmt === false) {
-        throw new Exception("Qualcosa sembra essere andato storto1");
+        throw new Exception("Qualcosa sembra essere andato storto");
       } else if ($stmt->bind_param('ssiidisss', $isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_reverse, $percorso, $trama) === false) {
         $stmt->close();
-        throw new Exception("Qualcosa sembra essere andato storto2");
+        throw new Exception("Qualcosa sembra essere andato storto");
       }
 
       $tmp = $stmt->execute();
@@ -381,29 +381,29 @@ class Service extends Constant {
           throw new Exception("Qualcosa sembra essere andato storto3");
         } else if ($stmt->bind_param('si', $isbn, $autore) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto4");
+          throw new Exception("Qualcosa sembra essere andato storto");
         }
         $tmp = $stmt->execute();
 
         if (!$tmp) {
           $stmt->close();
-          throw new Exception("Controllare i dati del libro.1");
+          throw new Exception("Controllare i dati del libro.");
         }
       }
       foreach ($categoria as $c) {
         $query3 = "INSERT INTO appartenenza(libro_isbn, codice_categoria) VALUES(?,?)";
         $stmt = $this->connection->prepare($query3);
         if ($stmt === false) {
-          throw new Exception("Qualcosa sembra essere andato storto5");
+          throw new Exception("Qualcosa sembra essere andato storto");
         } else if ($stmt->bind_param('si', $isbn, $c) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto6");
+          throw new Exception("Qualcosa sembra essere andato storto");
         }
         $tmp = $stmt->execute();
 
         if (!$tmp) {
           $stmt->close();
-          throw new Exception("Controllare i dati del libro.2");
+          throw new Exception("Controllare i dati del libro.");
         }
       }
 
@@ -411,7 +411,7 @@ class Service extends Constant {
         $this->connection->commit();
       } else {
         $stmt->close();
-        throw new Exception("Qualcosa sembra essere andato storto7");
+        throw new Exception("Qualcosa sembra essere andato storto");
       }
     } catch (\Throwable $exception) {
       $this->connection->rollback();
@@ -434,77 +434,139 @@ class Service extends Constant {
     return $res;
   }
 
-  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso): response_manager {
-    $query = "UPDATE libro SET ";
-    $components = array();
-    $aux = "";
-    $type = "";
+  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $autori, $categorie): response_manager {
+    $this->connection->autocommit(false);
+    $this->connection->begin_transaction();
+    try {
+      $query1 = "UPDATE libro SET ";
+      $components = array();
+      $aux = "";
+      $type = "";
+      $result = array();
 
 
-    if (isset($titolo)) {
-      array_push($components, $titolo);
+      if (isset($titolo)) {
+        array_push($components, $titolo);
+        $type .= "s";
+        $aux .= " titolo = ?,";
+      }
+
+      if (isset($editore)) {
+        array_push($components, $editore);
+        $type .= "i";
+        $aux .= " editore = ?,";
+      }
+      if (isset($pagine)) {
+        array_push($components, $pagine);
+        $type .= "i";
+        $aux .= " pagine = ?,";
+      }
+      if (isset($prezzo)) {
+        array_push($components, $prezzo);
+        $type .= "d";
+        $aux .= " prezzo = ?,";
+      }
+      if (isset($quantita)) {
+        array_push($components, $quantita);
+        $type .= "i";
+        $aux .= " quantita = ?,";
+      }
+      if (isset($data_pub)) {
+        array_push($components, $data_pub);
+        $type .= "s";
+        $aux .= " data_pubblicazione = ?,";
+      }
+      if (isset($percorso)) {
+        array_push($components, $percorso);
+        $type .= "s";
+        $aux .= " persorso = ?,";
+      }
+
+      $aux = substr($aux, 0, -1);
+      array_push($components, $isbn);
+
+      $aux .= " ";
+
+      $query1 .= $aux . "WHERE isbn = ?";
+
       $type .= "s";
-      $aux .= " titolo = ?,";
+
+      $stmt = $this->connection->prepare($query1);
+
+
+      if ($stmt === false) {
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param($type, ...$components) === false) {
+        $stmt->close();
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      }
+
+      $tmp = $stmt->execute();
+
+      if (!$tmp) {
+        $stmt->close();
+        throw new Exception("Controllare i dati del libro.");
+      }
+
+      foreach ($autori as $autore) {
+        $query2 = "INSERT INTO pubblicazione(libro_isbn, autore_id) VALUES (?,?)";
+        $stmt = $this->connection->prepare($query2);
+
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto3");
+        } else if ($stmt->bind_param('si', $isbn, $autore) === false) {
+          $stmt->close();
+          throw new Exception("Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("Controllare i dati del libro.");
+        }
+      }
+
+      foreach ($categorie as $c) {
+        $query3 = "INSERT INTO appartenenza(libro_isbn, codice_categoria) VALUES(?,?)";
+        $stmt = $this->connection->prepare($query3);
+        if ($stmt === false) {
+          throw new Exception("Qualcosa sembra essere andato storto");
+        } else if ($stmt->bind_param('si', $isbn, $c) === false) {
+          $stmt->close();
+          throw new Exception("Qualcosa sembra essere andato storto");
+        }
+        $tmp = $stmt->execute();
+
+        if (!$tmp) {
+          $stmt->close();
+          throw new Exception("Controllare i dati del libro.");
+        }
+      }
+
+      if ($tmp) {
+        $this->connection->commit();
+      } else {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
+      }
+    } catch (\Throwable $exception) {
+      $this->connection->rollback();
+      return new response_manager($result, $this->connection, $exception->getMessage());
+    }
+    $this->connection->autocommit(true);
+
+    if ($tmp) {
+      array_push($result, $tmp);
     }
 
-    if (isset($editore)) {
-      array_push($components, $editore);
-      $type .= "i";
-      $aux .= " editore = ?,";
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile aggiornare il libro");
     }
-    if (isset($pagine)) {
-      array_push($components, $pagine);
-      $type .= "i";
-      $aux .= " pagine = ?,";
-    }
-    if (isset($prezzo)) {
-      array_push($components, $prezzo);
-      $type .= "d";
-      $aux .= " prezzo = ?,";
-    }
-    if (isset($quantita)) {
-      array_push($components, $quantita);
-      $type .= "i";
-      $aux .= " quantita = ?,";
-    }
-    if (isset($data_pub)) {
-      array_push($components, $data_pub);
-      $type .= "s";
-      $aux .= " data_pubblicazione = ?,";
-    }
-    if (isset($percorso)) {
-      array_push($components, $percorso);
-      $type .= "s";
-      $aux .= " editore = ?,";
-    }
-
-    $aux = substr($aux, 0, -1);
-    array_push($components, $isbn);
-
-    $aux .= " ";
-
-    $query .= $aux . "WHERE isbn = ?";
-
-    $type .= "s";
-
-    $stmt = $this->connection->prepare($query);
-
-
-    if ($stmt === false) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param($type, ...$components) === false) {
-      $stmt->close();
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $response = $stmt->execute();
 
     $stmt->close();
-
-    if (!$response) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-    return new response_manager(array(true), $this->connection, "");
+    return $res;
   }
 
   public function signin($nome, $cognome, $nascita, $username, $email, $pass, $tel): response_manager {

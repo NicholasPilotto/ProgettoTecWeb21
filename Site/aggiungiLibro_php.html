@@ -43,7 +43,6 @@
             enctype="multipart/form-data">
             </alert>
             <fieldset>
-                </editFlag>
                 <label for="isbn">ISBN</label>
                 <span><input class="styleInput" id="isbn" name="isbn" type="number" value="</modificaLibroISBN>"
                         </isbnSettings>></span>
@@ -54,6 +53,7 @@
                         required></modificaLibroTitolo></textarea></span>
 
                 <label for="copertina">Copertina</label>
+                <input type="hidden" id="imgSrc" name="imgSrc" value="</modificaLibroCopertina>" />
                 <img id="img-preview" src="</modificaLibroCopertina>" />
                 <input type="file" accept="image/*" id="copertina" name="copertina" />
 
