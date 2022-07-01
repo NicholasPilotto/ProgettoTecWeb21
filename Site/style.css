@@ -58,9 +58,11 @@ SEZIONE MENU'
 #menu ul {
     commento column-count: 4;
 }
+
 #menu ul li {
     commento margin-left: 5%;
     commento margin-right: 5%;
+
     text-align: center;
 } 
 */

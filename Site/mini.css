@@ -1,11 +1,201 @@
-/* ------------------- ANALYTICS ------------------- */
-#myChart {
-    max-width: 100%;
+/* ------------------- TABELLA ORDINI ------------------- */
+
+table {
+    border: 0;
 }
 
+table caption {
+font-size: 1.3em;
+}
+
+table thead {
+border: none;
+clip: rect(0 0 0 0);
+height: 1px;
+margin: -1px;
+overflow: hidden;
+padding: 0;
+position: absolute;
+width: 1px;
+}
+
+table tr {
+border-bottom: 3px solid #ddd;
+display: block;
+margin-bottom: .625em;
+}
+
+table td {
+border-bottom: 1px solid #ddd;
+display: block;
+font-size: .8em;
+text-align: right;
+}
+
+table td::before {
+/*
+* aria-label has no advantage, it won't be read inside a table
+content: attr(aria-label);
+*/
+content: attr(data-label);
+float: left;
+font-weight: bold;
+text-transform: uppercase;
+}
+
+table td:last-child {
+border-bottom: 0;
+}
+
+/* ------------------- FORM ------------------- */
 .formInput {
     /*width: 30em;*/
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.divPreForm {
+    width: 91%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ------------------- ANALYTICS ------------------- */
+#myChart {
+    max-width: 100%;
+}
+
+/* ------------------- LIBRO ------------------- */
+#liButtonLibro {
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    /*margin-right: 1%;*/
+}
+
+#liButtonLibro input[type=submit] {
+    display: block;
+
+    width: 95%;
+    height: 2.5em;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 1.2em;
+}
+
+
+#liButtonLibro input[type=number] {
+    font-size: 1.4em;
+    width: 2em;
+
+    text-align: center;
+}
+
+#liButtonLibro label {
+    margin-left: 2.5%;
+    font-size: 1.2em;
+}
+
+#liTrama {
+    padding-top: 0.7em;
+
+    margin-left: 3%;
+    margin-right: 3%;
+
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 90%;
+}
+
+#liTrama p {
+    font-size: 1em;
+}
+
+#liDettagliLibro {
+    padding-top: 1em;
+
+    margin-left: 3%;
+    margin-right: 3%;
+
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 90%;
+}
+
+/* ------------------- RICERCA ------------------- */
+
+#filtri {
+    flex-basis: 90%;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    border-right: none;
+    border-bottom: none;
+    padding-bottom: 1em;
+}
+
+#ulFiltri {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.liFiltri {
+    flex-basis: 30%;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+#filtri ul li input[type=number] {
+    width: 70%;
+    /*height: 2em;*/
+
+    font-size: 1.5em;
+}
+
+#filtriForm input[type=submit]{
+    display: block;
+    width: 90%;
+    margin-top: 0.7em;
+}
+
+/* ------------------- ACCOUNT ------------------- */
+
+.accountCards {
+    flex-wrap: wrap;
+}
+
+.accountCards li {
+    flex-basis: 70%;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+/* ------------------- BADGE CARRELLO ------------------- */
+.notification .badge {
+    font-size: larger;
+    padding-right: 5px;
+}
+
+/* ------------------- ALERT ------------------- */
+
+.alert {
+    width: 95%;
+}
+
+/*
+==================
+SEZIONE FOOTER
+==================
+*/
+
+footer .imgValidCode {
+    width: 10%;
 }

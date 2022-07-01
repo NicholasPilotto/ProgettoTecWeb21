@@ -39,13 +39,13 @@ if (isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "") {
 }
 $listaFiltriPrezzo = "<ul>";
 
-$listaFiltriPrezzo .= "<li>";
+$listaFiltriPrezzo .= "<li class='liPrezzo'>";
 $listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any'  value='" . $prezzoMin . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
 $listaFiltriPrezzo .= "</li>";
 
-$listaFiltriPrezzo .= "<li>";
+$listaFiltriPrezzo .= "<li class='liPrezzo'>";
 $listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any'  value='" . $prezzoMax . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
@@ -73,10 +73,10 @@ $generi = array(
     "genere21" => "Bambini e Ragazzi",
 );
 
-$listaFiltriGenere =  "<ul>";
+$listaFiltriGenere =  "<ul id='ulFiltri'>";
 
 foreach ($generi as $key => $value) {
-    $listaFiltriGenere .= "<li>";
+    $listaFiltriGenere .= "<li class='liFiltri'>";
 
     $listaFiltriGenere .= "<input type='checkbox' id='" . $key . "' name='" . $key . "' ";
 
