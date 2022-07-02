@@ -52,7 +52,7 @@ if ($usernameCheck && $codiceCheck) {
             $_SESSION["info"] = $log->get_error_message();
             header("Location: modificapassword.php");
           }
-        } else if ($log->get_errno() != 0 || isset($log->get_error_message_mysqli())) {
+        } else if ($log->get_errno() != 0) {
           $connessione->closeConnection(); // chiudo la connessione
           $_SESSION["error"] = "Non è stato possibile collegarsi al sistema.";
           header("Location: modificapassword.php");
