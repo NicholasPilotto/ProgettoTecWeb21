@@ -10,7 +10,14 @@ class graphics {
         $c = null;
 
         if (isset($_SESSION["Nome"])) {
-            $helloUser = "<p id='benvenuto'>Benvenuto, " . $_SESSION["Nome"] . "</p>";
+            $greeting = "";
+            $time = date('H');
+            if ($time >= 17) {
+                $greeting = "Buonasera";
+            } else {
+                $greeting = "Buongiorno";
+            }
+            $helloUser = "<p id='benvenuto'>" . $greeting . ", " . $_SESSION["Nome"] . "</p>";
             //     $linkUtente .= "<a class='linkUtente' href='account.php'>Account</a>";
 
             $linkUtente .= '<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>';
