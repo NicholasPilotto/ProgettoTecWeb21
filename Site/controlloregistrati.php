@@ -22,7 +22,14 @@ $connessione = new Service();
 $a = $connessione->openConnection();
 if ($a) {
 
-    if (isset($nome) && isset($cognome) && isset($nascita) && isset($username) && isset($email) && isset($password) && isset($telefono)) {
+    $nomeCheck = (isset($nome) && preg_match('/^[A-Za-zàèùìòé\s]\w{2,20}$/', $nome));
+    $cognomeCheck = (isset($nome) && preg_match('/^[A-Za-zàèùìòé\s]\w{2,20}$/', $nome));
+    $usernameCheck = (isset($nome) && preg_match('/^[A-Za-z\s]\w{2,10}$/', $nome));
+    $emailCheck = (isset($nome) && preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $nome));
+    $passwordCheck = (isset($nome) && preg_match('/^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*--+={}\[\]|\\:;<>,.?/_₹]).{10,16}$/', $nome));
+    $telefonoCheck = (isset($nome) && preg_match('/^[0-9]{10}$/', $nome));
+
+    if ($nomeCheck && $cognomeCheck && isset($nascita) && $usernameCheck && $emailCheck && $passwordCheck && $telefonoCheck) {
 
         $utente = $connessione->signin($nome, $cognome, $nascita, $username, $email, $password, $telefono);
 

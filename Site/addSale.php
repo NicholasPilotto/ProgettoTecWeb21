@@ -11,10 +11,15 @@ $sconto = $_POST["sconto"];
 $inizio = $_POST["inizio"];
 $fine = $_POST["fine"];
 
+$isbnCheck = (isset($isbn)) && preg_match('/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/', $isbn);
+$scontoCheck = (isset($sconto) && preg_match('/^[1-9][0-9]*$/', $sconto));
+$inizioCheck = (isset($inizio));
+$fineCheck = (isset($fine));
+
 $connessione = new Service();
 $a = $connessione->openConnection();
 if ($a) {
-  if (isset($isbn) && isset($sconto) && isset($inizio) && isset($fine)) {
+  if ($isbnCheck && $scontoCheck && $inizioCheck && $fineCheck) {
     $data = $connessione->add_book_to_offers($isbn, $inizio, $fine, $sconto);
     if ($data->get_errno() != 0) {
       $_SESSION["error"] = $data->get_error_message();
@@ -22,7 +27,7 @@ if ($a) {
       $_SESSION["success"] = "Inserimento avvenuto con successo";
     }
   } else {
-    $_SESSION["info"] = "Ci sono dei dati mancanti.";
+    $_SESSION["info"] = "Dati mancanti o non corretti.";
   }
 } else {
   $_SESSION["error"] = "Impossibile connettersi al sistema";

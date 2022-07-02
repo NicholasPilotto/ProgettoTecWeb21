@@ -4,60 +4,79 @@ session_start();
 
 use DB\Service;
 
+require_once('backend/db.php');
+
 if (!isset($_SESSION["Nome"])) {
+    $_SESSION["error"] = "La sessione non sembra essere integra.";
     header("Location: index.php");
-} else if (!isset($_POST['username']) || !isset($_POST['email'])) {
-    header("Location: datilogin.php");
+    $_SESSION["error"] = "La sessione non sembra essere integra.";
 } else {
-    require_once('backend/db.php');
-    $connessione = new Service();
-    $a = $connessione->openConnection();
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $usernameCheck = (isset($username) && preg_match('/^[A-Za-z\s]\w{2,10}$/', $username));
+    $emailCheck = (isset($email) && preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $email));
 
-    if (!$a) {
-        $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
-        header("Location: datilogin.php");
-    } else {
+    if ($usernameCheck && $emailCheck) {
 
-        $oldUsername = $_SESSION['Username'];
-        $oldMail = $_SESSION['Email'];
-        // $oldPassword = "";
+        $connessione = new Service();
+        $a = $connessione->openConnection();
 
-        if (isset($oldUsername) && isset($oldMail)) {
+        if (!$a) {
+            $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
+            header("Location: datilogin.php");
+        } else {
 
-            $oldArray = array(
-                "username" => $oldUsername,
-                "email" => $oldMail,
-            );
+            $oldUsername = $_SESSION['Username'];
+            $oldMail = $_SESSION['Email'];
+            $oldUsernameCheck = (isset($oldUsername) && preg_match('/^[A-Za-z\s]\w{2,10}$/', $oldUsername));
+            $oldMailCheck = (isset($oldMail) && preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $oldMail));
 
-            $newUsername = $_POST['username'];
-            $newMail = $_POST['email'];
 
-            if (isset($newUsername) && isset($newMail)) {
+            if ($oldUsernameCheck && $oldMailCheck) {
 
-                $newArray = array(
-                    "username" => $newUsername,
-                    "email" => $newMail,
+                $oldArray = array(
+                    "username" => $oldUsername,
+                    "email" => $oldMail,
                 );
 
-                $data = $connessione->update_user_data($_SESSION['Codice_identificativo'], $oldArray, $newArray);
+                $newUsername = $_POST['username'];
+                $newMail = $_POST['email'];
 
-                if (!$data->ok()) {
-                    $_SESSION["info"] = $data->get_error_message();
-                } else if ($data->get_error_message_mysqli() != "") {
-                    $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
-                } else if ($data->get_errno() == 0) {
-                    $_SESSION["Username"] = $newUsername;
-                    $_SESSION["Email"] = $newMail;
-                    $_SESSION["success"] = "Modifica avvenuta correttamente";
+                if (isset($newUsername) && isset($newMail)) {
+
+                    $newArray = array(
+                        "username" => $newUsername,
+                        "email" => $newMail,
+                    );
+
+                    $id = $_SESSION['Codice_identificativo'];
+
+                    if (isset($id)) {
+
+                        $data = $connessione->update_user_data($id, $oldArray, $newArray);
+
+                        if (!$data->ok()) {
+                            $_SESSION["info"] = $data->get_error_message();
+                        } else if ($data->get_error_message_mysqli() != "") {
+                            $_SESSION["error"] = "Impossibile stabilire una connessione con il sistema.";
+                        } else if ($data->get_errno() == 0) {
+                            $_SESSION["Username"] = $newUsername;
+                            $_SESSION["Email"] = $newMail;
+                            $_SESSION["success"] = "Modifica avvenuta correttamente";
+                        }
+                    } else {
+                        $_SESSION["error"] = "La sessione sembra corrotta";
+                    }
+                } else {
+                    $_SESSION["info"] = "Non tutti i campi sembrano essere compilati";
                 }
             } else {
-                $_SESSION["info"] = "Non tutti i campi sembrano essere compilati";
+                $_SESSION["error"] = "La sessione non sembra essere integra";
             }
-
             $connessione->closeConnection();
-        } else {
-            $_SESSION["error"] = "La sessione non sembra essere integra";
         }
-        header("Location:datilogin.php");
+    } else {
+        $_SESSION["info"] = "Dati mancanti o non corretti.";
     }
+    header("Location:datilogin.php");
 }

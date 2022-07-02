@@ -16,8 +16,9 @@ if (!$c) {
   $_SESSION["error"] = "Impossibile connettersi al sistema.";
   header("Location: accedi.php");
 } else {
-
-  if (isset($username) && isset($password)) {
+  $usernameCheck = (isset($username) && preg_match('/^[A-Za-z\s]\w{2,10}$/', $username));
+  $passwordCheck = (isset($password) && preg_match('/^[\w~!@#$%^&*--+={}\[\]|\\:;<>,.?_]+.{2,20}$/', $password));
+  if ($usernameCheck && $passwordCheck) {
 
     $log = $connessione->login($username, $password);
 

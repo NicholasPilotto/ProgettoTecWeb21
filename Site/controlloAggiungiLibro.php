@@ -17,10 +17,6 @@ require_once "cart.php";
 $connessione = new Service();
 $a = $connessione->openConnection();
 
-if (!$a) {
-  $_SESSION["error"] = "Impossibile connettersi al sistema";
-  header("Location: aggiungiLibro.php");
-}
 
 
 $isbn = $_POST["isbn"];
@@ -37,10 +33,27 @@ $categoria = $_POST["categoria"];
 
 $percorso = $_POST["imgSrc"];
 
+$isbnCheck = (isset($isbn) && preg_match('/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/', $isbn));
+$titoloCheck = (isset($titolo) && preg_match('/^[a-zA-Z0-9 <>"=/òàùèéÈÉÀÁÒÓÙÚ()\'?.,!-]{10,500}$/', $titolo));
+$copertinaCheck = (isset($copertina));
+$autoreCheck = (isset($autore));
+$editoreCheck = (isset($editore));
+$prezzoCheck = (isset($prezzo) && preg_match('/^([1-9][0-9]*)([.]([0-9]+))*$/', $prezzo));
+$pagineCheck = (isset($pagine) && preg_match('/^[1-9][0-9]*$/', $pagine));
+$quantitaCheck = (isset($quantita) && preg_match('/^[1-9][0-9]*$/', $quantita));
+$dataCheck = (isset($dataPubblicazione));
+$tramaCheck = (isset($trama) && preg_match('/^[a-zA-Z0-9 «»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()\'\’\´?.,!-<>{}[\]]{10,2500}$/', $trama));
+$categoriaCheck = (isset($categoria));
+
+if (!$a) {
+  $_SESSION["error"] = "Impossibile connettersi al sistema";
+  header("Location: aggiungiLibro.php?isbn=" . $isbn);
+}
 
 if (isset($_SESSION["editFlag"])) {
   // modifica libro
-  if (isset($isbn) && isset($titolo) && isset($editore) && isset($pagine) && isset($prezzo) && isset($quantita) && isset($data) && isset($copertina) && isset($trama) && !empty($autore) && !empty($categoria)) {
+
+  if ($isbnCheck && $titoloCheck && $editoreCheck && $pagineCheck && $prezzoCheck && $quantitaCheck && $dataCheck && $copertinaCheck && $tramaCheck && !empty($autoreCheck) && !empty($categoriaCheck)) {
     $oldBookData = $connessione->get_book_by_isbn($isbn);
     $autoriToChange = array();
     foreach ($autore as $aut) {
@@ -85,9 +98,10 @@ if (isset($_SESSION["editFlag"])) {
     } else {
       $_SESSION["info"] = $edit->get_error_message();
     }
+  } else {
+    $_SESSION["info"] = "Dati mancanti o non corretti.";
   }
   $connessione->closeConnection();
-  header("Location: aggiungiLibro.php?isbn=" . $isbn);
 } else {
   $path = NULL;
 
@@ -105,7 +119,7 @@ if (isset($_SESSION["editFlag"])) {
       header("Location: aggiungiLibro.php?isbn=" . $isbn);
     }
 
-    if (isset($isbn) && isset($titolo) && isset($editore) && isset($pagine) && isset($prezzo) && isset($quantita) && isset($data) && isset($path) && isset($trama) && !empty($autore) && !empty($categoria)) {
+    if ($isbnCheck && $titoloCheck && $editoreCheck && $pagineCheck && $prezzoCheck && $quantitaCheck && $dataCheck && $copertinaCheck && $tramaCheck && !empty($autoreCheck) && !empty($categoriaCheck)) {
       $aux = $connessione->insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data, $path, $autore, $categoria, $trama);
       if ($aux->ok()) {
         $_SESSION["success"] = "Libro inserito correttamente";
@@ -113,12 +127,12 @@ if (isset($_SESSION["editFlag"])) {
         $_SESSION["info"] = $aux->get_error_message();
       }
     } else {
-      $_SESSION["info"] = "Non tutti i dati sono stati inseriti";
+      $_SESSION["info"] = "Dati mancanti o non corretti.";
     }
   } else {
     $_SESSION["info"] = "La copertina sembra non essere presente, ricontrolla.";
   }
+  $connessione->closeConnection();
 }
 
-$connessione->closeConnection();
 header("Location: aggiungiLibro.php?isbn=" . $isbn);
