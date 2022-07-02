@@ -434,7 +434,7 @@ class Service extends Constant {
     return $res;
   }
 
-  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $autori, $categorie): response_manager {
+  public function edit_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data_pub, $percorso, $trama, $autori, $categorie): response_manager {
     $this->connection->autocommit(false);
     $this->connection->begin_transaction();
     try {
@@ -479,8 +479,14 @@ class Service extends Constant {
       if (isset($percorso)) {
         array_push($components, $percorso);
         $type .= "s";
-        $aux .= " persorso = ?,";
+        $aux .= " percorso = ?,";
       }
+      if (isset($trama)) {
+        array_push($components, $trama);
+        $type .= "s";
+        $aux .= " trama = ?,";
+      }
+
 
       $aux = substr($aux, 0, -1);
       array_push($components, $isbn);
@@ -495,8 +501,25 @@ class Service extends Constant {
 
 
       if ($stmt === false) {
-        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto1");
       } else if ($stmt->bind_param($type, ...$components) === false) {
+        $stmt->close();
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto2");
+      }
+
+      $tmp = $stmt->execute();
+
+      if (!$tmp) {
+        $stmt->close();
+        throw new Exception("Controllare i dati del libro.");
+      }
+
+      $auxQuery = "DELETE FROM pubblicazione WHERE libro_isbn = ?";
+      $stmt = $this->connection->prepare($auxQuery);
+
+      if ($stmt === false) {
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param("s", $isbn) === false) {
         $stmt->close();
         return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
       }
@@ -505,7 +528,7 @@ class Service extends Constant {
 
       if (!$tmp) {
         $stmt->close();
-        throw new Exception("Controllare i dati del libro.");
+        throw new Exception("Qualcosa sembra essere andato storto");
       }
 
       foreach ($autori as $autore) {
@@ -516,7 +539,7 @@ class Service extends Constant {
           throw new Exception("Qualcosa sembra essere andato storto3");
         } else if ($stmt->bind_param('si', $isbn, $autore) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto4");
         }
         $tmp = $stmt->execute();
 
@@ -526,14 +549,31 @@ class Service extends Constant {
         }
       }
 
+      $auxQuery = "DELETE FROM appartenenza WHERE libro_isbn = ?";
+      $stmt = $this->connection->prepare($auxQuery);
+
+      if ($stmt === false) {
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      } else if ($stmt->bind_param("s", $isbn) === false) {
+        $stmt->close();
+        return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+      }
+
+      $tmp = $stmt->execute();
+
+      if (!$tmp) {
+        $stmt->close();
+        throw new Exception("Qualcosa sembra essere andato storto");
+      }
+
       foreach ($categorie as $c) {
         $query3 = "INSERT INTO appartenenza(libro_isbn, codice_categoria) VALUES(?,?)";
         $stmt = $this->connection->prepare($query3);
         if ($stmt === false) {
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto5");
         } else if ($stmt->bind_param('si', $isbn, $c) === false) {
           $stmt->close();
-          throw new Exception("Qualcosa sembra essere andato storto");
+          throw new Exception("Qualcosa sembra essere andato storto6");
         }
         $tmp = $stmt->execute();
 
@@ -547,7 +587,7 @@ class Service extends Constant {
         $this->connection->commit();
       } else {
         $stmt->close();
-        throw new Exception("Qualcosa sembra essere andato storto");
+        throw new Exception("Qualcosa sembra essere andato storto7");
       }
     } catch (\Throwable $exception) {
       $this->connection->rollback();
