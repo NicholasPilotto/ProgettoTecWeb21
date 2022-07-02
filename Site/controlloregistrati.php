@@ -16,42 +16,43 @@ $username = isset($_POST["username"]) ? $_POST["username"] : $errore = true;
 $email = isset($_POST["email"]) ? $_POST["email"] : $errore = true;
 $password = isset($_POST["password"]) ? $_POST["password"] : $errore = true;
 
-if (!$errore) {
 
-    $connessione = new Service();
+$connessione = new Service();
 
-    $a = $connessione->openConnection();
+$a = $connessione->openConnection();
+if ($a) {
 
-    $utente = $connessione->signin($nome, $cognome, $nascita, $username, $email, $password, $telefono);
+    if (isset($nome) && isset($cognome) && isset($nascita) && isset($username) && isset($email) && isset($password) && isset($telefono)) {
 
-    if ($utente->ok()) {
-        if (!$utente->is_empty()) {
-            $connessione->closeConnection();
+        $utente = $connessione->signin($nome, $cognome, $nascita, $username, $email, $password, $telefono);
 
-            $_SESSION["Codice_identificativo"] = $utente->get_result()[0]['codice_identificativo'];
-            $_SESSION["Nome"] = $utente->get_result()[0]['nome'];
-            $_SESSION["Cognome"] = $utente->get_result()[0]['cognome'];
-            $_SESSION["Data_nascita"] = $utente->get_result()[0]['data_nascita'];
-            $_SESSION["Username"] = $utente->get_result()[0]['username'];
-            $_SESSION["Email"] = $utente->get_result()[0]['email'];
-            $_SESSION["Telefono"] = $utente->get_result()[0]['telefono'];
+        if ($utente->ok()) {
+            if (!$utente->is_empty()) {
+                $connessione->closeConnection();
 
-            header("Location: index.php");
-            die();
+                $_SESSION["Codice_identificativo"] = $utente->get_result()[0]['codice_identificativo'];
+                $_SESSION["Nome"] = $utente->get_result()[0]['nome'];
+                $_SESSION["Cognome"] = $utente->get_result()[0]['cognome'];
+                $_SESSION["Data_nascita"] = $utente->get_result()[0]['data_nascita'];
+                $_SESSION["Username"] = $utente->get_result()[0]['username'];
+                $_SESSION["Email"] = $utente->get_result()[0]['email'];
+                $_SESSION["Telefono"] = $utente->get_result()[0]['telefono'];
+
+                header("Location: index.php");
+            } else {
+                $_SESSION["info"] = $utente->get_error_message();
+                header("Location: registrati.php");
+            }
         } else {
-            echo "test";
+            $connessione->closeConnection();
+            $_SESSION["info"] = $utente->get_error_message();
         }
     } else {
-        $_SESSION["error"] = $utente->get_error_message();
         $connessione->closeConnection();
-
-        echo($utente->get_errno());
-
+        $_SESSION["info"] = "Non tutti i campi sono stati inseriti correttamente";
         header("Location: registrati.php");
-        die();
     }
 } else {
-    $_SESSION["error"] = "I campi non sono stati inseriti correttamente";
-    $connessione->closeConnection();
+    $_SESSION["error"] = "Impossibile connettersi al sistema";
     header("Location: registrati.php");
 }

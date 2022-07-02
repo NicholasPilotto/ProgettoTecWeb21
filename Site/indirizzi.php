@@ -1,28 +1,27 @@
 <?php
-    session_start();
+session_start();
 
-    use DB\Service;
-    require_once('backend/db.php');
-    require_once "graphics.php";
+use DB\Service;
 
-    if(!isset($_SESSION["Nome"]))
-    {
-        header("Location: index.php");
-    }
-    else
-    {   
-        $paginaHTML = graphics::getPage("indirizzi_php.html");
+require_once('backend/db.php');
+require_once "graphics.php";
 
-        // Accesso al database
-        $connessione = new Service();
-        $a = $connessione->openConnection();
+if (!isset($_SESSION["Nome"])) {
+    header("Location: index.php");
+} else {
+    $paginaHTML = graphics::getPage("indirizzi_php.html");
+
+    // Accesso al database
+    $connessione = new Service();
+    $a = $connessione->openConnection();
+
+    if ($a) {
 
         $queryIndirizzi = $connessione->get_addresses($_SESSION["Codice_identificativo"]);
 
         $tabellaIndirizzi = "";
 
-        if($queryIndirizzi->ok() && !$queryIndirizzi->is_empty())
-        {
+        if ($queryIndirizzi->ok() && !$queryIndirizzi->is_empty()) {
             $tabellaIndirizzi = "<table title='I tuoi indirizzi'>";
             $tabellaIndirizzi .=   "<thead>";
             $tabellaIndirizzi .=       "<tr>";
@@ -35,8 +34,7 @@
 
             $tabellaIndirizzi .=   "<tbody>";
 
-            foreach($queryIndirizzi->get_result() as $indirizzo)
-            {
+            foreach ($queryIndirizzi->get_result() as $indirizzo) {
                 $tabellaIndirizzi .= "<tr>";
                 $tabellaIndirizzi .=   "<td>" . $indirizzo['città'] . "</td>";
                 $tabellaIndirizzi .=   "<td>" . $indirizzo['cap'] . "</td>";
@@ -50,17 +48,17 @@
             // tfoot?
 
             $tabellaIndirizzi .= "</table>";
+        } else {
+            $tabellaIndirizzi = "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessun indirizzo presente</span>";
         }
-        else
-        {
-            // questo utente non ha indirizzi
-        }
-
-        $paginaHTML = str_replace("</tabellaIndirizzi>", $tabellaIndirizzi, $paginaHTML);
-
-        $connessione->closeConnection();
-        // -------------------
-
-        echo $paginaHTML;
+    } else {
+        $tabellaIndirizzi = "<span class='alert error'><i class='fa fa-close' aria-hidden='true'></i> Impossibile connettersi al sistema.</span>";
     }
-?>
+
+    $paginaHTML = str_replace("</tabellaIndirizzi>", $tabellaIndirizzi, $paginaHTML);
+
+    $connessione->closeConnection();
+    // -------------------
+
+    echo $paginaHTML;
+}

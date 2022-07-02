@@ -29,6 +29,8 @@ if (isset($_SESSION["cart"])) {
     $paginaHTML = str_replace("</totale>", $tot, $paginaHTML);
     $selectIndirizzi = "";
 
+    $scadenza = "1971-01-01";
+
     $queryAddresses = $connessione->get_addresses($_SESSION["Codice_identificativo"]);
     if ($queryAddresses->ok() && !$queryAddresses->is_empty()) {
         $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' required>";
@@ -37,9 +39,11 @@ if (isset($_SESSION["cart"])) {
         }
         $selectIndirizzi .= "</select>";
     } else {
-        $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' disabled><option></option></select>";
+        // $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' disabled><option></option></select>";
+        $selectIndirizzi = "<span><p class='errorSuggestion' id='indirizzo' name='indirizzo'>Devi prima registrare un indirizzo</p></span>";
     }
 
+    $paginaHTML = str_replace("</scadenza>", $scadenza, $paginaHTML);
     $paginaHTML = str_replace("</selectIndirizzi>", $selectIndirizzi, $paginaHTML);
 } else {
     header("Location:carrello.php");

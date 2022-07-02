@@ -35,47 +35,54 @@ if (!isset($_SESSION["Nome"])) {
         $connessione = new Service();
         $a = $connessione->openConnection();
 
-        // controllo se l'admin viene da "aggiungi libro" o da "modifica libro"
-        $modificaLibroISBN = "";
-        $modificaLibroTitolo = "";
-        $modificaLibroCopertina = "";
-        $modificaLibroPagine = "";
-        $modificaLibroPrezzo = "";
-        $modificaLibroQuantita = "";
-        $modificaLibroDataPubblicazione = '1971-01-01';
-        $modificaLibroTrama = "";
-        $modificaLibroAutori = array();
-        $modificaLibroCategorie = array();
-        $modificaLibroEditore = "";
-        if (isset($_GET['isbn'])) {
-            // modifica libro
-            $isbn = $_GET['isbn'];
-            $queryIsbn = $connessione->get_book_by_isbn($isbn);
+        if ($a) {
 
-            if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
-                $libro = $queryIsbn->get_result()[0];
+            // controllo se l'admin viene da "aggiungi libro" o da "modifica libro"
+            $modificaLibroISBN = "";
+            $modificaLibroTitolo = "";
+            $modificaLibroCopertina = "";
+            $modificaLibroPagine = "";
+            $modificaLibroPrezzo = "";
+            $modificaLibroQuantita = "";
+            $modificaLibroDataPubblicazione = '1971-01-01';
+            $modificaLibroTrama = "";
+            $modificaLibroAutori = array();
+            $modificaLibroCategorie = array();
+            $modificaLibroEditore = "";
+            if (isset($_GET['isbn'])) {
+                // modifica libro
+                $isbn = $_GET['isbn'];
+                $queryIsbn = $connessione->get_book_by_isbn($isbn);
 
-                $modificaLibroISBN = $isbn;
-                $modificaLibroTitolo = $libro['titolo'];
-                $modificaLibroCopertina = $libro['percorso'];
-                $modificaLibroPagine = $libro['pagine'];
-                $modificaLibroPrezzo = $libro['prezzo'];
-                $modificaLibroQuantita = $libro['quantita'];
-                $modificaLibroDataPubblicazione = $libro['data_pubblicazione'];
-                $modificaLibroTrama = $libro['trama'];
-                // autori
-                foreach ($queryIsbn->get_result() as $autore) {
-                    array_push($modificaLibroAutori, $autore["autore_id"]);
+                if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
+                    $libro = $queryIsbn->get_result()[0];
+
+                    $modificaLibroISBN = $isbn;
+                    $modificaLibroTitolo = $libro['titolo'];
+                    $modificaLibroCopertina = $libro['percorso'];
+                    $modificaLibroPagine = $libro['pagine'];
+                    $modificaLibroPrezzo = $libro['prezzo'];
+                    $modificaLibroQuantita = $libro['quantita'];
+                    $modificaLibroDataPubblicazione = $libro['data_pubblicazione'];
+                    $modificaLibroTrama = $libro['trama'];
+                    // autori
+                    foreach ($queryIsbn->get_result() as $autore) {
+                        array_push($modificaLibroAutori, $autore["autore_id"]);
+                    }
+                    // categorie
+                    $cat = $connessione->get_genres_from_isbn($isbn);
+                    foreach ($cat->get_result() as $categoria) {
+                        array_push($modificaLibroCategorie, $categoria['id_categoria']);
+                    }
+
+                    // editore
+                    $modificaLibroEditore = $libro['editore'];
+                } else {
+                    $_SESSION["info"] = "Nessun libro trovato con tale ISBN";
                 }
-                // categorie
-                $cat = $connessione->get_genres_from_isbn($isbn);
-                foreach ($cat->get_result() as $categoria) {
-                    array_push($modificaLibroCategorie, $categoria['id_categoria']);
-                }
-
-                // editore
-                $modificaLibroEditore = $libro['editore'];
             }
+        } else {
+            $_SESSION["error"] = "Impossibile connettersi al sistema";
         }
         // -------------------------------------------------------------------
 
@@ -89,6 +96,8 @@ if (!isset($_SESSION["Nome"])) {
                 $cognome = ($autore['cognome'] != "-") ? $autore['cognome'] : "";
                 $selectAutori .= "<option value='" . $autore['id'] . "' " . $selected . ">" . $autore['nome'] . " " . $cognome . "</option>";
             }
+        } else {
+            $_SESSION["info"] = "Nessun autore trovato";
         }
         $selectAutori .= "</select>";
 
@@ -101,6 +110,8 @@ if (!isset($_SESSION["Nome"])) {
 
                 $selectCategorie .= "<option value='" . $categoria['id_categoria'] . "' " . $selected . ">" . $categoria['nome'] . "</option>";
             }
+        } else {
+            $_SESSION["info"] = "Nessuna categoria trovata";
         }
         $selectCategorie .= "</select>";
 
@@ -113,6 +124,8 @@ if (!isset($_SESSION["Nome"])) {
 
                 $selectEditori .= "<option value='" . $editore['id'] . "' " . $selected . ">" . $editore['nome'] . "</option>";
             }
+        } else {
+            $_SESSION["info"] = "Nessun editore trovato";
         }
 
         $selectEditori .= "</select>";

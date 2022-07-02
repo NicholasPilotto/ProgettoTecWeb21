@@ -15,30 +15,38 @@ $c = $connessione->openConnection();
 if (!$c) {
   $_SESSION["error"] = "Impossibile connettersi al sistema.";
   header("Location: accedi.php");
-}
+} else {
 
-$log = $connessione->login($username, $password);
+  if (isset($username) && isset($password)) {
 
-if ($log->ok()) {
-  if (!$log->is_empty()) {
+    $log = $connessione->login($username, $password);
 
-    $connessione->closeConnection(); // chiudo la connessione
+    if ($log->ok()) {
+      if (!$log->is_empty()) {
 
-    $_SESSION["Codice_identificativo"] = $log->get_result()[0]['codice_identificativo'];
-    $_SESSION["Nome"] = $log->get_result()[0]['nome'];
-    $_SESSION["Cognome"] = $log->get_result()[0]['cognome'];
-    $_SESSION["Data_nascita"] = $log->get_result()[0]['data_nascita'];
-    $_SESSION["Username"] = $log->get_result()[0]['username'];
-    $_SESSION["Email"] = $log->get_result()[0]['email'];
-    $_SESSION["Telefono"] = $log->get_result()[0]['telefono'];
-    header("Location: index.php");
+
+        $_SESSION["Codice_identificativo"] = $log->get_result()[0]['codice_identificativo'];
+        $_SESSION["Nome"] = $log->get_result()[0]['nome'];
+        $_SESSION["Cognome"] = $log->get_result()[0]['cognome'];
+        $_SESSION["Data_nascita"] = $log->get_result()[0]['data_nascita'];
+        $_SESSION["Username"] = $log->get_result()[0]['username'];
+        $_SESSION["Email"] = $log->get_result()[0]['email'];
+        $_SESSION["Telefono"] = $log->get_result()[0]['telefono'];
+        $connessione->closeConnection(); // chiudo la connessione
+        header("Location: index.php");
+      } else {
+        $_SESSION["info"] = $log->get_error_message();
+        $connessione->closeConnection(); // chiudo la connessione
+        header("Location: accedi.php");
+      }
+    } else {
+      $_SESSION["info"] = "Non tutti i campi sono stati inseriti";
+      $connessione->closeConnection(); // chiudo la connessione
+      header("Location: accedi.php");
+    }
   } else {
     $connessione->closeConnection(); // chiudo la connessione
     $_SESSION["info"] = $log->get_error_message();
     header("Location: accedi.php");
   }
-} else {
-  $connessione->closeConnection(); // chiudo la connessione
-  $_SESSION["info"] = $log->get_error_message();
-  header("Location: accedi.php");
 }

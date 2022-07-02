@@ -757,7 +757,7 @@ class Service extends Constant {
 
     if ($stmt === false) {
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ssiis', $via, $citta, $cap, $civico, $utente_id) === false) {
+    } else if ($stmt->bind_param('ssiss', $via, $citta, $cap, $civico, $utente_id) === false) {
       $stmt->close();
       return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
     }
