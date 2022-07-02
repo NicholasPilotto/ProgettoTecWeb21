@@ -87,12 +87,6 @@
                 $listaRecensioni .= "<input type='submit' class='button submitEliminaRecensione' value='Elimina recensione'/>";
                 $listaRecensioni .= "</form>";
                 
-                
-                
-                //$listaRecensioni .= "<a href='eliminaRecensione.php?idUtente=" . $_SESSION['Codice_identificativo'] . "&isbn=" . $recensione['libro_isbn'] . "'>Elimina recensione</a>";
-                
-                //$valoriChart  = '<input type="hidden" id="jsondataX" value="' . htmlspecialchars(json_encode($xValues), ENT_COMPAT) . '" />';
-                
                 $listaRecensioni .= "</li>";
             }
         }
@@ -101,46 +95,6 @@
             // errore oppure non ci sono recensioni
         }
         $listaRecensioni .= "</ul>";
-
-        /*
-        
-        if($queryRecensioni->ok())
-        {
-            $arrayRecensioni = $queryRecensioni->get_result();
-            
-            foreach($arrayRecensioni as $recensione)
-            {
-
-                // stelle
-                $scrittaStella = "stell";
-                $scrittaStella .= ($valutazione == 1) ? "a" : "e";
-                $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
-
-                for ($i = 0; $i < 5; $i++)
-                {
-                    if ($i < $valutazione)
-                    {
-                        $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
-                    }
-                    else
-                    {
-                        $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
-                    }
-                }
-
-                $listaRecensioni .= "</abbr></p>";
-
-                $listaRecensioni .= "<p>" . $commento . "</p>";
-
-                $listaRecensioni .= "</li>";
-            }
-        }
-        else
-        {
-            $trovatoErrore = true;
-        }
-        $listaRecensioni .= "</ul>";
-        */
 
         $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
 
