@@ -932,15 +932,47 @@ class Service extends Constant {
     return $res;
   }
 
-  public function get_order_books($order): response_manager {
-    $query = "SELECT ordine.codice_univoco, libro.titolo, libro.isbn, ordine.data, ordine.data_consegna, ordine.totale, composizione.quantita
+  public function get_order_by_user($order): response_manager {
+    $query = "SELECT *
               FROM ordine
-              INNER JOIN composizione 
-              ON ordine.Codice_univoco = composizione.Codice_ordine
-              INNER JOIN libro
-              ON composizione.Elemento = libro.ISBN
               WHERE ordine.Cliente_Codice = ?
               ORDER BY ordine.codice_univoco";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('s', $order) === false) {
+      $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun libro per questo ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function get_order_books($order): response_manager {
+    $query = "SELECT *
+              FROM composizione
+              INNER JOIN ordine 
+              ON composizione.Codice_ordine = ordine.Codice_univoco
+              INNER JOIN libro
+              ON composizione.Elemento = libro.ISBN
+              WHERE composizione.Codice_ordine = ?";
 
     $stmt = $this->connection->prepare($query);
     $result = array();

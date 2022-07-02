@@ -1,25 +1,32 @@
 /* ------------------- TABELLA ORDINI ------------------- */
 
-/* Force table to not be like tables anymore */
+/* Rompo la tabella */
 table, thead, tbody, th, td, tr { 
     display: block; 
 }
 
-/* Hide table headers (but not display: none;, for accessibility) */
+/* Nascondo gli header (li sposto, per l'accessibilità) */
 thead tr { 
     position: absolute;
     top: -9999px;
     left: -9999px;
 }
 
-tr { border: 1px solid #ccc; }
+tr {
+    border: 1px solid #ccc;
+    margin-top: 0.7em;
+}
 
 td { 
     /* Behave  like a "row" */
     border: none;
-    border-bottom: 1px solid #eee; 
+    /*border-bottom: 1px solid red; */
     position: relative;
     padding-left: 50%; 
+
+    /* bordi */
+    border-right: 1px solid black;
+    border-left: 1px solid black;
 }
 
 td:before { 
@@ -33,18 +40,35 @@ td:before {
     white-space: nowrap;
 }
 
-/*
-Label the data
-*/
+td:nth-child(odd) {
+    /*background-color: #DDF2B8;*/
+    background-color: #2E8B57;
+    color: white;
+}
+  
+td:nth-child(even) {
+    background:white;
+}
+
+td:first-child {
+    border-top: 1px solid black;
+}
+
+td:last-child {
+    border-bottom: 1px solid black;
+}
+
+table {
+    border: none;
+    padding-bottom: 0;
+}
+
 td:nth-of-type(1):before { content: "Codice Ordine"; }
-td:nth-of-type(2):before { content: "ISBN"; }
-td:nth-of-type(3):before { content: "Titolo"; }
-td:nth-of-type(4):before { content: "Quantità"; }
-td:nth-of-type(5):before { content: "Data Ordine"; }
-td:nth-of-type(6):before { content: "Data Consegna"; }
-td:nth-of-type(7):before { content: "Totale"; }
-
-
+td:nth-of-type(2):before { content: "Data Ordine"; }
+td:nth-of-type(3):before { content: "Data Partenza"; }
+td:nth-of-type(4):before { content: "Data Consegna"; }
+td:nth-of-type(5):before { content: "Totale"; }
+td:nth-of-type(6):before { content: "Dettaglio Ordine"; }
 
 /* ------------------- FORM ------------------- */
 .formInput {

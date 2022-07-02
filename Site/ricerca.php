@@ -14,7 +14,6 @@ require_once "graphics.php";
 
 $paginaHTML = graphics::getPage("ricerca_php.html");
 
-
 // setto sessione per paginaPrecedente, che era stata cancellata in getPage()
 $url = explode("/", $_SERVER['REQUEST_URI']);
 $current = end($url);
@@ -103,6 +102,7 @@ $connessione = new Service();
 $a = $connessione->openConnection();
 
 if ($a) {
+
     $queryLibri = $connessione->get_all_books();
 
     if ($queryLibri->ok()) {
@@ -154,7 +154,6 @@ if ($a) {
                 }
             } else {
                 // errore, non c'è un libro con quell' isbn
-                $paginaHTML = str_replace("</libriTrovati>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> ISBN non presente</span>", $paginaHTML);
             }
         } else {
             $coppieAggiunte = array();
@@ -241,28 +240,17 @@ if ($a) {
 
                 foreach ($queryLibri->get_result() as $libro) {
                     if ($libro['isbn'] == $key) {
-                        $libriTrovati .= "<li class='imgLi";
-                        if ($cont == 0) {
-                            $libriTrovati .= " primaInserzione";
-                        }
-                        $libriTrovati .= "'><a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['percorso'] . "' alt=''></a></li>";
 
-                        $libriTrovati .= "<li class='textLi";
-                        if ($cont == 0) {
-                            $libriTrovati .= " primaInserzione";
-                        }
-                        $libriTrovati .= "'>";
-
-                        $libriTrovati .= "<a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['titolo'] . "</a>";
+                        $libriTrovati .= "<li>";
+                        $libriTrovati .= "<a href='libro.php?isbn=" . $key . "'><img class='advertsImg' src='" . $libro['percorso'] . "' alt=''></a>";
+                        $libriTrovati .= "<div><a class='titolo' href='libro.php?isbn=" . $key . "'>" . $libro['titolo'] . "</a>";
                         $libriTrovati .= "<p>" . substr($arrayAutori[$key], 0, -2) . "</p>";
-
                         if (isset($libro['sconto'])) {
                             $libriTrovati .= "<p>&euro;" . number_format((float)$libro['prezzo'] * (100 - $libro['sconto']) / 100, 2, '.', '') . " (" . $libro['sconto'] . "% sconto)" . "</p>";
                         } else {
                             $libriTrovati .= "<p>&euro;" . $libro['prezzo'] . "</p>";
                         }
-
-                        $libriTrovati .= "</li>";
+                        $libriTrovati .= "</div></li>";
 
                         $cont++;
 
@@ -277,14 +265,8 @@ if ($a) {
         $paginaHTML = str_replace('<li class="nav-item"><a href="ricerca.php">Ricerca</a></li>', '<li class="nav-item selectedNavItem">Ricerca</li>', $paginaHTML);
 
         $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
-    } else {
-        $alert = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema</span>";
-        $paginaHTML = str_replace("</libriTrovati>", $alert, $paginaHTML);
     }
     $connessione->closeConnection();
-} else {
-    $alert = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema</span>";
-    $paginaHTML = str_replace("</libriTrovati>", $alert, $paginaHTML);
 }
 
 // -------------------

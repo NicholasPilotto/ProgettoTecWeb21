@@ -9,8 +9,7 @@ SEZIONE GLOBALE
     margin: 0;
 }
 
-html,
-body {
+html, body {
     font-size: 100%;
     /*font-family: "Comic Sans MS", cursive, sans-serif;*/
     font-family: 'Open Sans', sans-serif;
@@ -272,14 +271,19 @@ td, th {
     padding: 0.5em;
 }
 
-.tdthDestra {
+td:last-child, th:last-child {
     border-right: 1px solid black;
 }
 
 thead {
-    background-color: #DDF2B8;
+    /*background-color: #DDF2B8;*/
+    background-color: #2E8B57;
+    color: white;
 }
 
+.infoOrdine {
+    color: rgb(82, 141, 215);
+}
 
 /* ----- FORM INPUT ----- */
 .divPreForm {
@@ -606,57 +610,23 @@ SEZIONE CONTENT
     width: 20%;
     margin-right: 5%;
     margin-top: 0.5em;
-
     height: 2em;
-
-    /*margin-left: -0.3em;*/
-    /*min-width: fit-content;*/
 
     float: right;
 }
 
-.advertsCards {
-    list-style-type: none;
-
-    display: flex;
-    flex-wrap: wrap;
-    /* Andare a capo */
-
-    /*border-left: 1px solid #aaaaaa;*/
-}
+/* parte a destra */
 
 .advertsCards li {
+    overflow: hidden;
+    padding-left: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
     border-top: 1px solid #aaaaaa;
 }
 
-li.primaInserzione {
-    border-top: none;
-}
-
-li.primaInserzione {
-    border-top: none;
-}
-
-li.imgLi {
-    flex-basis: 25%;
-    /*border: 1px solid rgb(240, 38, 38);*/
-
-    text-align: center;
-
-    padding-top: 1em;
-    padding-bottom: 1em;
-}
-
-li.textLi {
-    flex-basis: 70%;
-    flex-grow: 1;
-    /*border: 1px solid rgb(0, 255, 64);*/
-
-    padding-top: 0.6em;
-    padding-bottom: 0.6em;
-}
-
-li.textLi p {
+.advertsCards li p{
     padding-top: 0.5em;
 }
 
@@ -667,6 +637,19 @@ li.textLi p {
     border-radius: 5px;
 
     vertical-align: middle;
+
+    float: left;
+    margin-right: 2em;
+}
+
+.advertsCards li > *:not(:first-child)
+{
+    float: none;
+    overflow: hidden;
+}
+
+.advertsCards li:first-child {
+    border-top: none;
 }
 
 a.titolo {
@@ -866,43 +849,41 @@ a.titolo {
 
 /* ------------------- CARRELLO ------------------- */
 
-.cardDettagli {
-    display: flex;
-    flex-wrap: wrap;
+.carrelloCards li {
+    overflow: hidden;
+    padding-left: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 
-    padding-bottom: 0.5em;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.carrelloCards li p{
     padding-top: 0.5em;
-    border-bottom: solid 2px #eaeaea;
+}
+
+.carrelloCards li > *:not(:first-child)
+{
+    float: none;
+    overflow: hidden;
+}
+
+.carrelloCards li:first-child {
+    border-top: 2px solid #eaeaea;
 }
 
 .carrelloImg {
-    display: block;
-
     object-fit: cover;
     width: 8em;
     height: 13em;
     border-radius: 5px;
+
+    float: left;
+    margin-right: 2em;
 }
 
-.libroCarrello {
-    padding-left: 3%;
-    padding-right: 3%;
-}
-
-.libroTitolo {
-    font-weight: bold;
-    font-size: larger;
-}
-
-.liInfo {
-    font-size: large;
-
-    flex-basis: 30%;
-    flex-grow: 1;
-}
-
-.liInfo p {
-    margin-bottom: 0.2em;
+#removeCartForm input{
+    margin-top: 1em;
 }
 
 .cartButton {
@@ -993,6 +974,12 @@ a.titolo {
     border-top: 1px solid #ddd;
 
     padding-left: 1.2em;
+}
+
+/* ------------------- INFO ORDINE ------------------- */
+.cancellaOrdine {
+    width: 9em;
+    height: 2em;
 }
 
 /*
