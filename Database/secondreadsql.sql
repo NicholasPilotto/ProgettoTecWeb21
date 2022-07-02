@@ -756,7 +756,7 @@ INSERT INTO utente(codice_identificativo,nome,cognome,data_nascita,username,emai
 (1000000004,'Lucia','Verdi','1964-08-20','luc64','luciaverdi12@gmail.com','e5b782a8f0b6b73e3207edfdec79e58f634b8e197c4033d656125354cc44178a','9736182341'),
 (1000000005,'Davide','Nosella','1995-11-14','nov15','davide95@gmail.com','9c61313ef568ab4ad89c252b5c5c27fc81956da92f80fb11188f511a2343d30d','4612546158'),
 (1000000006,'Admin','admin','1999-12-09','admin','admin@gmail.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','6380571935'),
-(1000000007, 'Utente', 'utente', '1999-12-08', 'utente', 'utente@gmail.com', '44c2dbe2c24719aae64ed42989c9e3f1e504474d0f4871bc26bab6695f95d912', '1111111111'),
+(1000000007, 'User', 'user', '1999-12-08', 'user', 'user@gmail.com', '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', '1111111111'),
 (1000000008, 'Pasquale', 'Casalino', '1998-11-09', 'pasqualo', 'pasqualino32143@gmail.com', '769592354829a87378421d60e3e2230a0f42ab9d20bec86d9faf2277fd44f387', '9876434444'),
 (1000000009, 'Michele', 'Vigigi', '2000-01-01', 'costalover', 'pepe4738@gmail.com', 'ee1217f35a45634fb9d0ad92d7bda098f778ac467b5d774da0df4a1087692dd3', '9783465555'),
 (1000000010, 'Angelo', 'Angelini', '1997-09-07', 'angelolini', 'angelolini123@gmail.com', '296d6431677f3cd659af9936fb3b61744927eeea5b6d4c33b6d720ec7d9d4932', '2222222222');
