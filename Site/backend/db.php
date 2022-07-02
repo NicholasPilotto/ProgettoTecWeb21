@@ -1400,7 +1400,7 @@ class Service extends Constant {
       $totale = $carrello->get_total();
       if ($stmt === false) {
         throw new Exception("Qualcosa sembra essere andato storto");
-      } else if ($stmt->bind_param('isssid', $cliente, $today, $shipping_date, $null, $indirizzo, $totale) === false) {
+      } else if ($stmt->bind_param('isssid', $cliente, $today, $null, $null, $indirizzo, $totale) === false) {
         $stmt->close();
         throw new Exception("Qualcosa sembra essere andato storto");
       }
@@ -1477,17 +1477,18 @@ class Service extends Constant {
 
   public function ship_order($order, $user): response_manager {
     $query = "UPDATE ordine 
-              SET data_consegna = ?
-              WHERE codice_univoco = ? AND cliente_codice = ? AND data_consegna IS NULL";
+              SET data_partenza = ? AND data_consegna = ?
+              WHERE codice_univoco = ? AND cliente_codice = ? AND data_partenza IS NULL AND data_consegna IS NULL";
     $stmt = $this->connection->prepare($query);
 
+    $start_date = date('Y-m-d');
     $arriving_date = date('Y-m-d', strtotime('+ ' . rand(1, 6) . ' days'));
 
     $result = array();
 
     if ($stmt === false) {
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('sss', $arriving_date, $order, $user) === false) {
+    } else if ($stmt->bind_param('ssss', $start_date, $arriving_date, $order, $user) === false) {
       $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
