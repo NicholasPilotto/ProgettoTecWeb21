@@ -52,7 +52,7 @@ if (!isset($_SESSION["Nome"])) {
             $tabellaIndirizzi = "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessun indirizzo presente</span>";
         }
     } else {
-        $tabellaIndirizzi = "<span class='alert error'><i class='fa fa-close' aria-hidden='true'></i> Impossibile connettersi al sistema.</span>";
+        $tabellaIndirizzi = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema.</span>";
     }
 
     $paginaHTML = str_replace("</tabellaIndirizzi>", $tabellaIndirizzi, $paginaHTML);

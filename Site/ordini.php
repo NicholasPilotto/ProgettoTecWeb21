@@ -72,7 +72,7 @@ if (!isset($_SESSION["Nome"])) {
             $tabellaOrdini = "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessun ordine presente</span></br>";
         }
     } else {
-        $tabellaOrdini = "<span class='alert error'><i class='fa fa-close' aria-hidden='true'></i> Impossibile connettersi al sistema</span></br>";
+        $tabellaOrdini = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema</span></br>";
     }
     $paginaHTML = str_replace("</tabellaOrdini>", $tabellaOrdini, $paginaHTML);
 

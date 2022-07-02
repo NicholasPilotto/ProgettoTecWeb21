@@ -86,7 +86,7 @@ if (!isset($_SESSION["Nome"])) {
     $listaRecensioni .= "</ul>";
 
     if (isset($_SESSION["error"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-close'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+        $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-times'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
         unset($_SESSION["error"]);
     } else if (isset($_SESSION["info"])) {
         $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
