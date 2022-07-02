@@ -264,8 +264,7 @@ table {
     border-top: 1px solid black;
 }
 
-td,
-th {
+td, th {
     border-left: 1px solid black;
     border-bottom: 1px solid black;
 
@@ -280,6 +279,7 @@ th {
 thead {
     background-color: #DDF2B8;
 }
+
 
 /* ----- FORM INPUT ----- */
 .divPreForm {
@@ -808,6 +808,14 @@ a.titolo {
     border-top: 1px solid #aaaaaa;
 }
 
+.submitEliminaRecensione {
+    width: 10em;
+    height: 1.6em;
+
+    margin-top: 0.3em;
+    margin-bottom: 0.1em;
+}
+
 /* ------------------- ACCOUNT ------------------- */
 
 .accountCards {
@@ -958,6 +966,33 @@ a.titolo {
     max-height: 30em;
     height: 30em;
     min-height: 20em;
+}
+
+/* ------------------- ORDINI ------------------- */
+#listaOrdini {
+    margin-left: 3%;
+    margin-right: 3%;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.7em;
+}
+
+.ordine {
+    border: 1px solid black;
+    border-top: none;
+
+    padding: 0.4em 0.5em 0.4em;
+    /* top, right e left, bottom */
+}
+
+#primoOrdine {
+    border-top: 1px solid black;
+}
+
+.libroOrdinato {
+    border-top: 1px solid #ddd;
+
+    padding-left: 1.2em;
 }
 
 /*

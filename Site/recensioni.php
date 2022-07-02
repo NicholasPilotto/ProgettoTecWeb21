@@ -80,6 +80,19 @@
                 }
                 $listaRecensioni .= "</abbr></p>";
                 $listaRecensioni .= "<p>" . $commento . "</p>";
+                
+                $listaRecensioni .= "<form action='eliminaRecensione.php' method='post' id='form'>";
+                $listaRecensioni .= "<input type='hidden' id='idUtente' value='" . $_SESSION['Codice_identificativo'] . "'/>";
+                $listaRecensioni .= "<input type='hidden' id='isbn' value='" . $recensione['libro_isbn'] . "'/>";
+                $listaRecensioni .= "<input type='submit' class='button submitEliminaRecensione' value='Elimina recensione'/>";
+                $listaRecensioni .= "</form>";
+                
+                
+                
+                //$listaRecensioni .= "<a href='eliminaRecensione.php?idUtente=" . $_SESSION['Codice_identificativo'] . "&isbn=" . $recensione['libro_isbn'] . "'>Elimina recensione</a>";
+                
+                //$valoriChart  = '<input type="hidden" id="jsondataX" value="' . htmlspecialchars(json_encode($xValues), ENT_COMPAT) . '" />';
+                
                 $listaRecensioni .= "</li>";
             }
         }
