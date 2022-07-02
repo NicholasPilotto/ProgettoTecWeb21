@@ -1396,11 +1396,11 @@ class Service extends Constant {
 
       $today = date('Y-m-d');
       $shipping_date = date('Y-m-d', strtotime('+ 2 days'));
-      $arriving_date = date('Y-m-d', strtotime('+ 6 days'));
+      $null = NULL;
       $totale = $carrello->get_total();
       if ($stmt === false) {
         throw new Exception("Qualcosa sembra essere andato storto");
-      } else if ($stmt->bind_param('isssid', $cliente, $today, $shipping_date, $arriving_date, $indirizzo, $totale) === false) {
+      } else if ($stmt->bind_param('isssid', $cliente, $today, $shipping_date, $null, $indirizzo, $totale) === false) {
         $stmt->close();
         throw new Exception("Qualcosa sembra essere andato storto");
       }
@@ -1469,6 +1469,39 @@ class Service extends Constant {
 
     if (!$res->ok()) {
       $res->set_error_message("Non è stato possibile inserire l'ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function ship_order($order, $user): response_manager {
+    $query = "UPDATE ordine 
+              SET data_consegna = ?
+              WHERE codice_univoco = ? AND cliente_codice = ? AND data_consegna IS NULL";
+    $stmt = $this->connection->prepare($query);
+
+    $arriving_date = date('Y-m-d', strtotime('+ ' . rand(1, 6) . ' days'));
+
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('sss', $arriving_date, $order, $user) === false) {
+      $stmt->close();
+      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $tmp = $stmt->execute();
+
+    if (!$tmp) {
+      return new response_manager($result, $this->connection, "Non è stato possibile spedire l'ordine");
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Non è stato possibile spedire l'ordine");
     }
 
     $stmt->close();

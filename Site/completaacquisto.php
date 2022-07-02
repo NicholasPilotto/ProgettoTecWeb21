@@ -29,7 +29,6 @@ if (!$a) {
             $indirizzo = $_POST["indirizzo"];
             if (isset($indirizzo) && isset($_POST["nomecognome"]) && isset($_POST["numCarta"]) && isset($_POST["dataScadenza"]) && isset($_POST["csv"]) && $queryUtente->ok()) {
                 $data = $connessione->insert_order($queryUtente->get_result()[0]["codice_identificativo"], $indirizzo, $cart);
-
                 if ($data->ok()) {
                     if ($data->get_errno() == 0) {
                         $_SESSION["success"] = "Ordine completato con successo.";

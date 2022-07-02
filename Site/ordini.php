@@ -65,6 +65,8 @@ if (!isset($_SESSION["Nome"])) {
             }
             $tabellaOrdini .=  "</tbody>";
 
+            // fa fa-trash
+
             $tabellaOrdini .= "</table>";
         } else {
             $tabellaOrdini = "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessun ordine presente</span></br>";
