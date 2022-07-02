@@ -993,6 +993,31 @@ class Service extends Constant {
     return new response_manager(array(true), $this->connection, "");
   }
 
+  public function delete_review($utente, $isbn): response_manager {
+    $query = "DELETE FROM Recensione 
+              WHERE idUtente = ? AND libro_isbn = ?";
+
+    $stmt = $this->connection->prepare($query);
+    $today = date('Y-m-d');
+    $result = array();
+
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $utente, $isbn) === false) {
+      $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $res = $stmt->execute();
+    $stmt->close();
+
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile cancellare la recensione");
+    }
+    return new response_manager(array(true), $this->connection, "");
+  }
+
   public function edit_review($utenteid, $isbn, $valore, $commento): response_manager {
     $query = "UPDATE recensione SET ";
 
@@ -1040,28 +1065,6 @@ class Service extends Constant {
 
     if (!$res) {
       return new response_manager($result, $this->connection, "Non è stato possibile inserire una recensione");
-    }
-    return new response_manager(array(true), $this->connection, "");
-  }
-
-  public function delete_review($utenteid, $isbn): response_manager {
-    $query = "DELETE FROM recensione 
-              WHERE idUtente = ? AND libro_isbn = ?";
-
-    $stmt = $this->connection->prepare($query);
-
-    if ($stmt === false) {
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ss', $utenteid, $isbn) === false) {
-      $stmt->close();
-      return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    }
-
-    $res = $stmt->execute();
-    $stmt->close();
-
-    if (!$res) {
-      return new response_manager(array(), $this->connection, "Non è stato possibile inserire una recensione");
     }
     return new response_manager(array(true), $this->connection, "");
   }

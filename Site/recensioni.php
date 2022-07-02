@@ -1,106 +1,107 @@
 <?php
-    session_start();
+session_start();
 
-    use DB\Service;
-    require_once('backend/db.php');
-    require_once "graphics.php";
+use DB\Service;
 
-    if(!isset($_SESSION["Nome"]))
-    {
-        header("Location: index.php");
-    }
-    else
-    {   
-        $paginaHTML = graphics::getPage("recensioni_php.html");
+require_once('backend/db.php');
+require_once "graphics.php";
 
-        // Accesso al database
-        $connessione = new Service();
-        $a = $connessione->openConnection();
+if (!isset($_SESSION["Nome"])) {
+    header("Location: index.php");
+} else {
+    $paginaHTML = graphics::getPage("recensioni_php.html");
 
-        $queryRecensioni = $connessione->get_reviews_by_user($_SESSION["Codice_identificativo"]);
+    // Accesso al database
+    $connessione = new Service();
+    $a = $connessione->openConnection();
 
-        $listaRecensioni = "<ul id='listaRecensioni'>";
+    $queryRecensioni = $connessione->get_reviews_by_user($_SESSION["Codice_identificativo"]);
 
-        if($queryRecensioni->ok() && !$queryRecensioni->is_empty())
-        {
-            $cont = 0;
-            $arrayMesi = array(
-                "01" => "Gennaio",
-                "02" => "Febbraio",
-                "03" => "Marzo",
-                "04" => "Aprile",
-                "05" => "Maggio",
-                "06" => "Giugno",
-                "07" => "Luglio",
-                "08" => "Agosto",
-                "09" => "Settembre",
-                "10" => "Ottobre",
-                "11" => "Novembre",
-                "12" => "Dicembre",
-            );
-            $arrayRecensioni = $queryRecensioni->get_result();
+    $listaRecensioni = "<ul id='listaRecensioni'>";
 
-            foreach($arrayRecensioni as $recensione)
-            {
-                $data = $recensione['datainserimento'];
-                $valutazione = $recensione['valutazione'];
-                $commento = $recensione['commento'];
+    if ($queryRecensioni->ok() && !$queryRecensioni->is_empty()) {
+        $cont = 0;
+        $arrayMesi = array(
+            "01" => "Gennaio",
+            "02" => "Febbraio",
+            "03" => "Marzo",
+            "04" => "Aprile",
+            "05" => "Maggio",
+            "06" => "Giugno",
+            "07" => "Luglio",
+            "08" => "Agosto",
+            "09" => "Settembre",
+            "10" => "Ottobre",
+            "11" => "Novembre",
+            "12" => "Dicembre",
+        );
+        $arrayRecensioni = $queryRecensioni->get_result();
 
-                $listaRecensioni .= "<li";
-                if($cont++ == 0)
-                {
-                    $listaRecensioni .= " id='primaRecensione'";
-                }
-                $listaRecensioni .= " class='recensione'>";
+        foreach ($arrayRecensioni as $recensione) {
+            $data = $recensione['datainserimento'];
+            $valutazione = $recensione['valutazione'];
+            $commento = $recensione['commento'];
 
-                $listaRecensioni .= "<p class='miniGrassetto'>" . $recensione['titolo'] . "</p>";
-                $listaRecensioni .= "<a href='libro.php?isbn=" . $recensione['isbn'] . "'>" . $recensione['isbn'] . "</a>";
-
-                // data
-                $arrayData = explode("-", $data);
-                $anno = $arrayData[0];
-                $mese = $arrayData[1];
-                $giorno = $arrayData[2];
-                $listaRecensioni .= "<p>" . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</p>";
-
-                // stelle
-                $scrittaStella = "stell";
-                $scrittaStella .= ($valutazione == 1) ? "a" : "e";
-                $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
-                for ($i = 0; $i < 5; $i++)
-                {
-                    if ($i < $valutazione)
-                    {
-                        $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
-                    }
-                    else
-                    {
-                        $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
-                    }
-                }
-                $listaRecensioni .= "</abbr></p>";
-                $listaRecensioni .= "<p>" . $commento . "</p>";
-                
-                $listaRecensioni .= "<form action='eliminaRecensione.php' method='post' id='form'>";
-                $listaRecensioni .= "<input type='hidden' id='idUtente' value='" . $_SESSION['Codice_identificativo'] . "'/>";
-                $listaRecensioni .= "<input type='hidden' id='isbn' value='" . $recensione['libro_isbn'] . "'/>";
-                $listaRecensioni .= "<input type='submit' class='button submitEliminaRecensione' value='Elimina recensione'/>";
-                $listaRecensioni .= "</form>";
-                
-                $listaRecensioni .= "</li>";
+            $listaRecensioni .= "<li";
+            if ($cont++ == 0) {
+                $listaRecensioni .= " id='primaRecensione'";
             }
+            $listaRecensioni .= " class='recensione'>";
+
+            $listaRecensioni .= "<p class='miniGrassetto'>" . $recensione['titolo'] . "</p>";
+            $listaRecensioni .= "<a href='libro.php?isbn=" . $recensione['isbn'] . "'>" . $recensione['isbn'] . "</a>";
+
+            // data
+            $arrayData = explode("-", $data);
+            $anno = $arrayData[0];
+            $mese = $arrayData[1];
+            $giorno = $arrayData[2];
+            $listaRecensioni .= "<p>" . $giorno . " " . $arrayMesi[$mese] . " " . $anno . "</p>";
+
+            // stelle
+            $scrittaStella = "stell";
+            $scrittaStella .= ($valutazione == 1) ? "a" : "e";
+            $listaRecensioni .= "<p><abbr title='"  . $valutazione .  " " . $scrittaStella . " su 5'>";
+            for ($i = 0; $i < 5; $i++) {
+                if ($i < $valutazione) {
+                    $listaRecensioni .= "<i class='fas fa-star starChecked'></i>";
+                } else {
+                    $listaRecensioni .= "<i class='fas fa-star starNotChecked'></i>";
+                }
+            }
+            $listaRecensioni .= "</abbr></p>";
+            $listaRecensioni .= "<p>" . $commento . "</p>";
+
+            $listaRecensioni .= "<form action='eliminaRecensione.php' method='post' id='form'>";
+            $listaRecensioni .= "<input type='hidden' name='idUtente' id='idUtente' value='" . $_SESSION['Codice_identificativo'] . "'/>";
+            $listaRecensioni .= "<input type='hidden' name='isbn' id='isbn' value='" . $recensione['libro_isbn'] . "'/>";
+            $listaRecensioni .= "<input type='submit' class='button submitEliminaRecensione' value='Elimina recensione'/>";
+            $listaRecensioni .= "</form>";
+
+            $listaRecensioni .= "</li>";
         }
-        else
-        {
-            // errore oppure non ci sono recensioni
-        }
-        $listaRecensioni .= "</ul>";
-
-        $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
-
-        $connessione->closeConnection();
-        // -------------------
-
-        echo $paginaHTML;
+    } else {
+        $_SESSION["info"] = "Non sono presenti recensioni";
     }
-?>
+    $listaRecensioni .= "</ul>";
+
+    if (isset($_SESSION["error"])) {
+        $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-close'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+        unset($_SESSION["error"]);
+    } else if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+        unset($_SESSION["info"]);
+    } else if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
+        unset($_SESSION["success"]);
+    } else {
+        $paginaHTML = str_replace("</alert>", "", $paginaHTML);
+    }
+
+    $paginaHTML = str_replace("</listaRecensioni>", $listaRecensioni, $paginaHTML);
+
+    $connessione->closeConnection();
+    // -------------------
+
+    echo $paginaHTML;
+}
