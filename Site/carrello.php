@@ -41,7 +41,7 @@ if (isset($_SESSION["cart"])) {
             $carrelloDiv .= "<div>";
             $carrelloDiv .= "<a class='titolo' href='libro.php?isbn=" . $isbn . "'>" . $res[0]['titolo'] . "</a>";
             $carrelloDiv .= "<p>Quantit&agrave;: " . $data->quant . "</p>";
-            $carrelloDiv .= "<p>Costo totale: &euro;" . $data->total . "</p>";
+            $carrelloDiv .= "<p>Costo totale: &euro;" . number_format((float)$data->total, 2, '.', '') . "</p>";
             $carrelloDiv .= "<form method='post' id='removeCartForm' action='removecart.php?isbn=" . $isbn . "'><input class='button cartButton' type='submit' value='Rimuovi'/></form>";
             $carrelloDiv .= "</div>";
             $carrelloDiv .= "</li>";
@@ -52,7 +52,7 @@ if (isset($_SESSION["cart"])) {
     $carrelloDiv .= "</ul>";
 
     $purchase = "<form method='post' action='acquista.php'><input type='submit' class='button procediAcquistoButton' value='Procedi con l&lsquo;acquisto'/></form>";
-    $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . $tot . "</p>" . $purchase . "</div>";
+    $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . number_format((float)$tot, 2, '.', '') . "</p>" . $purchase . "</div>";
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
 } else {
     if (isset($_SESSION["error"])) {
