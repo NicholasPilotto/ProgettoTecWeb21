@@ -317,10 +317,21 @@ if (isset($_GET['isbn'])) {
 
         if ($codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
             // utente
+
+            $wish = $connessione->get_wishlist($_SESSION["Codice_identificativo"]);
+            $list = array();
+            foreach ($wish->get_result() as $w) {
+                array_push($list, $w["libro_isbn"]);
+            }
+            $present = in_array($isbn, $list);
+            $wishButton = "";
+            if (!$present) {
+                $wishButton = "<input name='aggiungiWhish' type='submit' class='button' value='Aggiungi alla wishlist' />";
+            }
+
             $formBottoni = "
             <form action='addcart.php' method='post'>
-                <input name='aggiungiCarrello' type='submit' class='button' value='Aggiungi al carrello' />
-                <input name='aggiungiWhish' type='submit' class='button' value='Aggiungi alla wishlist' />
+                <input name='aggiungiCarrello' type='submit' class='button' value='Aggiungi al carrello' />" . $wishButton . "
                 <!-- Segnaposto -->
                 <label for='quantita'>Quantit&agrave;</label>
                 </inputQuantita>
