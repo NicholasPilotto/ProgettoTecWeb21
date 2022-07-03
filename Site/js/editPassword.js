@@ -1,12 +1,12 @@
 var dettagli_form = {
   "vecchiaPassword": [
     "Password",
-    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*--+={}\[\]|\\:;<>,.?/_₹]).{10,16}$/,
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/,
     "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
   ],
   "nuovaPassword": [
     "Password",
-    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*--+={}\[\]|\\:;<>,.?/_₹]).{10,16}$/,
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/,
     "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
   ]
 };
@@ -43,15 +43,7 @@ function validazioneCampo(input) {
   return true;
 }
 
-function confirmPass() {
-  const password = document.querySelector('input[name=vecchiaPassword]');
-  const confirm = document.querySelector('input[name=nuovaPassword]');
 
-  if (confirm.value === password.value) {
-    return true
-  }
-  return false;
-}
 
 function mostraErrore(input) {
   var padre = input.parentNode;
