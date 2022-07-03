@@ -14,12 +14,20 @@ require_once('backend/db.php');
 
 require_once "graphics.php";
 
-$isbn = $_SESSION['wishtoremove'];
-if (isset($_SESSION["wishtoremove"])) {
-    unset($_SESSION["wishtoremove"]);
+$isbn = $_REQUEST['wishtoremove'];
+if (isset($isbn)) {
     $connessione = new Service();
     $a = $connessione->openConnection();
-    $removeQuery = $connessione->remove_from_wishlist($_SESSION["Codice_identificativo"], $isbn);
+    if ($a) {
+        $removeQuery = $connessione->remove_from_wishlist($_SESSION["Codice_identificativo"], $isbn);
+        if ($removeQuery->ok()) {
+            $_SESSION["success"] = "Libro rimosso correttamente.";
+        } else {
+            $_SESSION["info"] = $removeQuery->get_error_message();
+        }
+    } else {
+        $_SESSION["error"] = "Impossibile connettersi al sistema";
+    }
     header("Location:wishlist.php");
 } else {
     header("Location:index.php");
