@@ -30,7 +30,7 @@ $paginaHTML = str_replace("</barraRicerca>", $barraRicerca, $paginaHTML);
 
 // Stampa filtri PREZZO
 $prezzoMin = 1;
-$prezzoMax = 20;
+$prezzoMax = 100;
 if (isset($_GET['prezzoMin']) && $_GET['prezzoMin'] != "") {
     $prezzoMin = $_GET['prezzoMin'];
 }
@@ -40,13 +40,13 @@ if (isset($_GET['prezzoMax']) && $_GET['prezzoMax'] != "") {
 $listaFiltriPrezzo = "<ul>";
 
 $listaFiltriPrezzo .= "<li class='liPrezzo'>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='0.00' max='100' step='any'  value='" . $prezzoMin . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMin' name='prezzoMin' min='1.00' max='100' step='any'  value='" . $prezzoMin . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMin'>&euro; Min</label>";
 $listaFiltriPrezzo .= "</li>";
 
 $listaFiltriPrezzo .= "<li class='liPrezzo'>";
-$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='0.00' max='100' step='any'  value='" . $prezzoMax . "'/>";
+$listaFiltriPrezzo .= "<input type='number' id='prezzoMax' name='prezzoMax' min='2.00' max='100' step='any'  value='" . $prezzoMax . "'/>";
 
 $listaFiltriPrezzo .= "<label for='prezzoMax'>&euro; Max</label>";
 $listaFiltriPrezzo .= "</li>";
@@ -154,6 +154,7 @@ if ($a) {
                 }
             } else {
                 // errore, non c'è un libro con quell' isbn
+                $paginaHTML = str_replace("</libriTrovati>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> ISBN non presente</span>", $paginaHTML);
             }
         } else {
             $coppieAggiunte = array();
@@ -265,8 +266,14 @@ if ($a) {
         $paginaHTML = str_replace('<li class="nav-item"><a href="ricerca.php">Ricerca</a></li>', '<li class="nav-item selectedNavItem">Ricerca</li>', $paginaHTML);
 
         $paginaHTML = str_replace("</libriTrovati>", $libriTrovati, $paginaHTML);
+    } else {
+        $alert = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema</span>";
+        $paginaHTML = str_replace("</libriTrovati>", $alert, $paginaHTML);
     }
     $connessione->closeConnection();
+} else {
+    $alert = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema</span>";
+    $paginaHTML = str_replace("</libriTrovati>", $alert, $paginaHTML);
 }
 
 // -------------------

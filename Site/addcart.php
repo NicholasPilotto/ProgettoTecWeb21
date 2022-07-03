@@ -35,8 +35,8 @@ if (isset($_POST["aggiungiCarrello"])) {
   }
 } else if (isset($_POST["aggiungiWhish"])) {
   if (isset($_SESSION["Nome"])) {
-    $isbn = isset($_SESSION["isbncart"]) ? $_SESSION["isbncart"] : NULL;
-    $user = isset($_SESSION["Codice_identificativo"]) ? $_SESSION["Codice_identificativo"] : NULL;
+    $isbn = $_SESSION["isbncart"];
+    $user = $_SESSION["Codice_identificativo"];
 
     if (isset($user) && isset($isbn)) {
       $c = new Service();
