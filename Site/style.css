@@ -9,7 +9,8 @@ SEZIONE GLOBALE
     margin: 0;
 }
 
-html, body {
+html,
+body {
     font-size: 100%;
     /*font-family: "Comic Sans MS", cursive, sans-serif;*/
     font-family: 'Open Sans', sans-serif;
@@ -263,7 +264,8 @@ table {
     border-top: 1px solid black;
 }
 
-td, th {
+td,
+th {
     border-left: 1px solid black;
     border-bottom: 1px solid black;
 
@@ -271,7 +273,8 @@ td, th {
     padding: 0.5em;
 }
 
-td:last-child, th:last-child {
+td:last-child,
+th:last-child {
     border-right: 1px solid black;
 }
 
@@ -626,7 +629,7 @@ SEZIONE CONTENT
     border-top: 1px solid #aaaaaa;
 }
 
-.advertsCards li p{
+.advertsCards li p {
     padding-top: 0.5em;
 }
 
@@ -642,8 +645,7 @@ SEZIONE CONTENT
     margin-right: 2em;
 }
 
-.advertsCards li > *:not(:first-child)
-{
+.advertsCards li>*:not(:first-child) {
     float: none;
     overflow: hidden;
 }
@@ -858,12 +860,11 @@ a.titolo {
     border-bottom: 2px solid #eaeaea;
 }
 
-.carrelloCards li p{
+.carrelloCards li p {
     padding-top: 0.5em;
 }
 
-.carrelloCards li > *:not(:first-child)
-{
+.carrelloCards li>*:not(:first-child) {
     float: none;
     overflow: hidden;
 }
@@ -882,7 +883,7 @@ a.titolo {
     margin-right: 2em;
 }
 
-#removeCartForm input{
+#removeCartForm input {
     margin-top: 1em;
 }
 
@@ -1014,14 +1015,15 @@ footer {
 footer p {
     font-style: italic;
     color: white;
-    margin-bottom:1.0em;
-    margin-left:1.0em;
-    margin-right:1.0em;
+    margin-bottom: 1.0em;
+    margin-left: 1.0em;
+    margin-right: 1.0em;
 }
 
 footer .copyright {
     display: inline;
 }
+
 footer .imgValidCode {
     vertical-align: middle;
     margin-left: 1.0em;
@@ -1043,7 +1045,7 @@ footer a:hover {
 footer h1 {
     font-style: italic;
     color: white;
-    font-size:1.3em;
+    font-size: 1.3em;
 }
 
 footer ul {
@@ -1065,7 +1067,7 @@ footer .second {
 
 footer .logo {
     display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width:5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 5%;
 }

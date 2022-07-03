@@ -12,6 +12,7 @@ require_once "graphics.php";
 require_once "cart.php";
 
 $user = $_SESSION["Codice_identificativo"];
+$user = hash('sha256', $user);
 
 $paginaHTML = graphics::getPage("ordiniPendenti_php.html");
 

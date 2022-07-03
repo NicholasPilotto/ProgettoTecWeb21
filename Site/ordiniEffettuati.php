@@ -17,7 +17,7 @@ if (isset($user) && $user != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
   $a = $connessione->openConnection();
 
   if ($a) {
-    $queryOrdini = $connessione->get_orders();
+    $queryOrdini = $connessione->get_orders_non_shipped();
 
     $tabellaOrdini = "";
 

@@ -932,6 +932,35 @@ class Service extends Constant {
     return $res;
   }
 
+  public function get_orders_non_shipped(): response_manager {
+    $query = "SELECT *
+              FROM ordine
+              WHERE data_consegna IS NOT NULL AND data_partenza IS NOT NULL";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
   public function get_order_by_user($order): response_manager {
     $query = "SELECT *
               FROM ordine

@@ -12,7 +12,7 @@ require_once "graphics.php";
 require_once "cart.php";
 
 $user = $_SESSION["Codice_identificativo"];
-
+$user = hash('sha256', $user);
 
 if (isset($user) && $user != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
   $connessione = new Service();

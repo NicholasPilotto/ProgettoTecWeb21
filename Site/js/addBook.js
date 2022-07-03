@@ -26,7 +26,7 @@ var dettagli_form = {
   ],
   "trama": [
     "Trama",
-    /^[a-zA-Z0-9 «»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()'’´?.,!-<>{}[\]]{10,2500}$/,
+    /^[a-zA-Z0-9 =«»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()'’´?.,!-<>{}[\]]{10,2500}$/,
     "Inserire una trama valida, di almento 11 caratteri e meno di 1000."
   ],
 };
