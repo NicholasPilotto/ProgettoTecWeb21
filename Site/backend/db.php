@@ -966,12 +966,14 @@ class Service extends Constant {
   }
 
   public function get_order_books($order): response_manager {
-    $query = "SELECT *
+    $query = "SELECT *, composizione.quantita AS ordQuant
               FROM composizione
               INNER JOIN ordine 
               ON composizione.Codice_ordine = ordine.Codice_univoco
               INNER JOIN libro
               ON composizione.Elemento = libro.ISBN
+              INNER JOIN indirizzo
+              ON indirizzo.codice = ordine.indirizzo
               WHERE composizione.Codice_ordine = ?";
 
     $stmt = $this->connection->prepare($query);
@@ -999,6 +1001,31 @@ class Service extends Constant {
 
     $stmt->close();
     return $res;
+  }
+
+  public function delete_order($order, $user): response_manager {
+    $query = "DELETE FROM ordine 
+              WHERE codice_univoco = ? AND cliente_codice = ?";
+
+    $stmt = $this->connection->prepare($query);
+    $today = date('Y-m-d');
+    $result = array();
+
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    } else if ($stmt->bind_param('ss', $order, $user) === false) {
+      $stmt->close();
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+
+    $res = $stmt->execute();
+    $stmt->close();
+
+    if (!$res) {
+      return new response_manager($result, $this->connection, "Non è stato possibile cancellare l'ordine");
+    }
+    return new response_manager(array(true), $this->connection, "");
   }
 
   public function insert_review($utenteid, $isbn, $valore, $commento): response_manager {
