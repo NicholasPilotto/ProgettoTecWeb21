@@ -25,6 +25,16 @@ if (!isset($_SESSION["Nome"])) {
                     <h3 lang='en'><a href='analytics.php'>Analytics</a></h3>
                     <p>Visualizza le <span lang='en'>analytics</span> di SecondRead</p>
                 </li>
+                <li>
+                    <i class='fa-li fas fa-list-alt fa-3x'></i>
+                    <h3 lang='en'><a href='orderToShip.php'>Ordini pendenti</a></h3>
+                    <p>Visualizza gli ordini pendenti di SecondRead</p>
+                </li>
+                <li>
+                    <i class='fa-li fas fa-list fa-3x'></i>
+                    <h3 lang='en'><a href='ordiniEffettuati.php'>Ordini effettuati</a></h3>
+                    <p>Visualizza gli ordini effettuati di SecondRead</p>
+                </li>
             ";
     } else {
         // user normale

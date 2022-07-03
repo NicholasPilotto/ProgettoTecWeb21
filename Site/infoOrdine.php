@@ -61,18 +61,23 @@ if ($a) {
           $bookElement .= "</li>";
         }
         $bookElement .= "</ul>";
-
         $info = "<div class='carrelloStatus'><p>" . "Indirizzo: " . $orderList->get_result()[0]["via"] . ", " . $orderList->get_result()[0]["num_civico"] .  ", " . $orderList->get_result()[0]["città"] . ", " . $orderList->get_result()[0]["cap"] . "</p>" . $purchase . "</div>";
-        $delivery = isset($orderList->get_result()[0]["data_consegna"]) ? $orderList->get_result()[0]["data_consegna"] : "Non ancora inviato";
-        $info .= "<div class='carrelloStatus'><p>" . "Data di consegna: " . $delivery . "</p>" . $purchase . "</div>";
-        $paginaHTML = str_replace("</indirizzo>", $info, $paginaHTML);
-
-        if (!isset($orderList->get_result()[0]["data_consegna"])) {
-          $delete .= "<form method='post' action='eliminaOrdine.php'>
+        $delivery = isset($orderList->get_result()[0]["data_consegna"]) ? date_format(date_create($orderList->get_result()[0]["data_consegna"]), 'd/m/Y') : "Non ancora inviato";
+        $orderedBy = "";
+        $user = hash('sha256', $user);
+        if ($user != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
+          if (!isset($orderList->get_result()[0]["data_consegna"])) {
+            $delete .= "<form method='post' action='eliminaOrdine.php'>
                       <input type='submit' class='button procediAcquistoButton' value='Elimina ordine'/>
                       <input type='hidden' name='orderDelete' value='" . $ordine . "'/>
                       </form>";
+          }
+        } else {
+          $orderedBy .= "<p>Utente: " . $orderList->get_result()[0]["nome"] . " " . $orderList->get_result()[0]["cognome"] . "</p>";
         }
+        $info .= "<div class='carrelloStatus'><p>" . "Data di consegna: " . $delivery . "</p>" . $orderedBy . "</div>";
+        $paginaHTML = str_replace("</indirizzo>", $info, $paginaHTML);
+        $delete = "";
         $totString .= "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . $orderList->get_result()[0]["totale"] . "</p>" . $delete . "</div>";
         $paginaHTML = str_replace("</riepilogo>", $totString, $paginaHTML);
       } else {

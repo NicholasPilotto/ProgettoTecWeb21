@@ -65,6 +65,7 @@ if (isset($_GET['isbn'])) {
         if ($offertaQuery->ok()) {
             $sconto = true;
             $prezzo = number_format((float)$tmp[0]['prezzo'] * (100 - $offertaQuery->get_result()[0]['sconto']) / 100, 2, '.', '') . " (" . $offertaQuery->get_result()[0]['sconto'] . "% sconto)";
+            $_SESSION["pricecart"] = $prezzo;
         } else {
             $prezzo = $tmp[0]['prezzo'];
         }
@@ -225,7 +226,7 @@ if (isset($_GET['isbn'])) {
 
                 // if ok
                 $nomeUtente = $queryUtente->get_result()[0]['username'];
-                $data = $recensione['datainserimento'];
+                $data = date_format(date_create($recensione['datainserimento']), 'd/m/Y');
                 $valutazione = $recensione['valutazione'];
                 $commento = $recensione['commento'];
 

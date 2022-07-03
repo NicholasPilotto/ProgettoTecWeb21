@@ -974,6 +974,8 @@ class Service extends Constant {
               ON composizione.Elemento = libro.ISBN
               INNER JOIN indirizzo
               ON indirizzo.codice = ordine.indirizzo
+              INNER JOIN utente
+              ON utente.codice_identificativo = ordine.cliente_codice
               WHERE composizione.Codice_ordine = ?";
 
     $stmt = $this->connection->prepare($query);
@@ -1534,10 +1536,10 @@ class Service extends Constant {
     return $res;
   }
 
-  public function ship_order($order, $user): response_manager {
-    $query = "UPDATE ordine 
-              SET data_partenza = ? AND data_consegna = ?
-              WHERE codice_univoco = ? AND cliente_codice = ? AND data_partenza IS NULL AND data_consegna IS NULL";
+  public function ship_order($order): response_manager {
+    $query = "UPDATE ordine
+              SET data_partenza = ?, data_consegna = ?
+              WHERE ordine.codice_univoco = ? AND ordine.data_partenza IS NULL AND ordine.data_consegna IS NULL";
     $stmt = $this->connection->prepare($query);
 
     $start_date = date('Y-m-d');
@@ -1547,7 +1549,7 @@ class Service extends Constant {
 
     if ($stmt === false) {
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
-    } else if ($stmt->bind_param('ssss', $start_date, $arriving_date, $order, $user) === false) {
+    } else if ($stmt->bind_param('ssi', $start_date, $arriving_date, $order) === false) {
       $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
@@ -1562,6 +1564,35 @@ class Service extends Constant {
 
     if (!$res->ok()) {
       $res->set_error_message("Non è stato possibile spedire l'ordine");
+    }
+
+    $stmt->close();
+    return $res;
+  }
+
+  public function non_shipped_orders(): response_manager {
+    $query = "SELECT DISTINCT ordine.*
+              FROM ordine
+              WHERE ordine.data_partenza IS NULL AND ordine.data_consegna IS NULL";
+
+    $stmt = $this->connection->prepare($query);
+    $result = array();
+
+    if ($stmt === false) {
+      return new response_manager($result, $this->connection, "Qualcosa sembra essere andato storto");
+    }
+    $stmt->execute();
+    $tmp = $stmt->get_result();
+    $result = array();
+
+    while ($row = $tmp->fetch_assoc()) {
+      array_push($result, $row);
+    }
+
+    $res = new response_manager($result, $this->connection, "");
+
+    if (!$res->ok()) {
+      $res->set_error_message("Nessun ordine pendente trovato");
     }
 
     $stmt->close();
