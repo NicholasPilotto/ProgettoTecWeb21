@@ -37,6 +37,7 @@ if (isset($_GET['isbn'])) {
     $trovatoErrore = false;
 
     if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
+
         $tmp = $queryIsbn->get_result();
         // Ce un libro con quell'isbn, posso andare avanti
 
@@ -193,11 +194,14 @@ if (isset($_GET['isbn'])) {
 
         // ---- RECENSIONI ----
         $queryRecensioni = $connessione->get_reviews_by_isbn($isbn);
+
+        // echo $queryRecensioni->get_error_message();
+        // die();
         $listaRecensioni = "<ul id='listaRecensioni' title='Lista recensioni'>";
         $cont = 0;
         $maxRec = 8;
 
-        if ($queryRecensioni->ok()) {
+        if (count($queryRecensioni->get_result()) != 0) {
             $arrayRecensioni = $queryRecensioni->get_result();
 
             // cerca se esiste una recensione fatta dall'utente loggato, così da poterla mettere per prima
@@ -291,7 +295,7 @@ if (isset($_GET['isbn'])) {
                 $listaRecensioni .= "</li>";
             }
         } else {
-            $trovatoErrore = true;
+            $listaRecensioni .= "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessuna recensione presente</span></br>";
         }
         $listaRecensioni .= "</ul>";
 

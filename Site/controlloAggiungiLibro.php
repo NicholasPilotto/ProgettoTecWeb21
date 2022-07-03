@@ -27,7 +27,7 @@ $editore = $_POST["editore"];
 $prezzo = $_POST["prezzo"];
 $pagine = $_POST["pagine"];
 $quantita = $_POST["quantita"];
-$data = $_POST["dataPubblicazione"];
+$data = $_POST["dataPub"];
 $trama = $_POST["trama"];
 $categoria = $_POST["categoria"];
 
@@ -41,19 +41,23 @@ $editoreCheck = (isset($editore));
 $prezzoCheck = (isset($prezzo) && preg_match('/^([1-9][0-9]*)([.]([0-9]+))*$/', $prezzo));
 $pagineCheck = (isset($pagine) && preg_match('/^[1-9][0-9]*$/', $pagine));
 $quantitaCheck = (isset($quantita) && preg_match('/^[1-9][0-9]*$/', $quantita));
-$dataCheck = (isset($dataPubblicazione));
-$tramaCheck = (isset($trama) && preg_match('/^[a-zA-Z0-9 «»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()\'\’\´?.,!-<>{}[\]]{10,2500}$/', $trama));
+$dataCheck = (isset($data));
+$tramaCheck = (isset($trama) && preg_match('/^[a-zA-Z0-9 =«»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()\'’´?.,!-<>{}[\]]{10,2500}$/', $trama));
 $categoriaCheck = (isset($categoria));
+
 
 if (!$a) {
   $_SESSION["error"] = "Impossibile connettersi al sistema";
   header("Location: aggiungiLibro.php?isbn=" . $isbn);
 }
 
-if (isset($_SESSION["editFlag"])) {
+if (isset($_POST["modificaLibroTrigger"])) {
   // modifica libro
+  // echo var_dump($isbnCheck) . " " . var_dump($titoloCheck) . " " . var_dump($editoreCheck) . " " . var_dump($pagineCheck) . " " . var_dump($prezzoCheck) . " " . var_dump($quantitaCheck) . " " . var_dump($dataCheck) . " " . var_dump($copertinaCheck) . " " . var_dump($tramaCheck) . " " . !empty($autoreCheck)  . " " . !empty($categoriaCheck);
+  // echo $dataPubblicazione;
+  // die();
 
-  if ($isbnCheck && $titoloCheck && $editoreCheck && $pagineCheck && $prezzoCheck && $quantitaCheck && $dataCheck && $copertinaCheck && $tramaCheck && !empty($autoreCheck) && !empty($categoriaCheck)) {
+  if ($isbnCheck) {
     $oldBookData = $connessione->get_book_by_isbn($isbn);
     $autoriToChange = array();
     foreach ($autore as $aut) {
@@ -104,6 +108,7 @@ if (isset($_SESSION["editFlag"])) {
   $connessione->closeConnection();
 } else {
   $path = NULL;
+
 
   $newName = NULL;
 
