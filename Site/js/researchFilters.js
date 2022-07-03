@@ -1,5 +1,5 @@
 function caricamento() {
-  resetFilters();
+  // resetFilters();
   document.getElementById("resetFilters").onclick = function () {
     resetFilters();
   }
@@ -24,7 +24,6 @@ function resetFilters() {
 }
 
 function controlNumberMin() {
-  console.log("aaa");
   var min = document.getElementById("prezzoMin");
   var max = document.getElementById("prezzoMax");
 
