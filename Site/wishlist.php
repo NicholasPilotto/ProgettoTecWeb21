@@ -16,15 +16,28 @@ if (!isset($_SESSION["Nome"])) {
 // Accesso al database
 $connessione = new Service();
 $a = $connessione->openConnection();
-$wishlistDiv = "";
 $utente = $_SESSION["Codice_identificativo"];
-
 $queryWishlist = $connessione->get_wishlist($utente);
 
+$wishlistDiv = "<ul class='carrelloCards'>";
 foreach ($queryWishlist->get_result() as $wish) {
     $queryIsbn = $connessione->get_book_by_isbn($wish["libro_isbn"]);
     if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
         $res = $queryIsbn->get_result();
+
+        $wishlistDiv .= "<li>";
+        $wishlistDiv .= "<a href='libro.php?isbn=" . $res[0]['isbn'] . "'><img class='carrelloImg' src='" . $res[0]['percorso'] . "' alt=''></a>";
+        $wishlistDiv .= "<div>";
+        $wishlistDiv .= "<a class='titolo' href='libro.php?isbn=" . $res[0]['isbn'] . "'>" . $res[0]['titolo'] . "</a>";
+        $wishlistDiv .= "<p>Prezzo: &euro;" . $res[0]['prezzo'] . "</p>";
+        $wishlistDiv .= "<form action='removewish.php'>
+                            <input type='submit' class='button procediAcquistoButton' value='Rimuovi'</input>
+                            <input type='hidden' name='wishtoremove' id='wishtoremove' value='" . $res[0]['isbn'] . "'/>
+                        </form>";
+        $wishlistDiv .= "</div>";
+        $wishlistDiv .= "</li>";
+
+        /*
         $imgLibro = "<li class='libroCarrello'><img class='carrelloImg' alt='' src='" . $res[0]['percorso'] . "'></li>";
         $titolo = "<li class='liInfo'><p class='libroTitolo'>" . $res[0]['titolo'] . "&nbsp;</p>";
         $cost = "<p>Prezzo: &euro;" . $res[0]['prezzo'] . "</p>";
@@ -33,8 +46,10 @@ foreach ($queryWishlist->get_result() as $wish) {
                     <input type='hidden' name='wishtoremove' id='wishtoremove' value='" . $res[0]['isbn'] . "'/>
                     </form>";
         $wishlistDiv .= "<ul class='cardDettagli'>" . $imgLibro . $titolo . $cost . $button . "</ul></li>";
+        */
     }
 }
+$wishlistDiv .= "</ul>";
 
 $connessione->closeConnection();
 // -------------------

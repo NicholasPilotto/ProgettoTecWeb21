@@ -230,7 +230,8 @@ if (isset($_GET['isbn'])) {
 
                 // if ok
                 $nomeUtente = $queryUtente->get_result()[0]['username'];
-                $data = date_format(date_create($recensione['datainserimento']), 'd/m/Y');
+                //$data = date_format(date_create($recensione['datainserimento']), 'd/m/Y');
+                $data = $recensione['datainserimento'];
                 $valutazione = $recensione['valutazione'];
                 $commento = $recensione['commento'];
 
@@ -322,16 +323,20 @@ if (isset($_GET['isbn'])) {
 
         if ($codiceIdentificativo != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
             // utente
-
-            $wish = $connessione->get_wishlist($_SESSION["Codice_identificativo"]);
-            $list = array();
-            foreach ($wish->get_result() as $w) {
-                array_push($list, $w["libro_isbn"]);
-            }
-            $present = in_array($isbn, $list);
+            // controllo se è loggato:
             $wishButton = "";
-            if (!$present) {
-                $wishButton = "<input name='aggiungiWhish' type='submit' class='button' value='Aggiungi alla wishlist' />";
+            if($codiceIdentificativo != "")
+            {
+                // è loggato, mostro la wishlist
+                $wish = $connessione->get_wishlist($_SESSION["Codice_identificativo"]);
+                $list = array();
+                foreach ($wish->get_result() as $w) {
+                    array_push($list, $w["libro_isbn"]);
+                }
+                $present = in_array($isbn, $list);
+                if (!$present) {
+                    $wishButton = "<input name='aggiungiWhish' type='submit' class='button' value='Aggiungi alla wishlist' />";
+                }
             }
 
             $formBottoni = "
