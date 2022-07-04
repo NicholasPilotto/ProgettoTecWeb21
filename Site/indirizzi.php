@@ -49,10 +49,10 @@ if (!isset($_SESSION["Nome"])) {
 
             $tabellaIndirizzi .= "</table>";
         } else {
-            $tabellaIndirizzi = "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessun indirizzo presente</span>";
+            $tabellaIndirizzi = graphics::createAlert("info", "Nessun indirizzo presente");
         }
     } else {
-        $tabellaIndirizzi = "<span class='alert error'><i class='fa fa-times' aria-hidden='true'></i> Impossibile connettersi al sistema.</span>";
+        $tabellaIndirizzi = graphics::createAlert("error", "Impossibile connettersi al sistema");
     }
 
     $paginaHTML = str_replace("</tabellaIndirizzi>", $tabellaIndirizzi, $paginaHTML);

@@ -148,9 +148,12 @@ p.nonLink {
 }
 
 @media only screen and (max-width: 768px) {
+
     .hamburger {
         display: block;
         cursor: pointer;
+
+        margin-left: 95%;
     }
 
     .nav-menu {
@@ -326,7 +329,6 @@ thead {
 
     margin: auto;
     padding-bottom: 1em;
-    padding-top: 0.7em;
 }
 
 .formInput fieldset {
@@ -384,14 +386,10 @@ thead {
 .formInput input[type=submit] {
     display: block;
 
-    /*width: 32%;*/
-    width: fit-content;
     padding-left: 0.5em;
     padding-right: 0.5em;
 
     height: 2em;
-
-    /*font-size: larger;*/
 
     margin: auto;
     margin-top: 1.2em;
@@ -898,12 +896,24 @@ a.titolo {
     margin-top: 0.5em;
 }
 
-.carrelloStatus {
-    font-weight: bold;
+.acquistaButton {
+    width: 7em;
+    height: 2em;
+}
+
+.carrelloStatus, .totaleAcquisto{
     font-size: larger;
+    margin-left: 1.7em;
+    padding-top: 0.7em;
+}
+
+.totaleAcquisto {
     text-align: center;
-    padding-top: 1em;
-    padding-bottom: 0.8em;
+    padding-bottom: 0.5em;
+}
+
+.boldText {
+    font-weight: bold;
 }
 
 /* ------------------- ERRORE ------------------- */
@@ -914,15 +924,19 @@ a.titolo {
 }
 
 .alert {
-    display: block;
-    width: 25em;
+    width: 24.5em;
     text-align: center;
     color: white;
     border-radius: 10px;
-    padding: 0.1em;
+    padding: 0.3em;
     margin-left: auto;
     margin-right: auto;
     font-weight: bold;
+}
+
+.divAlert {
+    padding-bottom: 1em;
+    width: 100%;
 }
 
 .error {
@@ -978,15 +992,16 @@ a.titolo {
 }
 
 /* ------------------- INFO ORDINE ------------------- */
-#formCancellaOrdine {
+.formOrdine {
     text-align: center;
+    padding-bottom: 0.7em;
+    padding-top: 1em;
 }
 
 .eliminaOrdineButton {
     width: 11em;
     height: 2em;
 }
-
 /*
 ==================
 SEZIONE ERRORI
@@ -998,6 +1013,11 @@ SEZIONE ERRORI
     font-size: 0.8em;
     display: block;
     /* margin-top: -1em; */
+}
+
+.indirizziError {
+    font-size: 0.9em;
+    display: block;
 }
 
 /*

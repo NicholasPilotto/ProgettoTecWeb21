@@ -37,14 +37,14 @@
 
   <div id="content">
     <h2>Lascia Recensione</h2>
+    </alert>
     <form class="formInput" id="formRecensione" action='inserisciRecensione.php' method="post">
-      </alert>
       <fieldset>
         </infoLibro>
 
         <label for="valutazione">Valutazione in <abbr title="stelle"><i
               class='fas fa-star starChecked'></i></abbr></label>
-        <select class="styleSelectStelle" id="valutazione" name="valutazione" required>
+        <select class="styleSelectStelle" id="valutazione" name="valutazione">
           <option value="5">5</option>
           <option value="4">4</option>
           <option value="3">3</option>
@@ -53,7 +53,7 @@
         </select>
 
         <label for="commento">Commento</label>
-        <span><textarea class="styleTextArea ultimoInput" id="commento" name="commento" required></textarea></span>
+        <span><textarea class="styleTextArea ultimoInput" id="commento" name="commento"></textarea></span>
         <span id="remaining"></span>
 
 

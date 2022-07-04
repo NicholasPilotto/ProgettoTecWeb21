@@ -27,7 +27,7 @@ if (!isset($_SESSION["Nome"])) {
                 </li>
                 <li>
                     <i class='fa-li fas fa-list-alt fa-3x'></i>
-                    <h3 lang='en'><a href='orderToShip.php'>Ordini pendenti</a></h3>
+                    <h3 lang='en'><a href='ordiniPendenti.php'>Ordini pendenti</a></h3>
                     <p>Visualizza gli ordini pendenti di SecondRead</p>
                 </li>
                 <li>
@@ -64,11 +64,6 @@ if (!isset($_SESSION["Nome"])) {
                     <i class='fa-li far fa-comment-dots fa-3x'></i>
                     <h3><a href='recensioni.php'>Recensioni</a></h3>
                     <p>Visualizza, modifica o cancella le recensioni lasciate ai libri</p>
-                </li>
-                <li>
-                    <i class='fa-li far fa-question-circle fa-3x'></i>
-                    <h3><a href=''>Aiuto</a></h3>
-                    <p>Stai avendo problemi? Scopri chi contattare</p>
                 </li>
             ";
     }

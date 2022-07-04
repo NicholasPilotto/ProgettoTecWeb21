@@ -8,13 +8,15 @@ if (isset($_SESSION["Nome"])) {
     $paginaHTML = graphics::getPage("accedi_php.html");
 
     if (isset($_SESSION["error"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-times'  aria-hidden='true' aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
         unset($_SESSION["error"]);
-    } else if (isset($_SESSION["info"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
         unset($_SESSION["info"]);
-    } else if (isset($_SESSION["success"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
         unset($_SESSION["success"]);
     } else {
         $paginaHTML = str_replace("</alert>", "", $paginaHTML);

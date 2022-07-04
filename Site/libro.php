@@ -12,9 +12,10 @@ $paginaPrecedente = " &gt;&gt; Dettaglio Libro"; // caso dalla home
 if (isset($_SESSION["paginaPrecedente"])) {
     $paginaPrecedente = $_SESSION["paginaPrecedente"];
     $paginaPrecedente .= " &gt;&gt; Libro";
-
-    unset($_SESSION['paginaPrecedente']);
 }
+
+// non sto modificando un libro
+unset($_SESSION["editFlag"]);
 
 // prima di fare il getPage() che cancella la sessione, prendo da che pagina vengo, e poi cancello la sessione
 $paginaHTML = graphics::getPage("libro_php.html");
@@ -103,12 +104,9 @@ if (isset($_GET['isbn'])) {
         }
 
         //
-        //$infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
         if ($sconto) {
             $prezzoVecchio = $tmp[0]['prezzo'];
-
             $infoGenerali .= "<p class='miniGrassetto'>Sconto da <del>&euro;" . $prezzoVecchio . "</del> a &euro;" . $prezzo . "</p>";
-            //$infoGenerali .= "<p class='miniGrassetto'><abbr title='Sconto da &euro;" . $prezzoVecchio . " a'><del>&euro;" . $prezzoVecchio . "</del></abbr> &euro;" . $prezzo . "</p>";
         } else {
             $infoGenerali .= "<p class='miniGrassetto'>&euro;" . $prezzo . "</p>";
         }
@@ -195,9 +193,7 @@ if (isset($_GET['isbn'])) {
         // ---- RECENSIONI ----
         $queryRecensioni = $connessione->get_reviews_by_isbn($isbn);
 
-        // echo $queryRecensioni->get_error_message();
-        // die();
-        $listaRecensioni = "<ul id='listaRecensioni' title='Lista recensioni'>";
+        $listaRecensioni = "";
         $cont = 0;
         $maxRec = 8;
 
@@ -222,6 +218,7 @@ if (isset($_GET['isbn'])) {
                 }
             }
 
+            $listaRecensioni .= "<ul id='listaRecensioni' title='Lista recensioni'>";
             foreach ($arrayRecensioni as $recensione) {
                 if ($cont >= $maxRec) {
                     break;
@@ -295,10 +292,11 @@ if (isset($_GET['isbn'])) {
 
                 $listaRecensioni .= "</li>";
             }
+            $listaRecensioni .= "</ul>";
         } else {
-            $listaRecensioni .= "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Nessuna recensione presente</span></br>";
+            $listaRecensioni = graphics::createAlert("info", "Nessuna recensione presente");
         }
-        $listaRecensioni .= "</ul>";
+        
 
         // Link lascia recensione
         // se l'utente è loggato, può recensire, altrimenti viene mandato al login
@@ -348,13 +346,20 @@ if (isset($_GET['isbn'])) {
             </form>";
         } else {
             // admin
+
+            $present = $connessione->get_active_offer_by_isbn($isbn);
+            $saleButton = "";
+            if($present->is_empty())
+            {
+                $saleButton = "<form action='applicaSconto.php?isbn=" . $isbn . "' method='post'>
+                                    <input type='submit' class='button' value='Applica sconto' />
+                               </form>";
+            }
+
             $formBottoni = "
             <form action='aggiungiLibro.php?isbn=" . $isbn . "' method='post'>
                 <input type='submit' class='button' name='modificaLibroTrigger' value='Modifica libro' />
-            </form>
-            <form action='applicaSconto.php?isbn=" . $isbn . "' method='post'>
-                <input type='submit' class='button' value='Applica sconto' />
-            </form>";
+            </form>" . $saleButton;
 
             // se sono admin, vedo quante copie ci sono nel db
             $infoGenerali .= "<p class='miniGrassetto'>Ci sono " . $tmp[0]['quantita'] . " copie in magazzino</p>";
@@ -381,18 +386,29 @@ if (isset($_GET['isbn'])) {
     } else {
         $trovatoErrore = true;
     }
+    $connessione->closeConnection();
 } else {
     $trovatoErrore = true;
 }
-$connessione->closeConnection();
+
+if (isset($_SESSION["error"])) {
+    $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
+    unset($_SESSION["error"]);
+}
+if (isset($_SESSION["info"])) {
+    $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
+    unset($_SESSION["info"]);
+}
+if (isset($_SESSION["success"])) {
+    $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
+    unset($_SESSION["success"]);
+} else {
+    $paginaHTML = str_replace("</alert>", "", $paginaHTML);
+}
 
 if ($trovatoErrore) {
     // Errore, pagina senza genereId o con idGenere sbagliato
     header("Location: error.php");
-    // $errore = "<img src='images/404.jpg' alt='Errore 404, genere inesistente' id='erroreImg'>";
-
-    // $paginaHTML = str_replace("</listaNuovi>", $errore, $paginaHTML);
-    // $paginaHTML = str_replace("</nomeGenere>", "Errore", $paginaHTML);
 }
 
 // -------------------

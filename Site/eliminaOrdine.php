@@ -20,6 +20,7 @@ if (isset($user)) {
     if ($a) {
       $delete = $connessione->delete_order($order, $user);
       if ($delete->ok()) {
+        $_SESSION["success"] = "Ordine eliminato correttamente";
         header("Location: ordini.php");
       } else {
         $_SESSION["info"] = $delete->get_error_message();

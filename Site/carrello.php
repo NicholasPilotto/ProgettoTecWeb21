@@ -11,6 +11,13 @@ require_once "cart.php";
 
 $paginaHTML = graphics::getPage("carrello_php.html");
 
+// setto sessione per paginaPrecedente, che era stata cancellata in getPage()
+$url = explode("/", $_SERVER['REQUEST_URI']);
+$current = end($url);
+
+$_SESSION['paginaPrecedente'] = " &gt;&gt; <a href='" . $current . "'>Carrello</a>";
+// -------------------------------------------------------------------------
+
 $codiceIdentificativo = $_SESSION["Codice_identificativo"];
 $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
 if (!isset($_SESSION["Nome"]) || $codiceIdentificativo == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
@@ -40,8 +47,8 @@ if (isset($_SESSION["cart"])) {
             $carrelloDiv .= "<a href='libro.php?isbn=" . $isbn . "'><img class='carrelloImg' src='" . $res[0]['percorso'] . "' alt=''></a>";
             $carrelloDiv .= "<div>";
             $carrelloDiv .= "<a class='titolo' href='libro.php?isbn=" . $isbn . "'>" . $res[0]['titolo'] . "</a>";
-            $carrelloDiv .= "<p>Quantit&agrave;: " . $data->quant . "</p>";
-            $carrelloDiv .= "<p>Costo totale: &euro;" . number_format((float)$data->total, 2, '.', '') . "</p>";
+            $carrelloDiv .= "<p><span class='miniGrassetto'>Quantit&agrave;:</span> " . $data->quant . "</p>";
+            $carrelloDiv .= "<p><span class='miniGrassetto'>Costo totale:</span> &euro;" . number_format((float)$data->total, 2, '.', '') . "</p>";
             $carrelloDiv .= "<form method='post' id='removeCartForm' action='removecart.php?isbn=" . $isbn . "'><input class='button cartButton' type='submit' value='Rimuovi'/></form>";
             $carrelloDiv .= "</div>";
             $carrelloDiv .= "</li>";
@@ -51,23 +58,27 @@ if (isset($_SESSION["cart"])) {
     }
     $carrelloDiv .= "</ul>";
 
-    $purchase = "<form method='post' action='acquista.php'><input type='submit' class='button procediAcquistoButton' value='Procedi con l&lsquo;acquisto'/></form>";
-    $totString = "<div class='carrelloStatus'><p>" . "Prezzo totale: &euro;" . number_format((float)$tot, 2, '.', '') . "</p>" . $purchase . "</div>";
+    $purchase = "<form class='formOrdine' method='post' action='acquista.php'><input type='submit' class='button procediAcquistoButton' value='Procedi con l&lsquo;acquisto'/></form>";
+    $totString = "<p class='carrelloStatus'>" . "<span class='boldText'>Prezzo totale:</span> &euro;" . number_format((float)$tot, 2, '.', '') . "</p>" . $purchase;
     $paginaHTML = str_replace("</totale>", $totString, $paginaHTML);
 } else {
     if (isset($_SESSION["error"])) {
-        $paginaHTML = str_replace("</totale>", "<span class='alert error'><i class='fa fa-close'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span></br>", $paginaHTML);
+        $paginaHTML = str_replace("</totale>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
         unset($_SESSION["error"]);
-    } else if (isset($_SESSION["info"])) {
-        $paginaHTML = str_replace("</totale>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span></br>", $paginaHTML);
-        unset($_SESSION["info"]);
-    } else if (isset($_SESSION["success"])) {
-        $paginaHTML = str_replace("</totale>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span></br>", $paginaHTML);
-        unset($_SESSION["success"]);
-    } else {
-        // $paginaHTML = str_replace("</alert>", "", $paginaHTML);
-        $carrelloDiv .= "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Il carrello è vuoto</span></br>";
     }
+    if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</totale>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
+        unset($_SESSION["info"]);
+    }
+    if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</totale>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
+        unset($_SESSION["success"]);
+    }
+    else
+    {
+        $carrelloDiv .= graphics::createAlert("info", "Il carrello &egrave; vuoto");
+    }
+
     $paginaHTML = str_replace("</totale>", "", $paginaHTML);
 }
 

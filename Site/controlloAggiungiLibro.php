@@ -22,6 +22,7 @@ $a = $connessione->openConnection();
 $isbn = $_POST["isbn"];
 $titolo = $_POST["titolo"];
 $copertina = $_FILES["copertina"];
+
 $autore = $_POST["autore"];
 $editore = $_POST["editore"];
 $prezzo = $_POST["prezzo"];
@@ -34,7 +35,7 @@ $categoria = $_POST["categoria"];
 $percorso = $_POST["imgSrc"];
 
 $isbnCheck = (isset($isbn) && preg_match('/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/', $isbn));
-$titoloCheck = (isset($titolo) && preg_match('/^[a-zA-Z0-9 <>"=/òàùèéÈÉÀÁÒÓÙÚ()\'?.,!-]{10,500}$/', $titolo));
+$titoloCheck = (isset($titolo) && preg_match('/^[a-zA-Z0-9 <>"=\/òàùèéÈÉÀÁÒÓÙÚ()\'?.,!-:;_&%\$€]{10,500}$/', $titolo));
 $copertinaCheck = (isset($copertina));
 $autoreCheck = (isset($autore));
 $editoreCheck = (isset($editore));
@@ -42,20 +43,18 @@ $prezzoCheck = (isset($prezzo) && preg_match('/^([1-9][0-9]*)([.]([0-9]+))*$/', 
 $pagineCheck = (isset($pagine) && preg_match('/^[1-9][0-9]*$/', $pagine));
 $quantitaCheck = (isset($quantita) && preg_match('/^[1-9][0-9]*$/', $quantita));
 $dataCheck = (isset($data));
-$tramaCheck = (isset($trama) && preg_match('/^[a-zA-Z0-9 =«»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()\'’´?.,!-<>{}[\]]{10,2500}$/', $trama));
+$tramaCheck = (isset($trama) && preg_match('/^[a-zA-Z0-9 =«»åòàùèéÈÉÀÁÒÓÙÚìÌÍ()\'’´?.,!-<>{}:;_&%\$€[\]]{10,2500}$/', $trama));
 $categoriaCheck = (isset($categoria));
-
 
 if (!$a) {
   $_SESSION["error"] = "Impossibile connettersi al sistema";
   header("Location: aggiungiLibro.php?isbn=" . $isbn);
 }
 
-if (isset($_POST["modificaLibroTrigger"])) {
+//echo var_dump($isbnCheck) . " " . var_dump($titoloCheck) . " " . var_dump($editoreCheck) . " " . var_dump($pagineCheck) . " " . var_dump($prezzoCheck) . " " . var_dump($quantitaCheck) . " " . var_dump($dataCheck) . " " . var_dump($copertinaCheck) . " " . var_dump($tramaCheck) . " " . !empty($autoreCheck)  . " " . !empty($categoriaCheck);
+
+if (isset($_SESSION["editFlag"])) {
   // modifica libro
-  // echo var_dump($isbnCheck) . " " . var_dump($titoloCheck) . " " . var_dump($editoreCheck) . " " . var_dump($pagineCheck) . " " . var_dump($prezzoCheck) . " " . var_dump($quantitaCheck) . " " . var_dump($dataCheck) . " " . var_dump($copertinaCheck) . " " . var_dump($tramaCheck) . " " . !empty($autoreCheck)  . " " . !empty($categoriaCheck);
-  // echo $dataPubblicazione;
-  // die();
 
   if ($isbnCheck) {
     $oldBookData = $connessione->get_book_by_isbn($isbn);
@@ -76,8 +75,14 @@ if (isset($_POST["modificaLibroTrigger"])) {
     $pathToChange = NULL;
 
     if ($copertina["size"] != 0) {
-      if (move_uploaded_file($_FILES["copertina"]["tmp_name"], "./images/books/" . $_FILES["copertina"]["name"])) {
-        $pathToChange = "images/books/" . $_FILES["copertina"]["name"];
+      $newName = NULL;
+      if (file_exists("./images/books/" . $_FILES["copertina"]["name"])) {
+        $path_parts = pathinfo($_FILES["copertina"]["name"]);
+        $newName = $path_parts['filename'] . $isbn . "." . $path_parts['extension'];
+      }
+  
+      if (move_uploaded_file($_FILES["copertina"]["tmp_name"], "./images/books/" . (isset($newName) ? $newName : $_FILES["copertina"]["name"]))) {
+        $pathToChange = "images/books/" . (isset($newName) ? $newName : $_FILES["copertina"]["name"]);
       } else {
         $_SESSION["info"] = "Impossibile salvare immagine di copertina.";
         header("Location: aggiungiLibro.php?isbn=" . $isbn);
@@ -98,7 +103,8 @@ if (isset($_POST["modificaLibroTrigger"])) {
     if ($edit->ok()) {
       $_SESSION["success"] = "Libro modificato con successo!";
       $connessione->closeConnection();
-      header("Location: aggiungiLibro.php?isbn=" . $isbn);
+      header("Location: libro.php?isbn=" . $isbn);
+      die();
     } else {
       $_SESSION["info"] = $edit->get_error_message();
     }
@@ -112,32 +118,43 @@ if (isset($_POST["modificaLibroTrigger"])) {
 
   $newName = NULL;
 
-  if (isset($copertina)) {
-    if (file_exists("./images/books/" . $_FILES["copertina"]["name"])) {
-      $newName = $_FILES["copertina"]["name"] . $isbn;
-    }
-
-    if (move_uploaded_file($_FILES["copertina"]["tmp_name"], "./images/books/" . (isset($newName) ? $newName : $_FILES["copertina"]["name"]))) {
-      $path = "images/books/" . $_FILES["copertina"]["name"];
-    } else {
-      $_SESSION["info"] = "Impossibile salvare immagine di copertina.";
-      header("Location: aggiungiLibro.php?isbn=" . $isbn);
-    }
-
-    if ($isbnCheck && $titoloCheck && $editoreCheck && $pagineCheck && $prezzoCheck && $quantitaCheck && $dataCheck && $copertinaCheck && $tramaCheck && !empty($autoreCheck) && !empty($categoriaCheck)) {
+  if ($isbnCheck && $titoloCheck && $editoreCheck && $pagineCheck && $prezzoCheck && $quantitaCheck && $dataCheck && $copertinaCheck && $tramaCheck && !empty($autoreCheck) && !empty($categoriaCheck))
+  {
+    if (isset($copertina))
+    {
+      if (file_exists("./images/books/" . $_FILES["copertina"]["name"])) {
+        $newName = $_FILES["copertina"]["name"] . $isbn;
+      }
+  
+      if (move_uploaded_file($_FILES["copertina"]["tmp_name"], "./images/books/" . (isset($newName) ? $newName : $_FILES["copertina"]["name"]))) {
+        $path = "images/books/" . $_FILES["copertina"]["name"];
+      }
+      else
+      {
+        $_SESSION["info"] = "Impossibile salvare immagine di copertina.";
+        header("Location: aggiungiLibro.php");
+        die();
+      }
+      
       $aux = $connessione->insert_book($isbn, $titolo, $editore, $pagine, $prezzo, $quantita, $data, $path, $autore, $categoria, $trama);
       if ($aux->ok()) {
         $_SESSION["success"] = "Libro inserito correttamente";
+        header("Location: libro.php?isbn=" . $isbn);
+        die();
       } else {
         $_SESSION["info"] = $aux->get_error_message();
       }
-    } else {
-      $_SESSION["info"] = "Dati mancanti o non corretti.";
     }
-  } else {
-    $_SESSION["info"] = "La copertina sembra non essere presente, ricontrolla.";
+    else
+    {
+      $_SESSION["info"] = "La copertina sembra non essere presente, ricontrolla.";
+    }
+  }
+  else
+  {
+    $_SESSION["info"] = "Dati mancanti o non corretti.";
   }
   $connessione->closeConnection();
 }
 
-header("Location: aggiungiLibro.php?isbn=" . $isbn);
+header("Location: aggiungiLibro.php");

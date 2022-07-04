@@ -78,7 +78,7 @@
                 $tabellaGuadagni .=   "<thead>";
                 $tabellaGuadagni .=       "<tr>";
                 $tabellaGuadagni .=           "<th scope='col'>Mese</th>";
-                $tabellaGuadagni .=           "<th class='tdthDestra' scope='col'>Guadagno</th>";
+                $tabellaGuadagni .=           "<th scope='col'>Guadagno</th>";
                 $tabellaGuadagni .=       "</tr>";
                 $tabellaGuadagni .=   "</thead>";
 
@@ -87,8 +87,8 @@
                 for($i = 0; $i < count($xValues); $i++)
                 {
                     $tabellaGuadagni .=   "<tr>";
-                    $tabellaGuadagni .=         "<td>" . $xValues[$i] . "</td>";
-                    $tabellaGuadagni .=         "<td class='tdthDestra'>&euro;" . $yValues[$i] . "</td>";
+                    $tabellaGuadagni .=         "<td data-label='Mese'>" . $xValues[$i] . "</td>";
+                    $tabellaGuadagni .=         "<td data-label='Guadagno'>&euro;" . $yValues[$i] . "</td>";
                     $tabellaGuadagni .=   "</tr>";
 
                     $m = substr($xValues[$i], 0, 3);

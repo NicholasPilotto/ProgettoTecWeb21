@@ -11,15 +11,22 @@ if (!isset($_SESSION["Nome"])) {
 } else {
     $paginaHTML = graphics::getPage("recensioni_php.html");
 
+    // setto sessione per paginaPrecedente, che era stata cancellata in getPage()
+    $url = explode("/", $_SERVER['REQUEST_URI']);
+    $current = end($url);
+
+    $_SESSION['paginaPrecedente'] = " &gt;&gt; <a href='account.php'>Account</a> &gt;&gt; <a href='" . $current . "'>Recensioni</a>";
+    // -------------------------------------------------------------------------
+
     // Accesso al database
     $connessione = new Service();
     $a = $connessione->openConnection();
 
     $queryRecensioni = $connessione->get_reviews_by_user($_SESSION["Codice_identificativo"]);
 
-    $listaRecensioni = "<ul id='listaRecensioni'>";
-
+    $listaRecensioni = "";
     if ($queryRecensioni->ok() && !$queryRecensioni->is_empty()) {
+        $listaRecensioni .= "<ul id='listaRecensioni'>";
         $cont = 0;
         $arrayMesi = array(
             "01" => "Gennaio",
@@ -79,22 +86,27 @@ if (!isset($_SESSION["Nome"])) {
             $listaRecensioni .= "</form>";
 
             $listaRecensioni .= "</li>";
+
+            $listaRecensioni .= "</ul>";
         }
     } else {
         $_SESSION["info"] = "Non sono presenti recensioni";
     }
-    $listaRecensioni .= "</ul>";
 
     if (isset($_SESSION["error"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-times'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
         unset($_SESSION["error"]);
-    } else if (isset($_SESSION["info"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
         unset($_SESSION["info"]);
-    } else if (isset($_SESSION["success"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
         unset($_SESSION["success"]);
-    } else {
+    }
+    else
+    {
         $paginaHTML = str_replace("</alert>", "", $paginaHTML);
     }
 

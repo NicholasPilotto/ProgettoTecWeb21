@@ -29,7 +29,9 @@ if (isset($_POST["aggiungiCarrello"])) {
     }
     $c->add($isbn, $quant, $prezzo);
     $c->save();
-    header("Location:index.php");
+
+    $_SESSION['success'] = "Libro aggiunto al carrello";
+    header("Location: libro.php?isbn=" . $isbn);
   } else {
     header("Location: accedi.php");
   }
@@ -44,9 +46,10 @@ if (isset($_POST["aggiungiCarrello"])) {
       $c->insert_into_wishlist($user, $isbn);
       $c->closeConnection();
 
+      $_SESSION['success'] = "Libro aggiunto alla wishlist";
       header("Location: libro.php?isbn=" . $isbn);
     } else {
-      header("Location: index.php");
+      header("Location: error.php");
     }
   } else {
     header("Location: accedi.php");

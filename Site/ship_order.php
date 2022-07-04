@@ -14,7 +14,7 @@ require_once "cart.php";
 $user = $_SESSION["Codice_identificativo"];
 $user = hash('sha256', $user);
 
-if (isset($user) && $user != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
+if (isset($user) && $user == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88cf4da5542b0957") {
   $connessione = new Service();
   $a = $connessione->openConnection();
 
@@ -25,7 +25,7 @@ if (isset($user) && $user != "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
     if ($orderCheck) {
       // echo $order;
       $data = $connessione->ship_order($order);
-      if ($data->ok()) {
+      if ($data->get_errno() == 0) {
         $_SESSION["success"] = "Ordine spedito correttamente";
       } else {
         $_SESSION["info"] = $data->get_error_message();

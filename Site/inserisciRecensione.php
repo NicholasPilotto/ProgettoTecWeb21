@@ -36,14 +36,14 @@ if ($valueCheck && $commentCheck && $isbnCheck && $utenteCheck) {
           $_SESSION["info"] = "Hai già recensito questo libro.";
           $connessione->closeConnection();
 
-          header("Location: lasciaRecensione.php?isbn=" . $isbn);
+          header("Location: libro.php?isbn=" . $isbn);
         }
         $connessione->closeConnection();
         unset($_SESSION["isbnRevire"]);
 
         $_SESSION["success"] = "Recensione inserita con successo.";
 
-        header("Location: lasciaRecensione.php?isbn=" . $isbn);
+        header("Location: libro.php?isbn=" . $isbn);
       } else {
         $_SESSION["info"] = $utente->get_error_message();
         $connessione->closeConnection();

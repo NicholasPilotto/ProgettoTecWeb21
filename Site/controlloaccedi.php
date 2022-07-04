@@ -18,8 +18,8 @@ if (!$c) {
 } else {
   $usernameCheck = (isset($username) && preg_match('/^[A-Za-z\s]\w{2,10}$/', $username));
   $passwordCheck = (isset($password) && preg_match('/^[\w~!@#$%^&*--+={}\[\]|\\:;<>,.?_]+.{2,20}$/', $password));
-  if ($usernameCheck && $passwordCheck) {
-
+  if ($usernameCheck && $passwordCheck)
+  {
     $log = $connessione->login($username, $password);
 
     if ($log->ok()) {
@@ -35,19 +35,25 @@ if (!$c) {
         $_SESSION["Telefono"] = $log->get_result()[0]['telefono'];
         $connessione->closeConnection(); // chiudo la connessione
         header("Location: index.php");
-      } else {
+      }
+      else
+      {
         $_SESSION["info"] = $log->get_error_message();
         $connessione->closeConnection(); // chiudo la connessione
         header("Location: accedi.php");
       }
-    } else {
-      $_SESSION["info"] = "Non tutti i campi sono stati inseriti";
+    }
+    else
+    {
+      $_SESSION["info"] = "Credenziali errate";
       $connessione->closeConnection(); // chiudo la connessione
       header("Location: accedi.php");
     }
-  } else {
+  }
+  else
+  {
     $connessione->closeConnection(); // chiudo la connessione
-    $_SESSION["info"] = $log->get_error_message();
+    $_SESSION["info"] = "Campi vuoti o non corretti";
     header("Location: accedi.php");
   }
 }

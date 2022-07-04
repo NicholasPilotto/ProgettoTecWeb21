@@ -42,34 +42,24 @@
   </nav>
 
   <div id="content">
+    <h2>Applica Sconto</h2>
+    </alert>
+
     <form class="formInput" id="formApplicaSconto" action='addSale.php' method="post">
       <fieldset>
-        <h2>Applica Sconto</h2>
+        <p id="isbn">ISBN: </isbnApplicaSconto> </p>
+        <input type="hidden" name="isbn" value="</isbnApplicaSconto>" />
 
-        </alert>
-
-        <label for="isbn">ISBN</label>
-        <span>
-          <p class="styleInput" id="isbn" name="isbn" type="text">
-            </isbnApplicaSconto>
-          </p>
-        </span>
-
-        <label for="titolo">Titolo</label>
-        <span>
-          <p class="styleInput" id="titolo" name="titolo" type="text">
-            </titoloApplicaSconto>
-          </p>
-        </span>
+        <p id="titolo">Titolo: </titoloApplicaSconto></p>
 
         <label for="sconto">Sconto in &percnt;</label>
         <span><input class="styleInput" id="sconto" name="sconto" type="number" min="5" max="90" step="1"></span>
 
-        <label for="nascita">Data di inizio</label>
+        <label for="inizio">Data di inizio</label>
         <span><input class="styleInput" id="inizio" name="inizio" type="date" min="1950-01-01" max="2022-12-31"
             value="</startDate>" /></span>
 
-        <label for="nascita">Data di fine</label>
+        <label for="fine">Data di fine</label>
         <span><input class="styleInput" id="fine" name="fine" type="date" min="1950-01-01" max="2022-12-31"
             value="</endDate>" /></span>
 

@@ -25,8 +25,7 @@ $carrelloDiv = "";
 
 if (isset($_SESSION["cart"])) {
     $c = cart::build_cart_from_session();
-    $tot = "<p class='carrelloStatus'>Costo totale ordine: &euro;" . $c->get_total() . "</p>";
-    $paginaHTML = str_replace("</totale>", $tot, $paginaHTML);
+    $tot = "<p class='totaleAcquisto'><span class='miniGrassetto'>Costo totale ordine:</span> &euro;" . $c->get_total() . "</p>";
     $selectIndirizzi = "";
 
     $scadenza = "1971-01-01";
@@ -39,12 +38,27 @@ if (isset($_SESSION["cart"])) {
         }
         $selectIndirizzi .= "</select>";
     } else {
-        // $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' disabled><option></option></select>";
-        $selectIndirizzi = "<span><p class='errorSuggestion' id='indirizzo' name='indirizzo'>Devi prima registrare un indirizzo</p></span>";
+        $selectIndirizzi = "<span><a class='indirizziError' id='indirizzo' name='indirizzo' href='aggiungiIndirizzo.php'>Devi prima salvare un indirizzo</a></span>";
     }
 
+    $paginaHTML = str_replace("</totale>", $tot, $paginaHTML);
     $paginaHTML = str_replace("</scadenza>", $scadenza, $paginaHTML);
     $paginaHTML = str_replace("</selectIndirizzi>", $selectIndirizzi, $paginaHTML);
+
+    if (isset($_SESSION["error"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
+        unset($_SESSION["error"]);
+    }
+    if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
+        unset($_SESSION["info"]);
+    }
+    if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
+        unset($_SESSION["success"]);
+    } else {
+        $paginaHTML = str_replace("</alert>", "", $paginaHTML);
+    }
 } else {
     header("Location:carrello.php");
 }

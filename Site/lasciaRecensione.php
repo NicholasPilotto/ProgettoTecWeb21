@@ -6,7 +6,7 @@ use DB\Service;
 require_once('backend/db.php');
 require_once "graphics.php";
 
-if (!isset($_SESSION["Nome"])) {
+if (!isset($_SESSION["Nome"]) || !isset($_SESSION["Codice_identificativo"])) {
     header("Location: index.php");
 } else {
     $paginaHTML = graphics::getPage("lasciaRecensione_php.html");
@@ -28,29 +28,45 @@ if (!isset($_SESSION["Nome"])) {
 
         $queryIsbn = $connessione->get_book_by_isbn($isbn);
 
-        if ($queryIsbn->ok() && !$queryIsbn->is_empty()) {
-            $tmp = $queryIsbn->get_result();
-
-            // il libro c'è, ora controllo se c'è già una recensione (caso nel quale si voglia modificarla)
-
-        } else {
-            $_SESSION["error"] = "Hai già recensito questo libro.";
+        if ($queryIsbn->ok() && !$queryIsbn->is_empty())
+        {
+            // il libro c'è, ora controllo se c'è già una recensione
+            $queryControlloRecensione = $connessione->get_reviews_by_isbn($isbn);
+            if(!$queryControlloRecensione->is_empty())
+            {
+                foreach($queryControlloRecensione->get_result() as $recensione)
+                {
+                    if($recensione['idUtente'] == $_SESSION["Codice_identificativo"])
+                    {
+                        $_SESSION["info"] = "Hai gi&agrave; recensito questo libro";
+                        unset($_SESSION["paginaPrecedente"]);
+                        header("Location: libro.php?isbn=" . $isbn);
+                        die();
+                    }
+                }
+            }
+        }
+        else
+        {
+            header("Location: error.php");
         }
 
         $connessione->closeConnection();
     } else {
-        $_SESSION["info"] = "ISBN inserito non valido.";
+        header("Location: error.php");
     }
     // -------------------
 
     if (isset($_SESSION["error"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-times'  aria-hidden='true' aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
         unset($_SESSION["error"]);
-    } else if (isset($_SESSION["info"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["info"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
         unset($_SESSION["info"]);
-    } else if (isset($_SESSION["success"])) {
-        $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
+    }
+    if (isset($_SESSION["success"])) {
+        $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
         unset($_SESSION["success"]);
     } else {
         $paginaHTML = str_replace("</alert>", "", $paginaHTML);

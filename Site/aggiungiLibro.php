@@ -49,7 +49,9 @@ if (!isset($_SESSION["Nome"])) {
             $modificaLibroAutori = array();
             $modificaLibroCategorie = array();
             $modificaLibroEditore = "";
-            if (isset($_GET['isbn'])) {
+            if (isset($_GET['isbn']))
+            {
+                $_SESSION["editFlag"] = true;
                 // modifica libro
                 $isbn = $_GET['isbn'];
                 $queryIsbn = $connessione->get_book_by_isbn($isbn);
@@ -81,7 +83,13 @@ if (!isset($_SESSION["Nome"])) {
                     $_SESSION["info"] = "Nessun libro trovato con tale ISBN";
                 }
             }
-        } else {
+            else
+            {
+                unset($_SESSION["editFlag"]);
+            }
+        }
+        else
+        {
             $_SESSION["error"] = "Impossibile connettersi al sistema";
         }
         // -------------------------------------------------------------------
@@ -116,7 +124,7 @@ if (!isset($_SESSION["Nome"])) {
         $selectCategorie .= "</select>";
 
         $queryEditori = $connessione->get_all_editors();
-        $selectEditori = "<select class='styleSelect' id='editore' name='editore' required>";
+        $selectEditori = "<select class='styleSelect' id='editore' name='editore'>";
         if ($queryEditori->ok()) {
             foreach (OrderWithoutTags($queryEditori->get_result(), "nome") as $editore) {
                 // se sono nella modifica, devo cercare l'editore del libro e selezionarlo
@@ -129,10 +137,9 @@ if (!isset($_SESSION["Nome"])) {
         }
 
         $selectEditori .= "</select>";
-        $isbnSettings = "required";
-        if (isset($_POST["modificaLibroTrigger"])) {
+        $isbnSettings = "";
+        if (isset($_SESSION["editFlag"])) {
             $isbnSettings = "readonly";
-            $_SESSION["editFlag"] = true;
         }
         $paginaHTML = str_replace("</isbnSettings>", $isbnSettings, $paginaHTML);
         $paginaHTML = str_replace("</selectAutori>", $selectAutori, $paginaHTML);
@@ -150,14 +157,15 @@ if (!isset($_SESSION["Nome"])) {
         $paginaHTML = str_replace("</modificaLibroTrama>", $modificaLibroTrama, $paginaHTML);
 
         if (isset($_SESSION["error"])) {
-            $paginaHTML = str_replace("</alert>", "<span class='alert error'><i class='fa fa-times'  aria-hidden='true'></i> " . $_SESSION["error"] . "</span>", $paginaHTML);
+            $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
             unset($_SESSION["error"]);
-        } else if (isset($_SESSION["info"])) {
-            $paginaHTML = str_replace("</alert>", "<span class='alert info'><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> " . $_SESSION["info"] . "</span>", $paginaHTML);
+        }
+        if (isset($_SESSION["info"])) {
+            $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
             unset($_SESSION["info"]);
-        } else if (isset($_SESSION["success"])) {
-
-            $paginaHTML = str_replace("</alert>", "<span class='alert success'><i class='fa fa-check' aria-hidden='true'></i> " . $_SESSION["success"] . "</span>", $paginaHTML);
+        }
+        if (isset($_SESSION["success"])) {
+            $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
             unset($_SESSION["success"]);
         } else {
             $paginaHTML = str_replace("</alert>", "", $paginaHTML);

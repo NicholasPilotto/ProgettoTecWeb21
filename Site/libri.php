@@ -31,7 +31,9 @@ if ($queryLibri->ok())
     $listaLibri .= "</ul>";
 
     $paginaHTML = str_replace("</listaLibri>", $listaLibri, $paginaHTML);
-} else {
+}
+else
+{
     // la query ha prodotto un errore
 }
 

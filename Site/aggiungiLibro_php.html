@@ -34,6 +34,7 @@
 
     <div id="content">
         <h2>Aggiungi Libro</h2>
+        </alert>
         <div class="divPreForm">
             <abbr title="Attenzione!"><i class="fas fa-exclamation-triangle"></i></abbr>
             <p>Le eventuali parole in lingua straniera contenute nel titolo e trama vanno scritte nel seguente modo:</p>
@@ -41,16 +42,13 @@
         </div>
         <form class="formInput" id="form" action='controlloAggiungiLibro.php' method="post"
             enctype="multipart/form-data">
-            </alert>
             <fieldset>
                 <label for="isbn">ISBN</label>
                 <span><input class="styleInput" id="isbn" name="isbn" type="number" value="</modificaLibroISBN>"
                         </isbnSettings>></span>
 
                 <label for="titolo">Titolo</label>
-                <!-- <span><input class="styleInput" id="titolo" name="titolo" type="text" value="</modificaLibroTitolo>" required></span> -->
-                <span><textarea class="styleTextArea" id="titolo" name="titolo"
-                        required></modificaLibroTitolo></textarea></span>
+                <span><textarea class="styleTextArea" id="titolo" name="titolo"></modificaLibroTitolo></textarea></span>
 
                 <label for="copertina">Copertina</label>
                 <input type="hidden" id="imgSrc" name="imgSrc" value="</modificaLibroCopertina>" />
@@ -77,23 +75,22 @@
 
                 <label for="pagine">Pagine</label>
                 <span><input class="styleInput" id="pagine" name="pagine" type="number" min="1" step="1"
-                        value="</modificaLibroPagine>" required></span>
+                        value="</modificaLibroPagine>"></span>
 
                 <label for="prezzo">Prezzo in &euro; (usare . come separatore delle decine)</label>
                 <span><input class="styleInput" id="prezzo" name="prezzo" type="number" min="0.00" max="1000.00"
-                        step="0.01" value="</modificaLibroPrezzo>" required></span>
+                        step="0.01" value="</modificaLibroPrezzo>"></span>
 
                 <label for="quantita">Quantit&agrave;</label>
                 <span><input class="styleInput" id="quantita" name="quantita" type="number" min="0" step="1"
-                        value="</modificaLibroQuantita>" required></span>
+                        value="</modificaLibroQuantita>"></span>
 
                 <label for="dataPubblicazione">Data Pubblicazione</label>
                 <span><input class="styleInput" id="dataPub" name="dataPub" type="date"
-                        value="</modificaLibroDataPubblicazione>" required></span>
+                        value="</modificaLibroDataPubblicazione>"></span>
 
                 <label for="trama">Trama</label>
-                <span><textarea class="styleTextArea ultimoInput" id="trama" name="trama"
-                        required></modificaLibroTrama></textarea></span>
+                <span><textarea class="styleTextArea ultimoInput" id="trama" name="trama"></modificaLibroTrama></textarea></span>
 
                 <input type="submit" class="button" value="Conferma">
             </fieldset>

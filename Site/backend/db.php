@@ -620,7 +620,6 @@ class Service extends Constant {
       $stmt->close();
       return new response_manager(array(), $this->connection, "Qualcosa sembra essere andato storto");
     }
-
     $response = $stmt->execute();
 
     $stmt->close();

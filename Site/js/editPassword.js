@@ -1,12 +1,13 @@
 var dettagli_form = {
   "vecchiaPassword": [
     "Password",
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/,
-    "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
+    /*   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/,*/
+    /^[\w@$.,-;:<>!%*?&_=]{1,16}$/,
+    "Password non conforme"
   ],
   "nuovaPassword": [
     "Password",
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/,
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$.,-;:<>!%*?&_=])[A-Za-z\d@$.,-;:<>!%*?&_=]{8,16}$/,
     "Inserire una password di almeno 8 caratteri, di cui: uno minuscolo, uno maiuscolo, un numero ed un carattere speciale"
   ]
 };

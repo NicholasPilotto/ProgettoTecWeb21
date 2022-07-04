@@ -21,14 +21,9 @@ var dettagli_form = {
   ]
 };
 
-var chooseFile;
-var imgPreview;
-
 function caricamento() {
 
   let form = document.getElementById("form");
-
-  console.log(document.getElementById("indirizzo").value.length);
 
   form.addEventListener("submit", function (event) {
     if (!validazioneForm()) {
@@ -45,17 +40,21 @@ function caricamento() {
 }
 
 function validazioneCampo(input) {
-  var padre = input.parentNode;
+  if(input)
+  {
+    var padre = input.parentNode;
 
-  if (padre.children.length == 2) {
-    padre.removeChild(padre.children[1]);
-  }
+    if (padre.children.length == 2) {
+      padre.removeChild(padre.children[1]);
+    }
 
-  if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
-    mostraErrore(input);
-    return false;
+    if (input.value.search(dettagli_form[input.id][1]) != 0 || input.value == dettagli_form[input.id][0]) {
+      mostraErrore(input);
+      return false;
+    }
+    return true;
   }
-  return true;
+  return false;
 }
 
 function confirmPass() {

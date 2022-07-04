@@ -6,7 +6,7 @@ use DB\Service;
 require_once('backend/db.php');
 require_once "graphics.php";
 
-$isbn = $_POST["isbn"];
+$isbn = $_REQUEST["isbn"];
 $sconto = $_POST["sconto"];
 $inizio = $_POST["inizio"];
 $fine = $_POST["fine"];
@@ -24,7 +24,10 @@ if ($a) {
     if ($data->get_errno() != 0) {
       $_SESSION["error"] = $data->get_error_message();
     } else if ($data->get_errno() == 0) {
-      $_SESSION["success"] = "Inserimento avvenuto con successo";
+      $_SESSION["success"] = "Sconto applicato con successo";
+      $connessione->closeConnection();
+      header("Location: libro.php?isbn=" . $isbn);
+      die();
     }
   } else {
     $_SESSION["info"] = "Dati mancanti o non corretti.";

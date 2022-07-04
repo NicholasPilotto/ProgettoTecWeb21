@@ -10,8 +10,8 @@ if (isset($_SESSION["Nome"])) {
   $newPassword = $_POST["nuovaPassword"];
 
 
-  $oldPasswordCheck = (isset($oldPassword) && preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/', $oldPassword));
-  $newPasswordCheck = (isset($newPassword) && preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$.,-;:<>!%*?&]{8,16}$/', $newPassword));
+  $oldPasswordCheck = (isset($oldPassword) && preg_match('/^[\w@$.,-;:<>!%*?&_=]{1,16}$/', $oldPassword));
+  $newPasswordCheck = (isset($newPassword) && preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$.,-;:<>!%*?&_=])[A-Za-z\d@$.,-;:<>!%*?&_=]{8,16}$/', $newPassword));
 
   $username = $_SESSION["Username"];
   $codice = $_SESSION["Codice_identificativo"];

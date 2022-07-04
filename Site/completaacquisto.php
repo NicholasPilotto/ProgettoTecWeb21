@@ -18,7 +18,9 @@ $connessione = new Service();
 $a = $connessione->openConnection();
 if (!$a) {
     $_SESSION["error"] = "Non è stato possibile connettersi al sistema.";
-} else {
+}
+else
+{
     if (isset($_SESSION["Email"])) {
         $queryUtente = $connessione->get_utente_by_email($_SESSION["Email"]);
 
@@ -27,7 +29,8 @@ if (!$a) {
             $cart = cart::build_cart_from_session();
 
             $indirizzo = $_POST["indirizzo"];
-            if (isset($indirizzo) && isset($_POST["nomecognome"]) && isset($_POST["numCarta"]) && isset($_POST["dataScadenza"]) && isset($_POST["csv"]) && $queryUtente->ok()) {
+            if (!empty($indirizzo) && !empty($_POST["nomecognome"]) && !empty($_POST["numCarta"]) && !empty($_POST["dataScadenza"]) && !empty($_POST["csv"]) && $queryUtente->ok())
+            {
                 $data = $connessione->insert_order($queryUtente->get_result()[0]["codice_identificativo"], $indirizzo, $cart);
 
                 if ($data->ok()) {
@@ -54,4 +57,4 @@ if (!$a) {
         $connessione->closeConnection();
     }
 }
-header("Location: carrello.php");
+header("Location: acquista.php");
