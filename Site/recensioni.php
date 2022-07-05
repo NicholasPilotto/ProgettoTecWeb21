@@ -86,9 +86,8 @@ if (!isset($_SESSION["Nome"])) {
             $listaRecensioni .= "</form>";
 
             $listaRecensioni .= "</li>";
-
-            $listaRecensioni .= "</ul>";
         }
+        $listaRecensioni .= "</ul>";
     } else {
         $_SESSION["info"] = "Non sono presenti recensioni";
     }
