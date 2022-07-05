@@ -24,7 +24,17 @@ if (!isset($_SESSION["Nome"])) {
     require_once('backend/db.php');
     require_once "graphics.php";
 
+    $paginaPrecedenteModificaLibro = " &gt;&gt; <a lang='en' href='account.php'>Account</a> &gt;&gt; Aggiungi Libro"; // caso dall'account
+    if (isset($_SESSION["paginaPrecedenteModificaLibro"]))
+    {
+        $paginaPrecedenteModificaLibro = $_SESSION["paginaPrecedenteModificaLibro"];
+        $paginaPrecedenteModificaLibro .= " &gt;&gt; Modifica Libro";
+    }
+
     $paginaHTML = graphics::getPage("aggiungiLibro_php.html");
+
+    // replace della breadcrumb
+    $paginaHTML = str_replace("</paginaPrecedenteModificaLibro>", $paginaPrecedenteModificaLibro, $paginaHTML);
 
     $codiceIdentificativo = $_SESSION["Codice_identificativo"];
     $codiceIdentificativo = hash('sha256', $codiceIdentificativo);

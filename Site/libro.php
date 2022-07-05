@@ -8,11 +8,18 @@ require_once('backend/db.php');
 require_once "graphics.php";
 
 // Breadcrumb
-$paginaPrecedente = " &gt;&gt; Dettaglio Libro"; // caso dalla home
-if (isset($_SESSION["paginaPrecedente"])) {
+$paginaPrecedente = ""; // caso dalla home
+if (isset($_SESSION["paginaPrecedente"]) && isset($_GET['isbn'])) {
     $paginaPrecedente = $_SESSION["paginaPrecedente"];
-    $paginaPrecedente .= " &gt;&gt; Libro";
 }
+if (isset($_GET['isbn'])) 
+{
+    // setto la sessione per il modifica libro
+    $_SESSION['paginaPrecedenteModificaLibro'] = $paginaPrecedente;
+    $_SESSION['paginaPrecedenteModificaLibro'] .= " &gt;&gt; <a href='libro.php?isbn=" . $_GET['isbn'] . "'>Libro</a>";
+}
+
+$paginaPrecedente .= " &gt;&gt; Libro";
 
 // non sto modificando un libro
 unset($_SESSION["editFlag"]);

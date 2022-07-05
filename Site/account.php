@@ -7,6 +7,8 @@ if (!isset($_SESSION["Nome"])) {
 
     $paginaHTML = graphics::getPage("account_php.html");
 
+    unset($_SESSION['paginaPrecedenteModificaLibro']);
+
     $codiceIdentificativo = $_SESSION["Codice_identificativo"];
     $codiceIdentificativo = hash('sha256', $codiceIdentificativo);
     $liAccount = "";

@@ -18,7 +18,6 @@ class graphics {
                 $greeting = "Buongiorno";
             }
             $helloUser = "<p id='benvenuto'>" . $greeting . ", " . $_SESSION["Nome"] . "</p>";
-            //     $linkUtente .= "<a class='linkUtente' href='account.php'>Account</a>";
 
             $linkUtente .= '<li class="nav-item"><a class="nav-link" href="account.php">Area riservata</a></li>';
 
@@ -41,7 +40,6 @@ class graphics {
         }
 
 
-        // $headerHTML = str_replace("</linkUtente>", $linkUtente, $headerHTML);
         $linkHTML = file_get_contents("link.html");
         $paginaHTML = file_get_contents($nome);
         $footerHTML = file_get_contents("footer.html");

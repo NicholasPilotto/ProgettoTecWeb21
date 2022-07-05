@@ -1,3 +1,885 @@
-html{
-    background-color: rgb(42, 165, 58);
+/*
+==================
+SEZIONE GLOBALE
+==================
+*/
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    font-size: 12pt;
+    font-family: 'Times New Roman', Times, serif;
+    margin: auto;
+}
+
+a {
+    color: #0080FF;
+}
+
+a:visited {
+    color: #991199;
+}
+
+ul {
+    list-style-type: none;
+}
+
+/* ----- STELLE ----- */
+
+.starChecked {
+    color: orange;
+}
+
+.starNotChecked {
+    color: #aaaaaa;
+}
+
+/* ----- BADGE ----- */
+
+.badgeLv3 {
+    color: orange;
+    font-size: 1.5em;
+}
+
+.badgeLv2 {
+    color: #8a9597;
+    /*8a9597*/
+    font-size: 1.5em;
+}
+
+.badgeLv1 {
+    color: #8a6642;
+    font-size: 1.5em;
+}
+
+/* ----- BOTTONI VERDI ----- */
+.button {
+    border-radius: 3px;
+    border: 1px solid #aaaaaa;
+    font-size: large;
+
+    width: fit-content;
+}
+
+/* ----- BOTTONE TORNA SU ----- */
+
+#divTornaSu {
+    display: none;
+}
+
+#scrollTopBtn {
+    display: none;
+}
+
+/* ----- TABELLA ----- */
+
+table {
+    padding-bottom: 1.5em;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-spacing: 0;
+    border-top: 1px solid black;
+}
+
+td, th {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    
+    text-align: center;
+    padding: 0.5em;
+}
+
+th {
+    border-top: 1px solid black;
+}
+
+td:last-child,
+th:last-child {
+    border-right: 1px solid black;
+}
+
+thead {
+    background-color: white;
+    color: black;
+
+}
+
+.infoOrdine {
+    color: rgb(82, 141, 215);
+}
+
+/* ----- FORM INPUT ----- */
+.divPreForm {
+    width: 24em;
+    margin: auto;
+
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+
+    margin-bottom: 1em;
+}
+
+.divPreForm:not(i) {
+    padding-left: 1em;
+    padding-top: 1em;
+}
+
+.divPreForm p {
+    padding-right: 1em;
+}
+
+#pLingua {
+    padding-bottom: 1em;
+}
+
+.divPreForm i {
+    float: left;
+    margin-right: 0.5em;
+    color: orange;
+    margin-top: 0.2em;
+}
+
+/*    */
+
+.formInput {
+    width: 25em;
+
+    margin: auto;
+    padding-bottom: 1em;
+}
+
+.formInput fieldset {
+    padding: 2em 3em 1em 3em;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 10px;
+}
+
+.styleInput {
+    width: 100%;
+    height: 1.5em;
+    font-size: larger;
+    text-indent: 0.3em;
+}
+
+.styleMultipleSelect {
+    width: 101%;
+    font-size: larger;
+    text-indent: 0.3em;
+}
+
+.styleSelect {
+    width: 101%;
+    font-size: larger;
+    height: 1.5em;
+}
+
+.styleSelectStelle {
+    height: 1.5em;
+    font-size: large;
+}
+
+.styleSelectStelle+label {
+    display: block;
+}
+
+.styleTextArea {
+    width: 100%;
+    height: 9em;
+
+    resize: none;
+
+    font-size: large;
+    text-indent: 0.2em;
+}
+
+.formInput input[type=date] {
+    height: 2em;
+}
+
+.formInput *:not(.ultimoInput):not(option) {
+    margin-bottom: 1em;
+}
+
+.formInput input[type=submit] {
+    display: block;
+
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    height: 2em;
+
+    margin: auto;
+    margin-top: 1.2em;
+}
+
+label:after {
+    content: ": ";
+}
+
+/*
+==================
+SEZIONE MENU'
+==================
+*/
+
+#menu {
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+}
+
+.nav-item {
+    margin-left: 0em;
+}
+
+/*
+==================
+SEZIONE HEADER
+==================
+*/
+header {
+    background-color: white;
+
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    font-size: 3em;
+    flex-basis: 250px;
+    flex-grow: 1;
+}
+
+
+#benvenuto {
+    margin-top: 0.2em;
+    margin-right: 7%;
+    margin-left: 1em;
+
+    font-weight: 550;
+}
+
+/*
+==================
+SEZIONE MENU'
+==================
+*/
+#menu {
+    display: none;
+}
+
+/*
+==================
+SEZIONE BREADCRUMB
+==================
+*/
+
+#breadcrumb {
+    padding-left: 1.5em;
+    padding-top: 0.3em;
+    padding-bottom: 0.5em;
+}
+
+/*
+==================
+SEZIONE CONTENT
+==================
+*/
+
+#content {
+    background-color: white;
+}
+
+#content h2 {
+    text-align: center;
+    margin-bottom: 0.4em;
+
+    padding-top: 0.4em;
+}
+
+.bookCards {
+    text-align: center;
+
+    display: flex;
+
+    flex-wrap: wrap;
+    /* Andare a capo */
+    justify-content: center;
+}
+
+.bookCards li {
+    margin: 0 10px 10px 10px;
+    flex-basis: 11%;
+}
+
+.bookCards img {
+    object-fit: cover;
+
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+    border-radius: 5px;
+}
+
+/* ------------------- HOME ------------------- */
+
+
+.homeCardsImg {
+    width: 7em;
+    height: 11em;
+}
+
+/* ------------------- GENERI ------------------- */
+
+.generiCardsImg {
+    width: 7em;
+    height: 11em;
+}
+
+/* ------------------- ACCEDI ------------------- */
+/* form */
+
+/* ------------------- RICERCA ------------------- */
+
+.contentRicerca {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#filtri label:after {
+    content: "";
+}
+
+#filtri {
+    flex-basis: 36%;
+    border-right: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+    padding-bottom: 1em;
+}
+
+#contentDx {
+    flex-basis: 60%;
+    flex-grow: 1;
+
+    border-bottom: 1px solid #aaaaaa;
+}
+
+#filtriForm fieldset {
+    border: none;
+}
+
+#filtriForm fieldset legend {
+    padding-left: 0.5em;
+    /*padding-top: 1em;*/
+    margin-left: 0.3em;
+    padding-top: 0.5em;
+
+    color: #146e53;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#filtri ul li {
+    margin-top: 0.5em;
+    margin-left: 1.5em;
+}
+
+#filtri ul li input[type=checkbox] {
+    transform: scale(1.5);
+    color: #146e53;
+    margin-left: 0.2em;
+}
+
+#filtri ul li input[type=number] {
+    font-size: 1em;
+    width: 4em;
+    text-align: center;
+}
+
+#filtri ul li label {
+    font-size: 0.8em;
+    padding-left: 0.8em;
+}
+
+#filtri .btnFiltri {
+    width: 42%;
+    margin-left: 5%;
+    margin-top: 2em;
+
+    height: 2em;
+}
+
+#searchBar {
+    width: 73%;
+    height: 2em;
+    border-radius: 3px;
+    border-width: 1px;
+    font-size: large;
+    text-indent: 0.3em;
+
+    margin-left: 5%;
+    margin-top: 0.5em;
+}
+
+#searchButton {
+    width: 21%;
+    margin-right: 1%;
+    margin-top: 0.5em;
+    height: 2em;
+
+    float: right;
+}
+
+/* parte a destra */
+
+.advertsCards li {
+    overflow: hidden;
+    padding-left: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+    border-top: 1px solid #aaaaaa;
+}
+
+.advertsCards li p {
+    padding-top: 0.5em;
+}
+
+.advertsImg {
+    object-fit: cover;
+    width: 5em;
+    height: 8em;
+    border-radius: 5px;
+
+    vertical-align: middle;
+
+    float: left;
+    margin-right: 2em;
+}
+
+.advertsCards li>*:not(:first-child) {
+    float: none;
+    overflow: hidden;
+}
+
+.advertsCards li:first-child {
+    border-top: none;
+}
+
+a.titolo {
+    font-size: larger;
+}
+
+.tramaRicerca {
+    margin-top: 1.3em;
+    margin-bottom: 1.3em;
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+    font-size: small;
+}
+
+/* ------------------- LIBRO ------------------- */
+.cardDettagli {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#liImg {
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+#imgLibro {
+    display: block;
+
+    object-fit: cover;
+    width: 10em;
+    height: 16em;
+    border-radius: 5px;
+}
+
+#liInfoGenerali {
+    font-size: large;
+
+    flex-basis: 30%;
+    flex-grow: 1;
+}
+
+#liInfoGenerali p {
+    margin-bottom: 0.2em;
+}
+
+#titoloLibro {
+    font-weight: bold;
+    font-size: larger;
+}
+
+#liButtonLibro {
+    flex-basis: 180px;
+
+    margin-right: 1%;
+}
+
+#liButtonLibro input[type=button],
+#liButtonLibro input[type=submit] {
+    display: block;
+
+    width: 100%;
+    height: 2em;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#liButtonLibro input[type=number] {
+    font-size: 1.2em;
+    width: 2em;
+
+    text-align: center;
+}
+
+#liTrama {
+    padding-top: 0.7em;
+
+    margin-left: 3%;
+    margin-right: 3%;
+
+    flex-basis: 60%;
+    flex-shrink: 1;
+}
+
+#liTrama p {
+    font-size: 0.9em;
+}
+
+#liDettagliLibro {
+    padding-top: 1em;
+
+    flex-basis: 32%;
+}
+
+#liDettagliLibro li {
+    padding-bottom: 0.5em;
+}
+
+.miniGrassetto {
+    font-weight: 550;
+}
+
+#titoloRecensioni {
+    margin-left: 3%;
+    padding-top: 1em;
+}
+
+#linkLasciaRecensione {
+    display: inline-block;
+    margin-left: 3%;
+    margin-top: 0.5em;
+}
+
+#listaRecensioni {
+    margin-left: 3%;
+    margin-right: 3%;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.7em;
+}
+
+.recensione {
+    border: 1px solid #aaaaaa;
+    border-top: none;
+
+    padding: 0.4em 0.5em 0.4em;
+    /* top, right e left, bottom */
+}
+
+#primaRecensione {
+    border-top: 1px solid #aaaaaa;
+}
+
+.submitEliminaRecensione {
+    width: 10em;
+    height: 1.6em;
+
+    margin-top: 0.3em;
+    margin-bottom: 0.1em;
+}
+
+/* ------------------- ACCOUNT ------------------- */
+
+.accountCards {
+    text-align: center;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.accountCards li {
+    flex-basis: 20%;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+
+    margin-left: 20%;
+    margin-top: 0.7em;
+    margin-bottom: 1em;
+
+    text-align: left;
+}
+
+/* ------------------- INDIRIZZI ------------------- */
+/* tabella */
+#aggiungiIndirizzoLink {
+    display: inline-block;
+    margin-left: 2.5%;
+    margin-bottom: 1em;
+}
+
+/* ------------------- AGGIUNGI LIBRO ------------------- */
+
+#img-preview {
+    display: none;
+    width: 8.5em;
+    border: 2px dashed #333;
+}
+
+#img-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#formAggiungiLibro {
+    width: 30em;
+}
+
+/* ------------------- CARRELLO ------------------- */
+
+.carrelloCards li {
+    overflow: hidden;
+    padding-left: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+    border-bottom: 2px solid #eaeaea;
+}
+
+.carrelloCards li p {
+    padding-top: 0.5em;
+}
+
+.carrelloCards li>*:not(:first-child) {
+    float: none;
+    overflow: hidden;
+}
+
+.carrelloCards li:first-child {
+    border-top: 2px solid #eaeaea;
+}
+
+.carrelloImg {
+    object-fit: cover;
+    width: 8em;
+    height: 13em;
+    border-radius: 5px;
+
+    float: left;
+    margin-right: 2em;
+}
+
+#removeCartForm input {
+    margin-top: 1em;
+}
+
+.cartButton {
+    width: 5em;
+    height: 2em;
+}
+
+.procediAcquistoButton {
+    width: 11em;
+    height: 2em;
+    margin-top: 0.5em;
+}
+
+.acquistaButton {
+    width: 7em;
+    height: 2em;
+}
+
+.carrelloStatus, .totaleAcquisto{
+    font-size: larger;
+    margin-left: 1.7em;
+    padding-top: 0.7em;
+}
+
+.totaleAcquisto {
+    text-align: center;
+    padding-bottom: 0.5em;
+}
+
+.boldText {
+    font-weight: bold;
+}
+
+/* ------------------- ERRORE ------------------- */
+
+#erroreImg {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.alert {
+    width: 24.5em;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0.3em;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+.divAlert {
+    padding-bottom: 1em;
+    width: 100%;
+}
+
+/* ------------------- ANALYTICS ------------------- */
+#myChart {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
+    max-height: 30em;
+    height: 30em;
+    min-height: 20em;
+}
+
+#alternativaChart
+{
+    margin-left: 2.5%;
+    margin-bottom: 0.4em;
+}
+
+/* ------------------- ORDINI ------------------- */
+#listaOrdini {
+    margin-left: 3%;
+    margin-right: 3%;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.7em;
+}
+
+.ordine {
+    border: 1px solid black;
+    border-top: none;
+
+    padding: 0.4em 0.5em 0.4em;
+    /* top, right e left, bottom */
+}
+
+#primoOrdine {
+    border-top: 1px solid black;
+}
+
+.libroOrdinato {
+    border-top: 1px solid #ddd;
+
+    padding-left: 1.2em;
+}
+
+/* ------------------- INFO ORDINE ------------------- */
+.formOrdine {
+    text-align: center;
+    padding-bottom: 0.7em;
+    padding-top: 1em;
+}
+
+.eliminaOrdineButton {
+    width: 11em;
+    height: 2em;
+}
+/*
+==================
+SEZIONE ERRORI
+==================
+*/
+
+.errorSuggestion {
+    color: rgb(201, 98, 98);
+    font-size: 0.8em;
+    display: block;
+    /* margin-top: -1em; */
+}
+
+.indirizziError {
+    font-size: 0.9em;
+    display: block;
+}
+
+/*
+==================
+SEZIONE FOOTER
+==================
+*/
+
+footer {
+    clear: both;
+    text-align: center;
+    font-size: 10pt;
+    padding: 0.5em;
+}
+
+footer p {
+    margin-bottom: 1.0em;
+    margin-left: 1.0em;
+    margin-right: 1.0em;
+}
+
+footer .copyright {
+    display: inline;
+}
+
+footer .imgValidCode {
+    vertical-align: middle;
+
+    width: 5em;
+}
+
+footer h1 {
+    font-size: 12pt;
+}
+
+footer ul {
+    padding-bottom: 1em;
+}
+
+footer ul li {
+    text-align: center;
+}
+
+footer .first {
+    font-weight: bold;
+}
+
+footer .logo {
+    display: none;
 }

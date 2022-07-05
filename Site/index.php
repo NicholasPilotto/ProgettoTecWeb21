@@ -9,6 +9,10 @@ require_once "graphics.php";
 
 $paginaHTML = graphics::getPage("index_php.html");
 
+// unsetto sessione per paginaPrecedente
+unset($_SESSION['paginaPrecedente']);
+// -------------------------------------------------------------------------
+
 // Accesso al database
 $connessione = new Service();
 $a = $connessione->openConnection();

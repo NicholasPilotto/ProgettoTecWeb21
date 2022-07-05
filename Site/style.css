@@ -40,50 +40,17 @@ SEZIONE MENU'
 */
 
 #menu {
-    /*padding-left: 0.6em;*/
-    /*padding-left: 1.5em;
-    padding-right: 1.5em;*/
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     background-color: white;
     align-items: center;
     padding: 1rem 1.5rem;
 }
 
-/*
-#menu ul {
-    commento column-count: 4;
-}
-
-#menu ul li {
-    commento margin-left: 5%;
-    commento margin-right: 5%;
-
-    text-align: center;
-} 
-*/
-
-#menu h1 {
-    background-image: url("images/SecondReadLogo.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    text-indent: -999em;
-    font-size: 3em;
-    display: inline-block;
-
-    /*
-    width: 28%;
-    min-width: 280px;
-    */
-    flex-basis: 280px;
-    flex-grow: 1;
-}
-
 .nav-menu {
-    display: block;
+    display: flex;
     justify-content: space-between;
     align-items: center;
+
     width: 100%;
     background-color: white;
     gap: 1em;
@@ -103,12 +70,6 @@ SEZIONE MENU'
     transition: all 0.3s ease-in-out;
     background-color: black;
     border-radius: 5px;
-}
-
-.nav-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .nav-item {
@@ -142,49 +103,6 @@ SEZIONE MENU'
 
 p.nonLink {
     margin-right: 1em;
-}
-
-@media only screen and (max-width: 768px) {
-
-    .hamburger {
-        display: block;
-        cursor: pointer;
-
-        margin-left: 95%;
-    }
-
-    .nav-menu {
-        display: none;
-        margin-top: 1em;
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-menu.active {
-        width: 100%;
-        display: block;
-    }
-
-    .nav-item {
-        margin: 2.5rem;
-    }
-
-    #menu h1 {
-        font-size: 1.8em;
-    }
-
-    .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
 }
 
 /* ----- STELLE ----- */
@@ -401,12 +319,15 @@ label:after {
 SEZIONE HEADER
 ==================
 */
+
 header {
     background-color: white;
 
     padding-left: 1em;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 header h1 {
@@ -415,14 +336,10 @@ header h1 {
     background-repeat: no-repeat;
     text-indent: -999em;
     font-size: 3em;
-
-    /*
-    width: 28%;
-    min-width: 280px;
-    */
-    flex-basis: 280px;
+    flex-basis: 250px;
     flex-grow: 1;
 }
+
 
 #benvenuto {
     margin-top: 0.2em;
@@ -959,6 +876,12 @@ a.titolo {
     max-height: 30em;
     height: 30em;
     min-height: 20em;
+}
+
+#alternativaChart
+{
+    margin-left: 2.5%;
+    margin-bottom: 0.4em;
 }
 
 /* ------------------- ORDINI ------------------- */

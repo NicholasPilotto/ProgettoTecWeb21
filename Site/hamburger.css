@@ -1,0 +1,38 @@
+.hamburger {
+    display: block;
+    cursor: pointer;
+
+    margin-left: 95%;
+}
+
+.nav-menu {
+    display: none;
+    margin-top: 1em;
+    width: 100%;
+    text-align: center;
+}
+
+.nav-menu.active {
+    width: 100%;
+    display: block;
+}
+
+.nav-item {
+    margin: 2.5rem;
+}
+
+#menu h1 {
+    font-size: 1.8em;
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
