@@ -99,11 +99,6 @@ th {
     border-top: 1px solid black;
 }
 
-td:last-child,
-th:last-child {
-    border-right: 1px solid black;
-}
-
 thead {
     background-color: white;
     color: black;
@@ -112,6 +107,24 @@ thead {
 
 .infoOrdine {
     color: rgb(82, 141, 215);
+}
+
+/* --- Devo togliere l'ultima colonna --- */
+.tabellaOrdini td:last-child, .tabellaOrdini th:last-child{
+    display: none;
+}
+
+.tabellaOrdini td:nth-last-child(2), .tabellaOrdini th:nth-last-child(2){
+    border-right: 1px solid black;
+}
+
+/* --- Devo togliere le ultime 2 colonne --- */
+.tabellaPendenti td:nth-last-child(2), .tabellaPendenti th:nth-last-child(2){
+    display: none;
+}
+
+.tabellaPendenti td:nth-last-child(3), .tabellaPendenti th:nth-last-child(3){
+    border-right: 1px solid black;
 }
 
 /* ----- FORM INPUT ----- */

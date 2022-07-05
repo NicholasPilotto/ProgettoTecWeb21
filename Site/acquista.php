@@ -32,7 +32,7 @@ if (isset($_SESSION["cart"])) {
 
     $queryAddresses = $connessione->get_addresses($_SESSION["Codice_identificativo"]);
     if ($queryAddresses->ok() && !$queryAddresses->is_empty()) {
-        $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo' required>";
+        $selectIndirizzi = "<select class='styleSelect' id='indirizzo' name='indirizzo'>";
         foreach ($queryAddresses->get_result() as $indirizzo) {
             $selectIndirizzi .= "<option value='" . $indirizzo['codice'] . "'>" . $indirizzo["via"] . ", " . $indirizzo["città"] . ", " . $indirizzo["num_civico"] . "</option>";
         }

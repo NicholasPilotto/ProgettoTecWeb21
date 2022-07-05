@@ -51,8 +51,8 @@ foreach ($queryWishlist->get_result() as $wish) {
         $wishlistDiv .= "<a class='titolo' href='libro.php?isbn=" . $res[0]['isbn'] . "'>" . $res[0]['titolo'] . "</a>";
         $wishlistDiv .= $textPrezzo;
         $wishlistDiv .= "<form action='removewish.php'>
-                            <input type='submit' class='button procediAcquistoButton' value='Rimuovi'</input>
-                            <input type='hidden' name='wishtoremove' id='wishtoremove' value='" . $res[0]['isbn'] . "'/>
+                            <input type='submit' class='button procediAcquistoButton' value='Rimuovi'/>
+                            <input type='hidden' name='wishtoremove' value='" . $res[0]['isbn'] . "'/>
                         </form>";
         $wishlistDiv .= "</div>";
         $wishlistDiv .= "</li>";

@@ -79,9 +79,9 @@ if (!isset($_SESSION["Nome"])) {
             $listaRecensioni .= "</abbr></p>";
             $listaRecensioni .= "<p>" . $commento . "</p>";
 
-            $listaRecensioni .= "<form action='eliminaRecensione.php' method='post' id='form'>";
-            $listaRecensioni .= "<input type='hidden' name='idUtente' id='idUtente' value='" . $_SESSION['Codice_identificativo'] . "'/>";
-            $listaRecensioni .= "<input type='hidden' name='isbn' id='isbn' value='" . $recensione['libro_isbn'] . "'/>";
+            $listaRecensioni .= "<form action='eliminaRecensione.php' method='post'>";
+            $listaRecensioni .= "<input type='hidden' name='idUtente' value='" . $_SESSION['Codice_identificativo'] . "'/>";
+            $listaRecensioni .= "<input type='hidden' name='isbn' value='" . $recensione['libro_isbn'] . "'/>";
             $listaRecensioni .= "<input type='submit' class='button submitEliminaRecensione' value='Elimina recensione'/>";
             $listaRecensioni .= "</form>";
 

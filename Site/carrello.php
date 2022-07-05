@@ -49,7 +49,7 @@ if (isset($_SESSION["cart"])) {
             $carrelloDiv .= "<a class='titolo' href='libro.php?isbn=" . $isbn . "'>" . $res[0]['titolo'] . "</a>";
             $carrelloDiv .= "<p><span class='miniGrassetto'>Quantit&agrave;:</span> " . $data->quant . "</p>";
             $carrelloDiv .= "<p><span class='miniGrassetto'>Costo totale:</span> &euro;" . number_format((float)$data->total, 2, '.', '') . "</p>";
-            $carrelloDiv .= "<form method='post' id='removeCartForm' action='removecart.php?isbn=" . $isbn . "'><input class='button cartButton' type='submit' value='Rimuovi'/></form>";
+            $carrelloDiv .= "<form method='post' action='removecart.php?isbn=" . $isbn . "'><input class='button cartButton' type='submit' value='Rimuovi'/></form>";
             $carrelloDiv .= "</div>";
             $carrelloDiv .= "</li>";
 
@@ -87,5 +87,5 @@ $connessione->closeConnection();
 $paginaHTML = str_replace("</carrello>", $carrelloDiv, $paginaHTML);
 $paginaHTML = str_replace('<abbr class="notification"', '<abbr class="notification selectedNavItem"', $paginaHTML);
 $paginaHTML = str_replace('<a href="carrello.php">', '', $paginaHTML);
-$paginaHTML = str_replace('</a">', '', $paginaHTML);
+$paginaHTML = str_replace('</a></abbr>', '</abbr>', $paginaHTML);
 echo $paginaHTML;

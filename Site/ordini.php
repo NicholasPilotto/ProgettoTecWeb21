@@ -15,10 +15,10 @@ if (!isset($_SESSION["Nome"])) {
     $connessione = new Service();
     $a = $connessione->openConnection();
 
+    $tabellaOrdini = "";
+
     if ($a) {
         $queryOrdini = $connessione->get_order_by_user($_SESSION["Codice_identificativo"]);
-
-        $tabellaOrdini = "";
 
         if ($queryOrdini->ok() && !$queryOrdini->is_empty()) {
             $tabellaOrdini = "<table class='tabellaOrdini' id='tabellaOrdini' title='Ordini Effettuati'>";
@@ -51,7 +51,9 @@ if (!isset($_SESSION["Nome"])) {
         } else {
             $_SESSION["info"] = "Nessun ordine presente";
         }
-    } else {
+    }
+    else
+    {
         $_SESSION["error"] = "Impossibile connettersi al sistema";
     }
 
@@ -63,7 +65,8 @@ if (!isset($_SESSION["Nome"])) {
         $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
         unset($_SESSION["info"]);
     }
-    if (isset($_SESSION["success"])) {
+    if (isset($_SESSION["success"]))
+    {
         $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
         unset($_SESSION["success"]);
     }

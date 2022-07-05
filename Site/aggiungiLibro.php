@@ -53,7 +53,7 @@ if (!isset($_SESSION["Nome"])) {
             // controllo se l'admin viene da "aggiungi libro" o da "modifica libro"
             $modificaLibroISBN = "";
             $modificaLibroTitolo = "";
-            $modificaLibroCopertina = "";
+            $modificaLibroCopertina = "images/placeholderimg.jpg";
             $modificaLibroPagine = "";
             $modificaLibroPrezzo = "";
             $modificaLibroQuantita = "";
@@ -115,7 +115,11 @@ if (!isset($_SESSION["Nome"])) {
                 $selected = (in_array($autore['id'], $modificaLibroAutori)) ? "selected" : "";
 
                 $cognome = ($autore['cognome'] != "-") ? $autore['cognome'] : "";
-                $selectAutori .= "<option value='" . $autore['id'] . "' " . $selected . ">" . $autore['nome'] . " " . $cognome . "</option>";
+
+                $nome = strip_tags($autore['nome']);
+                $cognome = strip_tags($cognome);
+
+                $selectAutori .= "<option value='" . $autore['id'] . "' " . $selected . ">" . $nome . " " . $cognome . "</option>";
             }
         } else {
             $_SESSION["info"] = "Nessun autore trovato";

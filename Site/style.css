@@ -203,7 +203,7 @@ thead {
 }
 
 .infoOrdine {
-    color: rgb(82, 141, 215);
+    color: black;
 }
 
 /* ----- FORM INPUT ----- */
@@ -818,7 +818,8 @@ a.titolo {
 .carrelloStatus, .totaleAcquisto{
     font-size: larger;
     margin-left: 1.7em;
-    padding-top: 0.7em;
+    padding-top: 0.4em;
+    padding-bottom: 0.41em;
 }
 
 .totaleAcquisto {
@@ -828,6 +829,13 @@ a.titolo {
 
 .boldText {
     font-weight: bold;
+}
+
+/* ------------------- RECUPERO PASSWORD ------------------- */
+
+.recuperoPasswordButton {
+    width: 10em;
+    height: 2em;
 }
 
 /* ------------------- ERRORE ------------------- */
@@ -920,6 +928,12 @@ a.titolo {
 
 .eliminaOrdineButton {
     width: 11em;
+    height: 2em;
+}
+
+/* ------------------- DATI LOGIN ------------------- */
+.datiLoginButton {
+    width: 10em;
     height: 2em;
 }
 /*

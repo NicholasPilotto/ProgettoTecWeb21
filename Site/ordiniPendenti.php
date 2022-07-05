@@ -26,7 +26,7 @@ if (isset($user) && $user == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
     $tabellaOrdini = "";
 
     if ($data->ok()) {
-      $tabellaOrdini = "<table title='Ordini Effettuati'>";
+      $tabellaOrdini = "<table class='tabellaOrdini tabellaPendenti' title='Ordini Effettuati'>";
       $tabellaOrdini .=   "<thead>";
       $tabellaOrdini .=       "<tr>";
       $tabellaOrdini .=           "<th scope='col'>Codice Ordine</th>";
@@ -43,13 +43,13 @@ if (isset($user) && $user == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
 
       foreach ($data->get_result() as $ordine) {
         $tabellaOrdini .= "<tr>";
-        $tabellaOrdini .=   "<td>" . $ordine['codice_univoco'] . "</td>";
-        $tabellaOrdini .=   "<td>" . $ordine['data'] . "</td>";
-        $tabellaOrdini .=   "<td>" . (($ordine['data_partenza'] == "") ? "Ordine non spedito" : date_format(date_create($ordine['data_partenza']), 'd/m/Y')) . "</td>";
-        $tabellaOrdini .=   "<td>" . (($ordine['data_consegna'] == "") ? "Ordine non spedito" : date_format(date_create($ordine['data_consegna']), 'd/m/Y')) . "</td>";
-        $tabellaOrdini .=   "<td>&euro;" . $ordine['totale'] . "</td>";
-        $tabellaOrdini .=   "<td><a href='infoOrdine.php?ordine=" . $ordine['codice_univoco'] . "'><abbr title='Visualizza informazioni'><i class='fa fa-info-circle infoOrdine' aria-hidden='true'></i></abbr></a></td>";
-        $tabellaOrdini .=   "<td><a href='ship_order.php?ordine=" . $ordine['codice_univoco'] . "'><abbr title='Visualizza informazioni'><i class='fa fa-truck infoOrdine' aria-hidden='true'></i></abbr></a></td>";
+        $tabellaOrdini .=   "<td data-label='Codice Ordine'>" . $ordine['codice_univoco'] . "</td>";
+        $tabellaOrdini .=   "<td data-label='Data Ordine'>" . $ordine['data'] . "</td>";
+        $tabellaOrdini .=   "<td data-label='Data Partenza'>" . (($ordine['data_partenza'] == "") ? "Ordine non spedito" : date_format(date_create($ordine['data_partenza']), 'd/m/Y')) . "</td>";
+        $tabellaOrdini .=   "<td data-label='Data Consegna'>" . (($ordine['data_consegna'] == "") ? "Ordine non spedito" : date_format(date_create($ordine['data_consegna']), 'd/m/Y')) . "</td>";
+        $tabellaOrdini .=   "<td data-label='Totale'>&euro;" . $ordine['totale'] . "</td>";
+        $tabellaOrdini .=   "<td data-label='Informazioni Ordine'><a href='infoOrdine.php?ordine=" . $ordine['codice_univoco'] . "'><abbr title='Visualizza informazioni'><i class='fa fa-info-circle infoOrdine' aria-hidden='true'></i></abbr></a></td>";
+        $tabellaOrdini .=   "<td data-label='Spedisci Ordine'><a href='ship_order.php?ordine=" . $ordine['codice_univoco'] . "'><abbr title='Visualizza informazioni'><i class='fa fa-truck infoOrdine' aria-hidden='true'></i></abbr></a></td>";
         $tabellaOrdini .= "</tr>";
       }
 
@@ -81,6 +81,6 @@ if (isset($_SESSION["success"])) {
 } else {
   $paginaHTML = str_replace("</alert>", "", $paginaHTML);
 }
-
+$paginaHTML = str_replace("</tabellaOrdini>", "", $paginaHTML);
 
 echo $paginaHTML;

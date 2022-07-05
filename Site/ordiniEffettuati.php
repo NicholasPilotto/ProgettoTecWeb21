@@ -16,13 +16,12 @@ if (isset($user) && $user == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
   $connessione = new Service();
   $a = $connessione->openConnection();
 
+  $tabellaOrdini = "";
   if ($a) {
     $queryOrdini = $connessione->get_orders_non_shipped();
 
-    $tabellaOrdini = "";
-
     if ($queryOrdini->ok() && !$queryOrdini->is_empty()) {
-      $tabellaOrdini = "<table title='Ordini Effettuati'>";
+      $tabellaOrdini = "<table class='tabellaOrdini' title='Ordini Effettuati'>";
       $tabellaOrdini .=   "<thead>";
       $tabellaOrdini .=       "<tr>";
       $tabellaOrdini .=           "<th scope='col'>Codice Ordine</th>";
@@ -55,6 +54,26 @@ if (isset($user) && $user == "935f40bdf987e710ee2a24899882363e4667b4f85cfb818a88
   } else {
     $tabellaOrdini = graphics::createAlert("error", "Impossibile connettersi al sistema");
   }
+
+  if (isset($_SESSION["error"]))
+  {
+      $paginaHTML = str_replace("</alert>", graphics::createAlert("error", $_SESSION["error"]), $paginaHTML);
+      unset($_SESSION["error"]);
+  }
+  if (isset($_SESSION["info"])) {
+      $paginaHTML = str_replace("</alert>", graphics::createAlert("info", $_SESSION["info"]), $paginaHTML);
+      unset($_SESSION["info"]);
+  }
+  if (isset($_SESSION["success"]))
+  {
+      $paginaHTML = str_replace("</alert>", graphics::createAlert("success", $_SESSION["success"]), $paginaHTML);
+      unset($_SESSION["success"]);
+  }
+  else
+  {
+      $paginaHTML = str_replace("</alert>", "", $paginaHTML);
+  }
+
   $paginaHTML = str_replace("</tabellaOrdini>", $tabellaOrdini, $paginaHTML);
 
   $connessione->closeConnection();
