@@ -2,84 +2,93 @@
 
 \subsection{Linguaggi e strumenti}
 \subsubsection{HTML}
-Il linguaggio usato per la parte della struttura e contenuto del sito è \textit{HTML5}. Questa scelta è stata fatta per due principali motivi:
+La struttura e il contenuto del sito sono stati realizzati attraverso il linguaggio \textit{HTML5}. Questa scelta è stata fatta per due principali ragioni:
 \begin{enumerate}
-	\item Essendo un sito di vendita online, è importante che tutte le pagine siano le più coerenti possibili in modo da poter competere nel mercato con un sito fatto bene ed aggiornato. Dall’altra parte, avere pagine scritte con linguaggi recenti aiuta moltissimo nella leggibilità del codice ed è più facile poter fare modifiche.
-	\item Un altro motivo per il quale si è scelto \textit{HTML5} è correlata con l’utenza finale del sito. Sono maggiormente le generazioni più giovani quelle che si affidano al mondo online per fare acquisti. Di conseguenza, saranno i dispositivi e i motori di ricerca più recenti quelli che si useranno di più.
-\end{enumerate}
-Si è comunque mantenuta la compatibilità con \textit{XHTML}, permettendo al sito di essere pienamente funzionante anche sui browser più vecchi e obsoleti.
-Durante tutto il processo di progettazione e creazione delle pagine del sito si sono utilizzate le linee guida del Corso di \textit{Tecnologie Web} e quelle del \textit{W3C}. Il codice è stato validato utilizzando il tool di validazione di 
-	\href{https://validator.w3.org/}{W3C}.
-	
+	\item Trattandosi di un sito di vendita online, è importante che tutte le pagine siano le più coerenti possibile in modo da poter competere nel mercato con un sito fatto bene ed aggiornato. Inoltre, avere pagine scritte con linguaggi recenti aiuta moltissimo nella leggibilità del codice ed è più facile modificarlo.
+	\item Un altro motivo per il quale si è scelto \textit{HTML5} è relativa all'utenza finale. Essendo principalmente le generazioni più giovani quelle ad affidarsi al mondo online per fare acquisti, i dispositivi e i motori di ricerca utilizzati saranno tendenzialmente più recenti.
+	\end{enumerate}
+	Si è comunque mantenuta la compatibilità con \textit{XHTML}, permettendo al sito di essere pienamente funzionante anche sui \textit{browser} più vecchi ed obsoleti. Durante tutto il processo di progettazione e creazione delle pagine si sono utilizzate le linee guida del corso di Tecnologie Web e quelle del \textit{W3C}. Il codice è stato validato utilizzando il tool di validazione del \href{https://validator.w3.org/}{W3C}.
 Alcune delle regole più importanti sono:
 \begin{itemize}
-	\item Separazione della struttura, presentazione e contenuto: Non ci devono essere file script oppure fogli di stile nel codice \textit{HTML}. Queste devono essere scritte in file separati e poi si devono importare nell'\textit{header} delle pagine \textit{HTML}.
-	\item \textit{Tag}: Tutti i \textit{tag} devono essere chiusi e si devono utilizzare i tag che migliorano l'accessibilità del sito.
-	\item \textit{Metatag}: L’inserimento dei \textit{metatag} nella parte dello \textit{header} è un regola importantissima. Se inseriti correttamente migliorano l’accessibilità del sito verso i browser.Allo stesso tempo, l’utilizzo corretto delle \textit{keyword} aiuta in un \textit{ranking} migliore nella ricerca.
+	\item \textbf{Separazione della struttura, presentazione e contenuto}: Non ci devono essere file \textit{script} oppure fogli di stile nel codice \textit{HTML}. Questi devono essere scritti in file esterni e poi importati nell’\textit{header} delle pagine \textit{HTML}.
+	\item \textbf{Tag}: Tutti i \textit{tag} devono essere chiusi e si devono utilizzare i \textit{tag} che migliorano l'accessibilità del sito.
+	\item \textbf{Metatag}: L’inserimento dei \textit{metatag} nella sezione head è molto importante in quanto migliora l’accessibilità del sito verso i browser. Allo stesso tempo, l’utilizzo corretto delle \textit{keyword} aiuta in un ranking migliore nella ricerca.
+	\item \textbf{Tabelle}: Le tabelle devono essere sempre evitate, oppure rese accessibili se il loro utilizzo è essenziale.
 \end{itemize}
 
 \subsection{PHP}
-Il comportamento del sito lato server si gestisce da file PHP, i quali stabiliscono il comportamento generale delle pagine, interagiscono con il database e creano le sessioni di utilizzo per gli utenti loggati. I file creati sono:
+Il lato server del sito viene gestito da file \textit{PHP} che stabiliscono il comportamento generale delle pagine, interagiscono con il \textit{database} e creano le sessioni di utilizzo per gli utenti loggati. Per agevolare l’interazione con il \textit{database}, sono state create delle classi di supporto che vanno a modellare i record delle principali tabelle del \textit{database}.
+
+\textbf{File dp.php}: Questo file contiene le classi e le funzioni che fanno da intermediari tra gli script PHP e le chiamate al database. Si occupa principalmente di:
+	\begin{itemize}
+		\item Gestire la connessione con il \textit{database}
+		\item Fornire funzioni per il recupero dei dati dal \textit{database}
+		\item Fornire funzioni per l’inserimento, la modifica e la cancellazione di dati nelle tabelle
+	\end{itemize}
+	
+\textbf{File response\_manager.php}: Contiene la classe \textit{response\_manager} che fornisce metodi necessari per la gestione delle risposte e il controllo degli errori.
+
+\textbf{"nomepagina".php:} (esempio: \textit{bestseller.php, generi.php}) sono i file che costruiscono le pagine del sito. Utilizzano le rispettive pagine html (es: \textit{bestseller\_php.html}) che contengono l’effettivo \textit{html}.
+
+Quasi tutte hanno una procedura di esecuzione standard:
+\begin{enumerate}
+	\item Verificano i permessi dell’utente
+	\item Verificano la disponibilità di connessione al \textit{database}
+	\item Richiedono le informazioni necessarie per la operazione da effettuare al \textit{database}
+	\item Eseguono l'operazione della modifica del database richiesta dall’utente che può essere un inserimento, modifica o cancellazione di dati
+\end{enumerate}
+
+In alcune pagine vengono effettuate delle validazioni sintattiche e di dominio prima di eseguire l’inserimento o la modifica dei dati. La validazione sintattica cerca di individuare la presenza di errori che potrebbero impattare sull'esito della \textit{query}, mentre quelle di dominio mirano ad evitare l’inserimento di informazioni non coerenti nel database (esempio: aggiungere più articoli al carrello della quantità disponibile per ciascuno).
+
+Un altro aspetto importante sul quale ci siamo focalizzati è la sicurezza dell'area privata. Sono stati aggiunti controlli che non permettono a tipi di utenti diversi di accedere ai contenuti di un altro tipo. Quindi un utente loggato non può accedere ai contenuti dell’admin e l’admin non può accedere ai contenuti di un utente registrato.
+
+Attraverso questo controllo si riesce inoltre ad impedire l’accesso all’area riservata senza aver effettuato il \textit{login}.
+
+\subsection{CSS}
+Il \textit{layout} del sito è stato modellato utilizzando la versione 3 del linguaggio di formattazione \textit{CSS}. Come descritto anche nel caso del \textit{HTML5}, essendo gli utenti principali del sito persone relativamente giovani, possiamo assumere l’utilizzo dei motori di ricerca moderni nella maggioranza dei casi.
+
+Sono stati prodotti 4 fogli di stile differenti, ciascuno per un opportuno dispositivo: \textit{style.css, medium.css , mini.css e print.css} (per la stampa) che contengono all'interno tutte le clausole relative alla formattazione dei documenti e varie regole disponibili con \textit{CSS3} come: \textit{flexbox}, variabili, selettori ecc.
+
+Come strategia di progettazione abbiamo usato \textit{Responsive Web design} basata sul concetto di \textit{media query} che ottimizzano la visualizzazione in base a dispositivi specifici e dimensioni di \textit{viewport}. Grazie all’utilizzo di misure sempre \textit{relative} o in \textit{percentuale} è stato implementato un design fluido e scalabile, che permette una corretta visualizzazione delle pagine su tutti i formati di schermo, senza intaccare in alcun modo la navigazione tramite \textit{screen reader}. Così facendo si migliora anche l’accessibilità del sito.
+
+\subsection{SQL}
+Il linguaggio SQL è stato utilizzato per la codifica del \textit{database} il quale è composto dalle seguenti tabelle:
 \begin{itemize}
-	\item db.php
-	\item response\_manager.php
-	\item test.php
+	\item \textbf{libro:} la tabella contenente tutti i libri che sono stati aggiunti dal admin e che sono ancora in vendita. I campi sono: \textit{isbn, titolo, editore, pagine, prezzo, quantità, data\_pubblicazione, percorso, trama} che descrive brevemente di cosa parla il libro
+	\item \textbf{editore:} contiene i \textit{nomi} delle diverse case editrici e l’\textit{id}. Ci possono essere più di un libro pubblicati dalla stessa casa
+	\item \textbf{autore:} contiene l’\textit{id, nome e cognome} dell'autore del libro. Un libro può avere più di un autore e un autore può aver pubblicato più di un libro
+	\item \textbf{pubblicazione:} è la relazione tra un libro e il suo/suoi autori. Contiene i campi \textit{libro\_isbn} e \textit{autore\_id}.
+	\item \textbf{categoria:} contiene la lista delle categorie (generi) presenti. Campo \textit{id\_categoria} e \textit{nome}
+	\item \textbf{appartenenza:} è la relazione tra un libro e la categoria in cui fa parte. Ci sono libri che fanno parte in più di una categoria. Campi \textit{libro\_isbn} e \textit{codice\_categoria}
+	\item \textbf{offerte:} contiene la lista dei libri che sono in offerta. Campi \textit{libro\_isbn, data\_inizio, data\_fine}, e \textit{sconto} che indica la percentuale dello sconto applicato
+	\item \textbf{utente:} contiene i campi in cui si salvano i dati degli utenti registrati e dell'amministratore; \textit{codice\_identificativo, nome, cognome, data\_nascita, username, email, password, telefono}
+	\item \textbf{ordine:} contiene \textit{codice\_univoco, cliente\_codice} che è il \textit{codice\_identificativo} dell’utente che ha effettuato l’\textit{ordine, data, data\_partenza, data\_consegna, indirizzo, totale}
+	\item \textbf{composizione:} è la relazione tra la tabella ordini e libro. Contiene i campi \textit{elemento, codice\_ordine, quantità}
+	\item \textbf{wishlist:} dove vengono memorizzati gli elementi aggiunti alla wishlist, contiene i campi \textit{cliente\_codice e libro\_isbn}
+	\item \textbf{indirizzo:} tabella con campi \textit{codice, via, città, cap, num\_civico, utente} a cui corrisponde l’indirizzo
+	\item \textbf{recensioni:} tabella che contiene le recensioni dell'utente. Campi \textit{id\_utente, libro\_isbn, data\_inserimento, valutazione e commento}
 \end{itemize}
 
-\textbf{File dp.php}: In questo file ci sono tutte le classi e funzioni che servono per lo svolgimento delle \textit{query} del database e il controllo di eventuali errori di connessione o di interazione con esso. Abbiamo inizialmente la classe Constant dove vengono dichiarate le costanti che riguardano il database: \textit{(HOST\_DB, DATABASE\_NAME, USERNAME, PASSWORD)}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{images/er_db}
+	\caption{Schema ER del \textit{database}}
+\end{figure}
 
-Abbiamo poi la classe \textit{Service} la quale estende la classe \textit{Constant}. Questa classe serve per effettuare la connessione al database utilizzando le funzioni \textit{openConnection()} che restituisce un \textit{booleano} in base al risultato ottenuto e la funzione \textit{closeConnection()} per chiudere la connessione.
+\subsection{Javascript}
+Per il comportamento di determinate pagine del sito, sono stati utilizzati file JavaScript che contengono varie funzioni necessarie per il controllo dell’\textit{input nei form}. Attraverso l’utilizzo di espressioni regolari sono stati effettuati i necessari controlli di validità su tutti gli \textit{input}.
 
-Queste funzioni verranno utilizzate poi in ogni pagina \textit{“namepagina.php”} dove serve stabilire una connessione in modo da poter effettuare poi una \textit{query} riguardante il risultato cercato.
+Il controllo è stato effettuato sia nella parte pubblica che nella parte privata ( utente e amministratore). È stato indispensabile l’utilizzo di javascript anche nella configurazione dei bottoni. Ad esempio, è stato creato un apposito script per i bottoni dei \textit{filtri} della ricerca (\textit{Reset, PrezzoMin} e \textit{PrezzoMax}), per il bottone Torna Su e per tutti i bottoni delle altre pagine interattive (\textit{Registrati, Accedi, Acquista, Aggiungi al carrello, Aggiungi alla wishlist, Applica sconto...})
 
-L’altra parte del contenuto di \textit{db.php} sono le varie funzioni utilizzate per effettuare le \textit{query}. Alcune funzioni effettuano le \textit{query} che servono per le funzionalità che vengono utilizzate da un utente generico (non registrato), altre per le funzionalità disponibili per un utente registrato e infine quelle per le funzionalità dell'amministratore del sito.
+Abbiamo creato uno script anche per la configurazione della \textit{navbar} laterale (\textit{burgerMenu.js}), dove sono state sviluppate le funzioni utili per la sua apertura e la chiusura.
 
-\textbf{Utente generico:} Un utente generico ha la possibilità di visualizzare quasi tutte le pagine e le sezioni del sito, tranne alcune riservate per un utente registrato. Per fare questo si utilizzano diverse funzioni, tra le quale possiamo elencare:
+Il pulsante del \textit{burger-menu} e poi anche \textit{X} che serve a chiuderla, sono situati in alto a destra delle pagine.
 
-\begin{itemize}
-	\item \textbf{get\_book\_by\_(isbn/title)}: Queste funzioni creano la \textit{query} che effettua una ricerca secondo il parametro specificato.Restituiscono un messaggio di errore nel caso in cui qualcosa non è andato bene oppure quando non si è trovato nessun risultato. Utilizzati quando si effettua una ricerca nella barra di ricerca
-	\item \textbf{get\_books\_by\_(author/genre)}: Se queste funzioni non trovano nessun risultato corrispondente al valore dato in \textit{input}, amplificano la ricerca cercando tutti i risultati che contengono quel valore nel campo cercato in qualsiasi posizione(utilizzando l’operatore \textbf{*campo cercato*} di \textit{SQL}). Utilizzabili quando si vogliono trovare i libri scritti da un certo autore oppure quando si vuole visualizzare la lista dei libri appartenenti a quel specifico genere.
-	\item \textbf{get\_new\_books\_by\_genre}: Restituisce un \textit{array} contenente 5 nuovi libri aggiunti nella categoria cercata, secondo l’ordine decrescente riguardo la data di pubblicazione.
-	\item \textbf{get\_genere\_by\_id}; Funzione che restituisce il genere con quel \textit{id}. Utilizzata quando si vuole visualizzare la pagina di un genere specifico dalla lista dei generi.
-	\item \textbf{get\_bestsellers}: Funzione che esegue la \textit{query} la quale restituisce i libri \textit{bestseller} di tutti i generi in quel momento ordinati dal libro più venduto a quello meno venduto. Utilizzata nella pagina home e anche per la pagina Bestseller stessa.
-	\item \textbf{signin}: Funzione che gestisce la creazione di un nuovo \textit{account} inserendolo nel \textit{database}. Nel caso si commettano errori(es. il tipo di uno dei valori in \textit{input} non è corretto) viene visualizzato un messaggio di errore.
-	\item \textbf{get\_avg\_review}: Funzione che esegue la \textit{query} per il calcolo della media delle recensioni di un certo libro. Utilizzata nella pagina \textit{Libro} che contiene i dettagli di quel specifico libro.
-	\item \textbf{get\_reviews\_by\_isbn}: Funzione che serve per trovare tutte le recensioni lasciate ad un libro. Si utilizza nella pagina \textit{Libro} nella parte dove vengono listati tutti le review.
-	\item \textbf{get\_new\_books}: Funzione che esegue la \textit{query} che trova i libri che sono stati pubblicati recentemente. Necessaria per la parte \textit{“Nuove uscite”} della \textit{homepage}.
-	\item \textbf{get\_books\_under\_5}: Funzione che esegue la \textit{query} che trova i libri che hanno prezzo minore di 5 euro. Necessaria per la parte “\textit{A meno di 5 euro”} nella \textit{homepage}.
-	\item \textbf{get\_all\_books}: Funzione che restituisce la lista di tutti i libri presenti nel \textit{database}. Utilizzato nella pagina \textit{Libri} e inizialmente nella pagina \textit{Ricerca} (prima che venga effettuata una ricerca, vengono visualizzati alcuni libri del \textit{database} a destra della pagina, mentre a sinistra ci sono i filtri e la barra di ricerca).
-	\item \textbf{get\_genres\_from\_isbn}: Questa funzione esegue la \textit{query} che trova i generi dove appartiene un libro con un certo \textit{isbn}. Viene utilizzata nella parte del \textit{"Dettagli Libro”} della pagina \textit{Libro} e anche nella parte dei filtri sui generi della pagina \textit{Ricerca}.
-	\item \textbf{get\_books\_with\_offers}: Funzione che effettua la \textit{query} che selezioni i libri che hanno una riduzione di prezzo, ossia sono in offerta. Necessaria per la pagina \textit{Offerte}.
-	\item \textbf{get\_active\_offer\_by\_isbn}: Funzione che trova quanto è lo sconto del prezzo di un specifico libro presenti nella pagina \textit{Offerte}. Necessario nella pagina \textit{Libro} dove viene visualizzato lo sconto attuale.
-\end{itemize}
+\subsection{XAMPP}
+Il corretto funzionamento della parte dinamica, particolarmente PHP e SQL, è stato verificato tramite \textit{XAMPP}. Questo ha reso possibile testare il sito con dispositivi mobile, aprendo la porta 80 dalla propria macchina e rendendo il tutto accessibile nella rete locale.
 
-\textbf{Utente registrato:} Le funzioni necessarie per eseguire le funzionalità che un utente registrato possiede sono tutte quelle dell'utente generico(tranne la registrazione), con altre in più.
-\begin{itemize}
-	\item \textbf{login}: Funzione che utilizza la \textit{query} per ottenere i dati dei campi della tabella utente che appartengono all’indirizzo \textit{email} e \textit{password} inserite durante la fase di accesso.
-	\item \textbf{get\_addresses}: Effettua una \textit{query} che trova tutti gli indirizzi appartenenti ad un id utente. Si utilizza nella sezione \textit{Indirizzi} di ogni \textit{account} dove si possono vedere gli indirizzi inseriti.
-	\item \textbf{insert\_addresses}: Funzione che gestisce l’inserzione di un nuovo indirizzo nel \textit{database} collegato con l’\textit{account} del utente. Si utilizza nella parte \textit{“Inserisci indirizzo”} della pagina \textit{Indirizzi}.
-	\item \textbf{insert\_review}: Funzione che gestisce l’inserzione di una nuova recensione da parte di un utente per uno libro specifico. Vengono visualizzati appositi messaggi di errore in caso qualcosa non sia andato bene.
-	\item \textbf{get\_reviews\_by\_user/by\_user\_book}: La prima funzione estrae tutte le recensioni lasciate da quel utente per qualsiasi libro, mentre la seconda trova tutte le recensioni effettuate per un libro specifico.
-	\item \textbf{insert\_order}: Funzione che aggiunge un nuovo ordine nella tabella \textit{Ordine} del \textit{database}. Vengono fatti vari controlli riguardo i campi dei dati inseriti e se si incontra alcun problema un apposito messaggio di errore viene visualizzato.
-	\item \textbf{get\_orders}: ?
-	\item \textbf{edit\_review/delete\_review}: Sono delle funzioni che utilizzano le \textit{query} per trovare le recensioni effettuate dall’utente e modificarle/cancellarle. Si utilizzano nella pagina \textit{Recensioni} che ogni utente ha dentro al proprio profilo. Se durante il processo si commettono errori, oppure qualcosa non va bene vengono visualizzati dei messaggi di errore.
-	\item \textbf{restore\_code}: Funzione che inserisce nella tabella recupero la nuova coppia di valori del codice di conferma(\textit{id}) ricevuto e il codice identificativo dell’utente a cui appartiene. Nel caso in cui ci sia già un valore per questa \textit{tupla}, esso viene aggiornato.
-	\item \textbf{restore\_psw}: Funzione che effettua una \textit{query} che cancella i vecchi valori dalla tabella recupero e aggiorna il nuovo \textit{password} dell'utente nella tabella utente. Viene utilizzata nei casi in cui l’utente ha dimenticato la \textit{password} e la recupera attraverso un codice ricevuto via \textit{mail}.
-	\item \textbf{is\_code\_correct}: Funzione che esegue una \textit{query} che restituisce la \textit{tupla} nella tabella recupero con i corrispondenti valori inseriti per i campi id ed utente. Nel caso in cui non si trova un risultato, oppure succede un errore viene visualizzato un messaggio.
-\end{itemize}
+Così facendo è stato possibile testare meglio il \textit{layout} e i bottoni in modo da evitare il \textit{fat finger}.
 
-\textbf{Amministratore:} L’amministratore dispone delle funzionalità in più rispetto ai semplici utenti. Le funzioni che aiutano ad poter eseguire queste funzionalità sono:
-\begin{itemize}
-	\item \textbf{get\_utente\_by\_email/id}: Funzioni che effettuano la \textit{query} che ricerca l’utente a cui appartiene l’indirizzo \textit{email}/\textit{id} selezionato. Vengono utilizzate nella gestione degli utenti dalla parte del amministratore.
-	\item \textbf{insert\_book}: Questa funzione permette di inserire un nuovo libro nel \textit{database}. Utilizzata nella pagina \textit{Aggiungi Libri}.
-	\item \textbf{edit\_book}: Attraverso questa funzione è possibile modificare tutti oppure alcuni campi di un libro già presente nel \textit{database}. Utilizzata nella pagina \textit{Modifica Libro}.
-\end{itemize}
+\subsection{Chrome Inspect}
+La modalità Ispeziona di \textit{Chrome} è stata usata maggiormente per testare \textit{CSS} e \textit{HTML} rendendo il processo di \textit{debugging} più facile. Inoltre, grazie alla possibilità di cambiare gli attributi del CSS senza modificarli nei file originali è stato più semplice decidere quale approccio seguire in alcuni casi di indecisione.
 
-\textbf{File response\_manager.php:} In questo file viene creata la classe \textit{response\_manager}. Sono dichiarate al suo interno variabili e metodi utilizzati per la gestione delle risposte e il controllo degli errori. Alcuni più importanti sono:
-\begin{itemize}
-	\item \textbf{\_\_construct}: che dichiara lo costruttore della classe \textit{response\_manager}
-	\item \textbf{get\_result}: che prende il risultato della \textit{query} dal \textit{server MySQL }e lo trasporterà al \textit{server PHP}
-	\item \textbf{set\_errorr\_messagge}: viene utilizzato per il controllo degli errori
-\end{itemize}
-
-\textbf{File NomePagina.php:} Sono i file che costruiscono le pagine del sito. Utilizzano le rispettive pagine \textit{HTML} che contengono l’effettivo \textit{HTML} e il \textit{file db.php}. Tra quelli che costruiscono e gestiscono le funzionalità più importanti del sito sono:

@@ -1,0 +1,14 @@
+\section{Intrusività}
+Durante tutte le fasi del progetto è stata considerata fondamentale l’adeguata separazione tra contenuto, presentazione e comportamento ottenuta tramite:
+\begin{itemize}
+	\item \textbf{HTML:} utilizzato solo per la struttura
+	\item \textbf{CSS non intrusivo:} tutto il codice \textit{CSS} è stato scritto in file separati, evitando di avere pratiche come il \textit{CSS embedded} o \textit{inline}
+	\item \textbf{PHP non intrusivo:} Avendo pagine con dati dinamici che cambiano in base ai dati inseriti dagli utenti o dall'amministratore, diventa impossibile evitare la presenza del codice HTML all’interno di alcuni \textit{file PHP}. Nonostante questo, ci siamo assicurati che la pagina \textit{HTML} corrispondente contenga solo codice \textit{HTML}.
+	
+		Il motivo principale dell’utilizzo di questa tecnica riguarda il miglioramento dell'esperienza utente.
+		
+		Invece di visualizzare una \textit{tabella vuota} (che non contiene dati), abbiamo scelto di stampare un messaggio che spiega la situazione. (esempio: quando un utente non ha inserito nessuna recensione, non ha effettuato nessun ordine..).
+	\item \textbf{Javascript non intrusivo:} Tutto il codice \textit{Javascript} è stato inserito in file differenti da quelli \textit{HTML} e \textit{PHP}.
+	
+		Quasi tutti gli \textit{script}, ad eccezione di alcuni, aggiungono funzionalità extra e migliorano l’esperienza utente. Per questo abbiamo deciso di inserire controlli anche sul lato server (tramite \textit{file PHP}) in modo da non riscontrare problemi nel caso in cui \textit{Javascript} non venga caricato o il motore di ricerca sia obsoleto. (esempio: la validazione dei campi \textit{input} sui \textit{form})
+\end{itemize}

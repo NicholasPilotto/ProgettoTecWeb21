@@ -1,26 +1,47 @@
 \section{Progettazione del sito}\label{sec:progettazionesito}
 
 \subsection{Obiettivi}
-La fase di progettazione e sviluppo del sito \textit{SecondRead} è stata fatta tenendo sempre in conto alcuni obiettivi e principi essenziali di un sito ben organizzato e accessibile.
+La fase di progettazione e dello sviluppo del sito SecondRead è stata realizzata aderendo ad alcuni principi essenziali di un sito ben organizzato e accessibile.
+
 \begin{itemize}
-	\item \textit{Separazione contenuto, presentazione e struttura}: Uno degli obiettivi più importanti nella progettazione. 
-	
-		Il contenuto è stato realizzato tramite documenti \textit{HTML5} e \textit{PHP}. La parte della presentazione grafica è realizzata attraverso i file esterni \textit{CSS} che vengono poi richiamati nelle pagine \textit{HTML}. La realizzazione del comportamento avviene tramite gli \textit{script} \textit{Javascript}. Tutto il codice delle pagine è stato scritto secondo le raccomandazioni \textit{W3C} e in ogni fase della progettazione si è verificato che tutto andasse bene tramite la validazione.
-	\item \textit{Accessibilità}: L’accessibilità è uno dei punti fondamentali da tenere in mente durante la progettazione. Si deve realizzare un sito che possa essere utilizzabile da tutte le categorie di utenti e da tutti i tipi di dispositivi e motori di ricerca. In modo da raggiungere questo obiettivo, abbiamo utilizzato varie tecniche.
+	\item \textbf{Separazione contenuto, presentazione e comportamento}: Rappresenta uno degli obiettivi più importanti nella progettazione e se sviluppato bene rende più semplice la futura manutenzione di tutto il sito
+		\begin{itemize}
+			\item Il \textit{contenuto} è stato realizzato tramite documenti \textit{HTML5} e \textit{PHP}.
+			\item La parte della presentazione grafica è realizzata attraverso i file esterni \textit{CSS} che vengono poi richiamati nelle pagine \textit{PHP}.
+			\item La realizzazione del \textit{comportamento} avviene tramite gli script \textit{Javascript} e \textit{PHP}. PHP è stato usato per gestire il lato server, mentre \textit{Javascript} per gestire il lato \textit{client}. Tutto il codice delle pagine è stato scritto secondo le raccomandazioni \textit{W3C} ed in ogni fase della progettazione si è verificato che tutto funzionasse correttamente tramite la validazione.	
+		\end{itemize}
+	\item \textbf{Accessibilità}: L’accessibilità è uno dei punti fondamentali da	considerare durante la progettazione di un sito che possa essere utilizzabile da tutte le categorie di utenti e da tutti i tipi di dispositivi e motori di ricerca. In modo da raggiungere questo obiettivo, sono state utilizzate varie tecniche:
 		\begin{enumerate}
-			\item Sono state fornite equivalenti testuali leggibili dallo \textit{screen reader} per tutti i tipi di media come supporto per gli utenti con disabilità visiva.
-			\item Grazie all’utilizzo delle misure relative o in percentuale nei fogli \textit{CSS} otteniamo un sito con un design fluido dove ogni pagina è responsive, ossia adattabile ai schermi di diverse dimensioni utilizzati dagli utenti.
+			\item Sono stati forniti \textit{equivalenti testuali} leggibili dallo \textit{screen reader} per tutti i tipi di media come supporto per gli utenti con disabilità visiva e/o motorie.
+			\item Grazie all’utilizzo delle \textit{misure relative} o in \textit{percentuale} nei fogli \textit{CSS} otteniamo un design fluido dove ogni pagina è responsive, ossia adattabile agli schermi di diverse dimensioni utilizzati dagli utenti.
 			\item Sono stati usati gli attributi \textit{lang} per le parole in lingue diverse dall’italiano in modo da essere lette correttamente dallo \textit{screen reader}.
-			\item La scelta dei colori del sito è stata fatta in modo da garantire un contrasto adeguato tra i diversi elementi strutturali e facilitare la lettura del contenuto a chi soffre di disturbi visivi.
-			\item Con lo scopo di rendere il sito facile da usare, e cercando di aiutare l’utente alla creazione di una mappa mentale, si sono rispettate alcune convenzioni importanti del web come il colore dei \textit{link}. I \textit{link} non visitati sono sottolineati e in color blu mentre quelli visitati diventano viola.
-			\item Si è aggiunto il testo \textit{“Ti trovi in :”} che precede in \textit{breadcrumb} per aiutare gli utenti svantaggiati.
-			\item Abbiamo aggiunto un pulsante in basso chiamato \textit{“Torna su”} che se cliccato, effettua uno \textit{scroll} verso l’alto fino all’inizio della pagina, migliorando così l’esperienza durante lo \textit{scroll} delle pagine lunghe.
-			\item Utilizzo del \textit{tag abbr} per definire le abbreviazioni.
-			\item Si è utilizzato un linguaggio semplice, informale e intuitivo da poter essere
-				comprensibile a tutti e in modo da aiutare l’utente a navigare all’interno della pagina corrente oppure tra le diverse pagine.
+			\item La scelta dei \textit{colori} del sito è stata fatta in modo da garantire un \textit{contrasto adeguato} tra i diversi elementi strutturali e per facilitare la lettura del contenuto a chi soffre di disturbi visivi.
+			\item Con lo scopo di rendere il sito facile da usare, aiutando l’utente alla creazione di una mappa mentale, si sono rispettate alcune convenzioni importanti del web come il \textit{colore dei link}. I link non visitati sono sottolineati e in color blu mentre quelli visitati diventano viola.
+			\item È stato aggiunto il testo \textit{“Ti trovi in :”} che precede in \textit{breadcrumb} per aiutare gli utenti svantaggiati.
+			\item Si è aggiunto in basso il pulsante \textit{“Torna su”} che se cliccato, effettua uno scroll verso l’alto fino all’inizio della pagina, migliorando così l’esperienza durante lo scroll delle pagine lunghe.
+			\item L’utilizzo del \textit{tag abbr} per definire le abbreviazioni.
+			\item Le tabelle sono state rese accessibili.
+			\item Si è utilizzato un \textit{linguaggio semplice}, \textit{informale} e \textit{intuitivo} in modo da poter essere comprensibile a tutti e cercando di aiutare l’utente a navigare all’interno della pagina corrente oppure tra le diverse pagine.
 		\end{enumerate}
-	\item \textit{Layout}: Il sito è stato progettato con un layout a tre pannelli:
-		\textit{Header}, \textit{Navbar}, Contenuto.
-	\item \textit{Resize Mobile}
-	\item \textit{Schema organizzativo}
+	\item \textbf{Flessibilità}: È importante che il sito possa essere consultabile da \textit{varie tipologie di dispositivi}, soprattutto dagli \textit{smartphone}. Deve essere quindi facilmente adattabile a differenti dimensioni di schermo.
+	\item \textbf{Layout}: Il \textit{layout} cambia a seconda che si tratti della parte espositiva oppure di quella interattiva. Quello della parte pubblica è a \textit{una colonna}, mentre quello della parte privata a \textit{due colonne}. Il motivo di questa scelta deriva dal fatto che nella parte pubblica si vuole dare più importanza al contenuto della pagina, mentre nella parte privata si vuole anche offrire una maggiore velocità di navigazione tra le diverse funzionalità.
+	\item \textbf{Resize Mobile}: Tutte le unità di misura sono state definite in \textit{em}, rendendo possibile il cambiamento delle dimensioni del font del sito per far scalare l’interfaccia con buoni risultati. Nonostante ciò, abbiamo avuto comunque la necessità di fare alcuni accorgimenti in modo da rendere l'interfaccia \textit{mobile} più semplice da utilizzare. Il cambiamento principale riguarda l’inserimento di una \textit{navbar a scomparsa} rappresentata attraverso l’inserimento di una \textit{burger icon} a destra nell’\textit{header} per il menu di navigazione principale (si è deciso questo posizionamento siccome la maggior parte degli utenti non è mancina e diventa più facile per loro selezionarlo attraverso il pollice che gioca il ruolo del puntatore).
+	
+		Un tap su tale icona apre la \textit{navbar}, che copre l’intera larghezza dello schermo con le voci al centro, e un tap sulla \textit{X} posto in alto a destra la chiude. Questa gestione viene implementata con uno script Javascript. Altro dettaglio che cambia a seconda della dimensione della finestra è la \textit{visualizzazione dei risultati} di ricerca di un libro. Essi vengono mostrati cercando di avere il giusto compromesso tra leggibilità e \textit{scrolling}.
+		
+	\item \textbf{Schema colori}: La scelta dei colori impatta tantissimo sull'accessibilità del sito. Come prima cosa si è garantito un \textit{contrasto elevato} necessario per facilitare la lettura del contenuto, soprattutto alle persone che soffrono di disturbi visivi. Poi si è lavorato per garantire un contrasto tra le diverse componenti principali come: il sistema di navigazione, il contenuto e i \textit{form}. Ad esempio, i \textit{link} sono facilmente distinguibili. Si è garantita una loro rappresentazione uniforme nel sito( blu se non visitati, altrimenti viola).
+		
+		I colori principali del sito sono il verde scuro (con diverse sue sfumature) ed il bianco utilizzato per lo sfondo delle pagine.
+		
+		L’unica eccezione avviene sui \textit{bottoni} e \textit{footer}. In questo caso lo sfondo è di colore verde mentre il colore del testo è in bianco. Al passaggio del puntatore sopra ai bottoni, essi vengono evidenziati attraverso il selettore \textit{:hover} presente in \textit{CSS3}, e il loro sfondo cambia in un colore verde più chiaro rispetto a quello di prima.
+		
+		Nelle icone, come quella del carrello, delle pagine dell'area privata, oppure le stelle delle recensioni e i \textit{badge} degli utenti, sono stati utilizzati altri colori. Avendo loro solo scopo di presentazione e non contestuale, si è deciso di utilizzare colori diversi da quelli principali in modo da evidenziarli e renderli più gradevoli alla vista. Sono stati comunque forniti gli equivalenti testuali per renderli accessibili.
+		
+	\item \textbf{Schema organizzativo}: Il sito è composto da una parte espositiva e una interattiva. Questo ha portato all'utilizzo di due schemi organizzativi ambigui: lo schema organizzativo ambiguo per \textit{argomento} per la parte espositiva e quello ambiguo \textit{orientato al task} per la parte interattiva.
+	
+		Nel primo caso, lo schema è stato progettato in modo da rappresentare tutte le informazioni generiche correlate all’argomento di interesse dell'utente. In questo modo, si facilita la navigazione degli utenti che non sanno esattamente cosa stiano cercando e diventa facile aggiungere successivamente delle informazioni senza dover rivedere a fondo la struttura gerarchica.
+		
+		Il contenuto della parte interattiva risulta organizzato come una collezione di processi e funzionalità diverse. Per questo motivo è stato scelto di utilizzare uno schema organizzativo ambiguo orientato al \textit{task}. L’utente, dopo aver selezionato il \textit{task} iniziale, sarà guidato in modo sequenziale fino al raggiungimento del proprio obiettivo attraverso il riempimento di informazioni negli input opportuni.
+		
+		Un approccio del genere aiuta a rendere più semplice l’accesso ai contenuti ed evita il sovraccarico cognitivo che provoca disorientamento.
 \end{itemize}

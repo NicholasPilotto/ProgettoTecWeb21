@@ -1,0 +1,21 @@
+\section{Validazione}\label{sec:validazione}
+In modo da ottenere un sito web accessibile e aderente agli standard bisogna che tutte le pagine che lo compongono siano corrette e che facciano quanto effettivamente dichiarato. In modo da ottenere questo risultato sono stati usati diversi strumenti per la validazione.
+\subsection{Strumenti usati}
+Per la validazione dei file \textit{HTML}\footnote{https://validator.w3.org} è stato utilizzato il validatore di \textit{W3C}. Per il \textit{CSS} del sito è stato sfruttato un altro validatore sempre offerto dal \textit{W3C}\footnote{http://www.css-validator.org}.
+
+L’accessibilità, a livello di test automatici, è stata controllata tramite lo strumento \textit{NV Access}. Infine, per la validazione sintattica degli script PHP e Javascript abbiamo sfruttato i validatori: \textit{PhpCodeChecker}\footnote{https://phpcodechecker.com} per il \textit{PHP} ed \textit{Esprima}\footnote{http://esprima.org/demo/validate.html}.
+
+\subsection{W3C HTML Validator}
+l servizio offerto da \textit{W3C} consente di validare anche l’\textit{HTML} prodotto dalle pagine \textit{PHP}, poiché permette di incollare direttamente il codice sorgente prodotto dallo \textit{script}. È il motivo per il quale è stato utilizzato per validare tutto il codice \textit{HTML} del sito web.
+
+\subsection{W3C CSS Validator}
+\textit{W3C} offre anche il servizio di validazione del \textit{CSS} che abbiamo utilizzato per assicurarci di aver rispettato rigorosamente lo standard.
+
+\subsection{NV Access}
+Attraverso questo \textit{tool} abbiamo eseguito una serie di test automatici su vari aspetti riguardanti l’accessibilità. Per esempio, abbiamo controllato se gli attributi aria utilizzati andassero bene, se il contenuto venisse letto correttamente dallo screen reader, se lo schema di colori scelta fosse adeguato.
+
+\subsection{PhpCodeChecker}
+Attraverso l’utilizzo di questo tool automatico è stata verificata la sintassi dei file PHP e controllata la presenza di eventuali errori. Essendo il sito composto principalmente da pagine dinamiche, il suo utilizzo è stato particolarmente utile.
+
+\subsection{Esprima}
+Attraverso l’utilizzo di questo tool automatico è stata controllata la sintassi di tutti gli \textit{script Javascript} utilizzati.
