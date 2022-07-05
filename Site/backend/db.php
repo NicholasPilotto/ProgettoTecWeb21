@@ -157,7 +157,6 @@ class Service extends Constant {
     $query = "SELECT libro.*, categoria.nome AS categoria_nome 
               FROM libro 
               INNER JOIN appartenenza 
-              
               ON libro.ISBN = appartenenza.Libro_ISBN AND appartenenza.Codice_Categoria = ?
               INNER JOIN categoria ON categoria.ID_Categoria = appartenenza.Codice_Categoria";
     $stmt = $this->connection->prepare($query);
@@ -316,7 +315,7 @@ class Service extends Constant {
   }
 
   public function get_bestsellers(): response_manager {
-    $query = "SELECT libro.*, count(Libro.isbn) AS sold 
+    $query = "SELECT libro.*, count(libro.isbn) AS sold 
               FROM libro 
               INNER JOIN composizione 
               ON composizione.elemento = libro.isbn 
@@ -352,7 +351,7 @@ class Service extends Constant {
     $this->connection->autocommit(false);
     $this->connection->begin_transaction();
     try {
-      $query1 = "INSERT INTO Libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso, trama) VALUES (?,?,?,?,?,?,?,?,?)";
+      $query1 = "INSERT INTO libro(ISBN,Titolo,Editore,Pagine,Prezzo,Quantita,Data_Pubblicazione,Percorso, trama) VALUES (?,?,?,?,?,?,?,?,?)";
       $stmt = $this->connection->prepare($query1);
 
       $data_reverse = date('Y-m-d', strtotime($data_pub));
@@ -749,7 +748,7 @@ class Service extends Constant {
   }
 
   public function insert_address($utente_id, $via, $citta, $cap, $civico): response_manager {
-    $query = "INSERT INTO Indirizzo(Via,Città,Cap,Num_civico,Utente) VALUES (?,?,?,?,?)";
+    $query = "INSERT INTO indirizzo(Via,Città,Cap,Num_civico,Utente) VALUES (?,?,?,?,?)";
     $stmt = $this->connection->prepare($query);
 
     $result = array();
@@ -1059,7 +1058,7 @@ class Service extends Constant {
   }
 
   public function insert_review($utenteid, $isbn, $valore, $commento): response_manager {
-    $query = "INSERT INTO Recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
+    $query = "INSERT INTO recensione(idUtente,Libro_ISBN,DataInserimento,Valutazione,Commento) VALUES (?,?,?,?,?)";
 
     $stmt = $this->connection->prepare($query);
     $today = date('Y-m-d');
@@ -1083,7 +1082,7 @@ class Service extends Constant {
   }
 
   public function delete_review($utente, $isbn): response_manager {
-    $query = "DELETE FROM Recensione 
+    $query = "DELETE FROM recensione 
               WHERE idUtente = ? AND libro_isbn = ?";
 
     $stmt = $this->connection->prepare($query);
@@ -1347,7 +1346,7 @@ class Service extends Constant {
   }
 
   public function restore_code($utente): response_manager {
-    $query = "INSERT INTO Recupero (id, utente) VALUES (?,?)
+    $query = "INSERT INTO recupero (id, utente) VALUES (?,?)
               ON DUPLICATE KEY UPDATE 
               id=?";
     $id = md5(uniqid(rand(), true));
@@ -1378,7 +1377,7 @@ class Service extends Constant {
 
   public function is_code_correct($id, $utente): response_manager {
     $query = "SELECT *
-              FROM Recupero
+              FROM recupero
               WHERE id = ? AND utente = ?";
     $stmt = $this->connection->prepare($query);
     $result = array();
