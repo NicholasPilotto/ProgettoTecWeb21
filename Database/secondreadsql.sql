@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS categoria;
 DROP TABLE IF EXISTS autore;
 DROP TABLE IF EXISTS ordine;
 DROP TABLE IF EXISTS indirizzo;
-DROP TABLE IF EXISTS recupero;
 DROP TABLE IF EXISTS utente;
 
 CREATE TABLE editore (
@@ -86,15 +85,6 @@ CREATE TABLE utente (
   telefono VARCHAR(15) NOT NULL UNIQUE,
   PRIMARY KEY(codice_identificativo)
   );
-
-  CREATE TABLE recupero (
-  id VARCHAR(32),
-  utente INT(10) UNSIGNED,
-  PRIMARY KEY (utente),
-  CONSTRAINT FK_Utente
-  FOREIGN KEY (utente) REFERENCES utente(codice_identificativo)
-  ON DELETE CASCADE
-);
 
 
 
