@@ -16,10 +16,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     margin: auto;
     max-width: 1024px;
-}
 
-body {
-    /*border: 1px solid #000;*/
     background-color: rgb(237, 239, 240);
     box-shadow: 0px 0px 10px 0px #aaaaaa;
 }
